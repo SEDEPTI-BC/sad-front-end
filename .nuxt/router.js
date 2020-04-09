@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
+const _ad8531ae = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
 const _166578b8 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
 const _23d2359d = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
@@ -23,6 +24,10 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
+    path: "/admin/calendario",
+    component: _ad8531ae,
+    name: "admin-calendario"
+  }, {
     path: "/admin/equipamentos",
     component: _166578b8,
     name: "admin-equipamentos"
