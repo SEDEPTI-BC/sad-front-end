@@ -24,4 +24,7 @@ export default {
 #container {
   margin-top: 40px;
 }
+h1 {
+  margin-bottom: 40px;
+}
 </style>
