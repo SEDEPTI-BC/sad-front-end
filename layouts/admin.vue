@@ -1,5 +1,10 @@
 <template>
-  <NavBar />
+  <div>
+    <NavBar />
+    <b-container id="container">
+      <nuxt />
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -11,4 +16,12 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+* {
+  font-family: 'PT Mono', monospace;
+}
+
+#container {
+  margin-top: 40px;
+}
 </style>
