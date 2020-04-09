@@ -1,14 +1,24 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">{{title}}</b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark" variant="secondary">
+      <!-- <b-navbar-brand href="#">{{title}}</b-navbar-brand> -->
+
+      <b-navbar-brand href="#">
+        <img
+          src="~/static/sad-logo.png"
+          alt="Sistema de Agendamento de Eventos"
+          style="height:48px"
+        />
+      </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <nuxt-link v-for="(item, index) in navItems" :key="index" :to="`admin/${item}`">
-            <b-nav-item>{{item |capitalize}}</b-nav-item>
+            <b-nav-item>
+              <b>{{item |capitalize}}</b>
+            </b-nav-item>
           </nuxt-link>
         </b-navbar-nav>
 
