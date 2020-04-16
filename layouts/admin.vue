@@ -2,7 +2,9 @@
   <div>
     <NavBar />
     <b-container id="container">
-      <nuxt />
+      <transition name="page" mode="out-in">
+        <nuxt />
+      </transition>
     </b-container>
   </div>
 </template>
@@ -15,12 +17,7 @@ export default {
 }
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
-* {
-  font-family: 'PT Mono', monospace;
-}
-
+<style scoped>
 #container {
   margin-top: 40px;
 }
