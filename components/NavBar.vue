@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar toggleable="lg" type="dark" :variant="navColor" :sticky="true">
       <!-- <b-navbar-brand href="#">{{title}}</b-navbar-brand> -->
       <b-container>
         <b-navbar-brand href="#">
@@ -18,7 +18,7 @@
             <nuxt-link
               v-for="(item, index) in navItems"
               :key="index"
-              :to="`admin/${item}`"
+              :to="`public/${item}`"
             >
               <b-nav-item>
                 <b>{{ item | capitalize }}</b>
@@ -59,13 +59,19 @@ export default {
     },
     navItems: {
       type: Array,
-      default: ['eventos', 'equipamentos', 'calendário']
+      default: () => {
+        return ['eventos', 'equipamentos', 'calendário']
+      }
     },
     user: {
       type: Object,
-      default: {
-        name: 'administrador'
+      default: () => {
+        return { name: 'administrador' }
       }
+    },
+    navColor: {
+      type: String,
+      default: 'dark'
     }
   },
   filters: {
