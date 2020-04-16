@@ -15,10 +15,13 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css'
 
 import '../node_modules/bootstrap-vue/dist/bootstrap-vue.css'
 
+import '../assets/main.css'
+
 import _77068119 from '../layouts/admin.vue'
 import _6f6c098b from '../layouts/default.vue'
+import _f7662442 from '../layouts/public.vue'
 
-const layouts = { "_admin": sanitizeComponent(_77068119),"_default": sanitizeComponent(_6f6c098b) }
+const layouts = { "_admin": sanitizeComponent(_77068119),"_default": sanitizeComponent(_6f6c098b),"_public": sanitizeComponent(_f7662442) }
 
 export default {
   render (h, props) {
