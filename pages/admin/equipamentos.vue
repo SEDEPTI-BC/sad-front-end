@@ -1,10 +1,10 @@
-<template></template>
+<template> <div></div></template>
 
 <script>
 export default {
-  layout: 'admin'
+  layout: 'admin',
+  data() {}
 }
 </script>
 
-<style>
-</style>
+<style></style>
