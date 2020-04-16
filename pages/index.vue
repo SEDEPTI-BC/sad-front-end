@@ -1,6 +1,6 @@
 <template>
   <div class="bg-image">
-    <div class="content ">
+    <div class="content">
       <b-container>
         <b-row align-h="center">
           <h1>Sistema de Agendamento de Auditório</h1>
@@ -11,28 +11,23 @@
         </b-row>
 
         <b-row align-h="center">
-          <nuxt-link tag="button" to="public/agendamentos" class="btn  agendar">
-            Agendar evento
-          </nuxt-link>
+          <nuxt-link tag="button" to="public/agendamentos" class="btn large-btn"
+            >Agendar evento</nuxt-link
+          >
         </b-row>
       </b-container>
     </div>
   </div>
 </template>
 
-<script scoped>
+<script>
 export default {
   layout: 'public',
   components: {}
 }
 </script>
 
-<style>
-.agendar {
-  margin-top: 50px;
-  padding: 20px 30px 20px 30px;
-  background: #f6cace;
-}
+<style scoped>
 .content {
   padding-top: 10%;
   text-align: center;
