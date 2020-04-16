@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,500&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+.bg-image {
+  height: 100vh;
+  background: #222;
+  background-image: url('../assets/images/img-bg.png');
+  background-size: cover;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.7s;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}
