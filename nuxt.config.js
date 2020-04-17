@@ -12,7 +12,8 @@ export default {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || ''
-      }
+      },
+      { name: 'theme-color', content: '#dc3545' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -57,5 +58,10 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+
+  server: {
+    port: 8000,
+    host: '0.0.0.0'
   }
 }
