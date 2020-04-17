@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'public',
+  name: 'Public',
   components: {
     NavBar: () => import('~/components/NavBar')
   },
@@ -23,4 +23,15 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+/* .background {
+  height: 100vh;
+} */
+
+.bg-image {
+  height: 100vh;
+  background: #222;
+  background-image: url('../assets/images/img-bg.png');
+  background-size: cover;
+}
+</style>
