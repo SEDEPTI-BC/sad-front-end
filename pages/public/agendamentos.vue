@@ -1,5 +1,5 @@
 <template>
-  <div class="content pt-3">
+  <div class="content pt-3 pb-5">
     <h1 class="page-title">Agendar Evento</h1>
     <b-container>
       <b-card
