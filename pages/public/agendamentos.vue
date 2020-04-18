@@ -47,7 +47,7 @@
 
         <hr class="my-4" />
 
-        <button class="btn btn-danger pt-3 pb-3" @click.prevent="submitForm">
+        <button class="btn btn-danger py-3" @click.prevent="submitForm">
           Enviar agendamento
         </button>
       </b-card>
