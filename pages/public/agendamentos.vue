@@ -47,9 +47,8 @@
 
         <hr class="my-4" />
 
-        <button class="btn btn-danger">Cancelar</button>
-        <button class="btn btn-success" @click.prevent="submitForm">
-          Enviar
+        <button class="btn btn-danger pt-3 pb-3" @click.prevent="submitForm">
+          Enviar agendamento
         </button>
       </b-card>
     </b-container>
