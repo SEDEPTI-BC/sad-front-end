@@ -1,11 +1,11 @@
 <template>
   <div>
     <NavBar :nav-items="optionsNav" nav-color="danger" />
-    <transition name="page" mode="out-in">
-      <div class="bg-image">
+    <div class="bg-public">
+      <transition name="page" mode="out-in">
         <nuxt />
-      </div>
-    </transition>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -24,12 +24,8 @@ export default {
 </script>
 
 <style>
-/* .background {
-  height: 100vh;
-} */
-
-.bg-image {
-  height: 100vh;
+.bg-public {
+  height: 100%;
   background: #222;
   background-image: url('../assets/images/img-bg.png');
   background-size: cover;
