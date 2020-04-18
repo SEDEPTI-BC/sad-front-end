@@ -13,7 +13,7 @@
         <b-form-input
           id="event-name"
           v-model="event.name"
-          placeholder="Nome do evento"
+          placeholder="Palestra Sobre Sustentabilidade"
           class="mb-4"
         ></b-form-input>
 
@@ -21,29 +21,50 @@
         <b-form-textarea
           id="description"
           v-model="event.description"
-          placeholder="Descrição do evento"
+          placeholder="Sustentabilidade é a capacidade de sustentação ou conservação de um processo ou sistema."
           rows="4"
           max-rows="6"
           class="mb-4"
         ></b-form-textarea>
 
-        <label for="event-owner">Dono do evento</label>
+        <label for="event-owner">Nome completo</label>
         <b-form-input
           id="event-owner"
           v-model="event.owner"
-          placeholder="Nome do proprietário"
+          placeholder="Paula K. Spencer"
           class="mb-4"
         ></b-form-input>
 
-        <label for="event-owner">Email</label>
+        <label for="event-email">Email</label>
         <b-form-input
-          id="event-owner"
+          id="event-email"
           v-model="event.email"
-          placeholder="Email"
+          placeholder="PaulaKSpencer@teleworm.us"
           class="mb-4"
           type="email"
           input-type="email"
         ></b-form-input>
+
+        <label for="dropdown-check">Equipamentos</label>
+        <b-dropdown
+          id="dropdown-check"
+          text="Selecionar equipamentos"
+          style="width: 100%; "
+        >
+          <b-dropdown-text style="max-width: 300px;">
+            <!-- checklist aqui -->
+            <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
+              <b-form-checkbox
+                v-for="(equipment, index) in equipments"
+                :key="index"
+                :value="equipment"
+                >{{ equipment | capitalize }}</b-form-checkbox
+              >
+            </b-form-checkbox-group>
+          </b-dropdown-text>
+          <b-dropdown-divider></b-dropdown-divider>
+          <b-dropdown-item-button>Pronto</b-dropdown-item-button>
+        </b-dropdown>
 
         <hr class="my-4" />
 
@@ -61,12 +82,13 @@ export default {
   layout: 'public',
   data() {
     return {
-      event: { name: '', owner: '', description: '' }
+      event: { name: '', owner: '', description: '' },
+      equipments: ['notebook', 'quadro interativo', 'TV', 'datashow']
     }
   },
   methods: {
     submitForm() {
-      alert(`Evento: ${this.event.name} criado`)
+      alert(`Evento: ${this.event.equipments} criado`)
     }
   }
 }
