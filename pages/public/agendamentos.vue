@@ -71,7 +71,7 @@
         <hr class="my-4" />
 
         <button class="btn btn-danger py-3" @click.prevent="submitForm">
-          Enviar agendamento
+          Confirmar agendamento
         </button>
       </b-card>
     </b-container>
