@@ -58,8 +58,10 @@
                 v-for="(equipment, index) in equipments"
                 :key="index"
                 :value="equipment"
-                >{{ equipment | capitalize }}</b-form-checkbox
+                style="display: block;"
               >
+                {{ equipment | capitalize }}
+              </b-form-checkbox>
             </b-form-checkbox-group>
           </b-dropdown-text>
           <b-dropdown-divider></b-dropdown-divider>
@@ -83,7 +85,14 @@ export default {
   data() {
     return {
       event: { name: '', owner: '', description: '' },
-      equipments: ['notebook', 'quadro interativo', 'TV', 'datashow']
+      equipments: [
+        'notebook',
+        'quadro interativo',
+        'TV',
+        'datashow',
+        'tablet',
+        'piloto'
+      ]
     }
   },
   methods: {
