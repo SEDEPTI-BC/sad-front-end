@@ -3,12 +3,12 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _ad8531ae = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
-const _166578b8 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
-const _72d66182 = () => interopDefault(import('../pages/public/agendamentos.vue' /* webpackChunkName: "pages/public/agendamentos" */))
-const _e16594d0 = () => interopDefault(import('../pages/public/sobre.vue' /* webpackChunkName: "pages/public/sobre" */))
-const _1bcbad2f = () => interopDefault(import('../pages/public/login/entrar.vue' /* webpackChunkName: "pages/public/login/entrar" */))
-const _23d2359d = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _9c4ac398 = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
+const _6c911903 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
+const _35dd3854 = () => interopDefault(import('../pages/public/agendamentos.vue' /* webpackChunkName: "pages/public/agendamentos" */))
+const _54c4abba = () => interopDefault(import('../pages/public/sobre.vue' /* webpackChunkName: "pages/public/sobre" */))
+const _e9d7d378 = () => interopDefault(import('../pages/public/login/entrar.vue' /* webpackChunkName: "pages/public/login/entrar" */))
+const _9e1e111c = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -28,27 +28,27 @@ export const routerOptions = {
 
   routes: [{
     path: "/admin/calendario",
-    component: _ad8531ae,
+    component: _9c4ac398,
     name: "admin-calendario"
   }, {
     path: "/admin/equipamentos",
-    component: _166578b8,
+    component: _6c911903,
     name: "admin-equipamentos"
   }, {
     path: "/public/agendamentos",
-    component: _72d66182,
+    component: _35dd3854,
     name: "public-agendamentos"
   }, {
     path: "/public/sobre",
-    component: _e16594d0,
+    component: _54c4abba,
     name: "public-sobre"
   }, {
     path: "/public/login/entrar",
-    component: _1bcbad2f,
+    component: _e9d7d378,
     name: "public-login-entrar"
   }, {
     path: "/",
-    component: _23d2359d,
+    component: _9e1e111c,
     name: "index"
   }],
 
