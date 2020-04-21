@@ -50,6 +50,7 @@
           id="dropdown-check"
           text="Selecionar equipamentos"
           style="width: 100%; "
+          class="mb-4"
         >
           <b-dropdown-text style="max-width: 300px;">
             <!-- checklist aqui -->
@@ -64,9 +65,40 @@
               </b-form-checkbox>
             </b-form-checkbox-group>
           </b-dropdown-text>
+
           <b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item-button>Pronto</b-dropdown-item-button>
         </b-dropdown>
+
+        <label for="date-picker">Data de início</label>
+        <div>
+          <b-form-datepicker
+            id="date-picker"
+            v-model="event.start"
+            class="mb-4"
+            :date-disabled-fn="dateDisabled"
+            locale="pt"
+            :weekdays="weekdays"
+            today-variant="danger"
+            selected-variant="danger"
+            v-bind="labels"
+          ></b-form-datepicker>
+        </div>
+
+        <label for="date-picker">Até às</label>
+        <div>
+          <b-form-datepicker
+            id="date-picker"
+            v-model="event.end"
+            class="mb-4"
+            :date-disabled-fn="dateDisabled"
+            locale="pt"
+            :weekdays="weekdays"
+            today-variant="danger"
+            selected-variant="danger"
+            v-bind="labels"
+          ></b-form-datepicker>
+        </div>
 
         <hr class="my-4" />
 
@@ -92,12 +124,42 @@ export default {
         'datashow',
         'tablet',
         'piloto'
-      ]
+      ],
+      weekdays: [
+        { value: 0, text: 'Domingo' },
+        { value: 1, text: 'Segunda-feira' },
+        { value: 2, text: 'Terça-feira' },
+        { value: 3, text: 'Quarta-feira' },
+        { value: 4, text: 'Quinta-feira' },
+        { value: 5, text: 'Sexta-feira' },
+        { value: 6, text: 'Sábado' }
+      ],
+      labels: {
+        weekdayHeaderFormat: 'long',
+        labelPrevDecade: 'Década anterior',
+        labelPrevYear: 'Ano anterior',
+        labelPrevMonth: 'Mês anterior',
+        labelCurrentMonth: 'Mês atual',
+        labelNextMonth: 'Mês que vem',
+        labelNextYear: 'Mês que vem',
+        labelNextDecade: 'Próxima década',
+        labelToday: 'Hoje',
+        labelSelected: 'Data selecionada',
+        labelNoDateSelected: 'Nenhuma data selecionada',
+        labelCalendar: 'Calendário',
+        labelNav: 'Navegação do calendário',
+        labelHelp: 'Use as teclas de seta para navegar pelo calendário'
+      }
     }
   },
   methods: {
     submitForm() {
-      alert(`Evento: ${this.event.equipments} criado`)
+      alert(`Evento: ${this.event.start} criado`)
+    },
+    dateDisabled(ymd, date) {
+      const weekday = date.getDay()
+      const day = date.getDate()
+      return weekday === 0 || weekday === 6 || day === 13
     }
   }
 }
