@@ -7,7 +7,13 @@
 .large-btn {
   margin-top: 50px;
   padding: 20px 30px 20px 30px;
+  background: #fef;
+  transition: all 0.3s;
+}
+
+.large-btn:hover {
   background: #f6cace;
+  transform: scale(1.1);
 }
 
 .page-enter-active,
