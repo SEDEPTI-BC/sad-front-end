@@ -10,10 +10,12 @@
 </template>
 
 <script>
+import NavBar from '~/components/NavBar'
+
 export default {
   name: 'Public',
   components: {
-    NavBar: () => import('~/components/NavBar')
+    NavBar
   },
   data() {
     return {
