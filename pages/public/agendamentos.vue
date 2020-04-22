@@ -71,34 +71,30 @@
         </b-dropdown>
 
         <label for="date-picker">Data de início</label>
-        <div>
-          <b-form-datepicker
-            id="date-picker"
-            v-model="event.start"
-            class="mb-4"
-            :date-disabled-fn="dateDisabled"
-            locale="pt"
-            :weekdays="weekdays"
-            today-variant="danger"
-            selected-variant="danger"
-            v-bind="labels"
-          ></b-form-datepicker>
-        </div>
+        <b-form-datepicker
+          id="date-picker"
+          v-model="event.start"
+          class="mb-4"
+          :date-disabled-fn="dateDisabled"
+          locale="pt"
+          :weekdays="weekdays"
+          today-variant="danger"
+          selected-variant="danger"
+          v-bind="labels"
+        ></b-form-datepicker>
 
         <label for="date-picker">Até às</label>
-        <div>
-          <b-form-datepicker
-            id="date-picker"
-            v-model="event.end"
-            class="mb-4"
-            :date-disabled-fn="dateDisabled"
-            locale="pt"
-            :weekdays="weekdays"
-            today-variant="danger"
-            selected-variant="danger"
-            v-bind="labels"
-          ></b-form-datepicker>
-        </div>
+        <b-form-datepicker
+          id="date-picker"
+          v-model="event.end"
+          class="mb-4"
+          :date-disabled-fn="dateDisabled"
+          locale="pt"
+          :weekdays="weekdays"
+          today-variant="danger"
+          selected-variant="danger"
+          v-bind="labels"
+        ></b-form-datepicker>
 
         <hr class="my-4" />
 
