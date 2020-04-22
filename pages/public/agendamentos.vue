@@ -70,31 +70,43 @@
           <b-dropdown-item-button>Pronto</b-dropdown-item-button>
         </b-dropdown>
 
-        <label for="date-picker">Data de início</label>
+        <label for="date-picker">Data do evento</label>
         <b-form-datepicker
           id="date-picker"
-          v-model="event.start"
-          class="mb-4"
+          v-model="eventDate.dateBegin"
           :date-disabled-fn="dateDisabled"
           locale="pt"
           :weekdays="weekdays"
           today-variant="danger"
+          class="mb-4"
           selected-variant="danger"
           v-bind="labels"
         ></b-form-datepicker>
 
-        <label for="date-picker">Até às</label>
-        <b-form-datepicker
-          id="date-picker"
-          v-model="event.end"
-          class="mb-4"
-          :date-disabled-fn="dateDisabled"
-          locale="pt"
-          :weekdays="weekdays"
-          today-variant="danger"
-          selected-variant="danger"
-          v-bind="labels"
-        ></b-form-datepicker>
+        <b-row>
+          <b-col mb="auto">
+            <label for="time_start">Hora de início</label>
+            <b-form-input
+              id="time_start"
+              v-model="eventDate.timeStart"
+              type="time"
+              locale="pt"
+              min="08:00"
+              max="21:00"
+            ></b-form-input>
+          </b-col>
+          <b-col mb="auto">
+            <label for="time_end">Até às</label>
+            <b-form-input
+              id="time_end"
+              v-model="eventDate.timeEnd"
+              type="time"
+              locale="pt"
+              min="08:00"
+              max="21:00"
+            ></b-form-input>
+          </b-col>
+        </b-row>
 
         <hr class="my-4" />
 
@@ -112,7 +124,7 @@ export default {
   layout: 'public',
   data() {
     return {
-      event: { name: '', owner: '', description: '' },
+      event: {},
       equipments: [
         'notebook',
         'quadro interativo',
@@ -120,15 +132,6 @@ export default {
         'datashow',
         'tablet',
         'piloto'
-      ],
-      weekdays: [
-        { value: 0, text: 'Domingo' },
-        { value: 1, text: 'Segunda-feira' },
-        { value: 2, text: 'Terça-feira' },
-        { value: 3, text: 'Quarta-feira' },
-        { value: 4, text: 'Quinta-feira' },
-        { value: 5, text: 'Sexta-feira' },
-        { value: 6, text: 'Sábado' }
       ],
       labels: {
         weekdayHeaderFormat: 'long',
@@ -145,23 +148,34 @@ export default {
         labelCalendar: 'Calendário',
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
-      }
+      },
+      weekdays: [
+        { value: 0, text: 'Domingo' },
+        { value: 1, text: 'Segunda-feira' },
+        { value: 2, text: 'Terça-feira' },
+        { value: 3, text: 'Quarta-feira' },
+        { value: 4, text: 'Quinta-feira' },
+        { value: 5, text: 'Sexta-feira' },
+        { value: 6, text: 'Sábado' }
+      ],
+      eventDate: {}
     }
   },
   methods: {
-    submitForm() {
-      alert(`Evento: ${this.event.start} criado`)
-    },
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
       const day = date.getDate()
       return weekday === 0 || weekday === 6 || day === 13
-    }
+    },
+    onContext(ctx) {
+      this.context = ctx
+    },
+    submitForm() {}
   }
 }
 </script>
 
-<style>
+<style scoped>
 .card-form {
   color: rgb(50, 50, 50);
   max-width: 500px;
