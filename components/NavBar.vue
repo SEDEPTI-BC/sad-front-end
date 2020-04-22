@@ -73,12 +73,6 @@ export default {
       type: String,
       default: 'dark'
     }
-  },
-  filters: {
-    capitalize(str) {
-      const captalizedStr = str.replace(str[0], str[0].toUpperCase())
-      return captalizedStr
-    }
   }
 }
 </script>

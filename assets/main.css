@@ -4,22 +4,21 @@
   font-family: 'Poppins', sans-serif;
 }
 
-.bg-image {
-  height: 100vh;
-  background: #222;
-  background-image: url('../assets/images/img-bg.png');
-  background-size: cover;
-}
-
 .large-btn {
   margin-top: 50px;
   padding: 20px 30px 20px 30px;
+  background: #fef;
+  transition: all 0.3s;
+}
+
+.large-btn:hover {
   background: #f6cace;
+  transform: scale(1.1);
 }
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.7s;
+  transition: opacity 0.25s;
 }
 .page-enter,
 .page-leave-to {

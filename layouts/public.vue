@@ -1,19 +1,21 @@
 <template>
   <div>
     <NavBar :nav-items="optionsNav" nav-color="danger" />
-    <transition name="page" mode="out-in">
-      <div class="bg-image">
+    <div class="bg-public">
+      <transition name="page" mode="out-in">
         <nuxt />
-      </div>
-    </transition>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
+import NavBar from '~/components/NavBar'
+
 export default {
-  name: 'public',
+  name: 'Public',
   components: {
-    NavBar: () => import('~/components/NavBar')
+    NavBar
   },
   data() {
     return {
@@ -23,4 +25,11 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.bg-public {
+  height: 100%;
+  background: #222;
+  background-image: url('../assets/images/img-bg.png');
+  background-size: cover;
+}
+</style>
