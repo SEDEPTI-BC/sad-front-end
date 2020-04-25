@@ -41,7 +41,7 @@
               </b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item v-else to="login" variant="light">
-              Entrar
+              Área administrativa
               <b-icon icon="person-fill"></b-icon>
             </b-nav-item>
           </b-navbar-nav>
