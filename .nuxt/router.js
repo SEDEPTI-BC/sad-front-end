@@ -3,11 +3,12 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
+const _115c42b2 = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
+const _534a6886 = () => interopDefault(import('../pages/agendar.vue' /* webpackChunkName: "pages/agendar" */))
+const _e255754e = () => interopDefault(import('../pages/sobre.vue' /* webpackChunkName: "pages/sobre" */))
 const _9c4ac398 = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
 const _6c911903 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
-const _35dd3854 = () => interopDefault(import('../pages/public/agendamentos.vue' /* webpackChunkName: "pages/public/agendamentos" */))
-const _54c4abba = () => interopDefault(import('../pages/public/sobre.vue' /* webpackChunkName: "pages/public/sobre" */))
-const _e9d7d378 = () => interopDefault(import('../pages/public/login/entrar.vue' /* webpackChunkName: "pages/public/login/entrar" */))
+const _d4b0db64 = () => interopDefault(import('../pages/login/entrar.vue' /* webpackChunkName: "pages/login/entrar" */))
 const _9e1e111c = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
@@ -27,6 +28,18 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
+    path: "/admin",
+    component: _115c42b2,
+    name: "admin"
+  }, {
+    path: "/agendar",
+    component: _534a6886,
+    name: "agendar"
+  }, {
+    path: "/sobre",
+    component: _e255754e,
+    name: "sobre"
+  }, {
     path: "/admin/calendario",
     component: _9c4ac398,
     name: "admin-calendario"
@@ -35,17 +48,9 @@ export const routerOptions = {
     component: _6c911903,
     name: "admin-equipamentos"
   }, {
-    path: "/public/agendamentos",
-    component: _35dd3854,
-    name: "public-agendamentos"
-  }, {
-    path: "/public/sobre",
-    component: _54c4abba,
-    name: "public-sobre"
-  }, {
-    path: "/public/login/entrar",
-    component: _e9d7d378,
-    name: "public-login-entrar"
+    path: "/login/entrar",
+    component: _d4b0db64,
+    name: "login-entrar"
   }, {
     path: "/",
     component: _9e1e111c,

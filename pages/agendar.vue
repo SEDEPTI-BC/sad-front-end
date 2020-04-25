@@ -120,7 +120,7 @@
 
 <script>
 export default {
-  name: 'Agendamentos',
+  name: 'Agendar',
   layout: 'public',
   data() {
     return {

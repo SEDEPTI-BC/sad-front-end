@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar />
-    <b-container id="container">
+    <b-container>
       <transition name="page" mode="out-in">
         <nuxt />
       </transition>
@@ -12,15 +12,12 @@
 <script>
 import NavBar from '~/components/NavBar'
 export default {
-  name: 'admin',
+  name: 'Admin',
   components: { NavBar }
 }
 </script>
 
 <style scoped>
-#container {
-  margin-top: 40px;
-}
 h1 {
   margin-bottom: 40px;
 }
