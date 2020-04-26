@@ -40,8 +40,8 @@
                 <b-icon icon="power"></b-icon>
               </b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item v-else href="/admin/equipamentos" variant="light">
-              Entrar
+            <b-nav-item v-else to="login" variant="light">
+              Área administrativa
               <b-icon icon="person-fill"></b-icon>
             </b-nav-item>
           </b-navbar-nav>

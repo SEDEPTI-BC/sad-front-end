@@ -60,9 +60,8 @@
                 :key="index"
                 :value="equipment"
                 style="display: block;"
+                >{{ equipment | capitalize }}</b-form-checkbox
               >
-                {{ equipment | capitalize }}
-              </b-form-checkbox>
             </b-form-checkbox-group>
           </b-dropdown-text>
 
@@ -176,6 +175,12 @@ export default {
 </script>
 
 <style scoped>
+input:focus,
+textarea:focus {
+  border: solid 2px #c5737b;
+  box-shadow: 0px 0px 4px rgb(230, 141, 150);
+}
+
 .card-form {
   color: rgb(50, 50, 50);
   max-width: 500px;
