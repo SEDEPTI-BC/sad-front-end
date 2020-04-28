@@ -2,12 +2,8 @@
   <div>
     <b-navbar toggleable="lg" type="dark" :variant="navColor" :sticky="true">
       <b-container>
-        <b-navbar-brand href="/">
-          <img
-            src="~/static/sad-logo.png"
-            alt="Sistema de Agendamento de Eventos"
-            style="height:48px"
-          />
+        <b-navbar-brand to="/">
+          <img src="~/static/sad-logo.png" :alt="title" style="height:48px" />
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -24,23 +20,7 @@
           </b-navbar-nav>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <b-nav-item-dropdown v-if="isAdm" right>
-              <!-- Using 'button-content' slot -->
-
-              <template v-slot:button-content>
-                {{ user.name | capitalize }}
-                <b-icon icon="person-fill"></b-icon>
-              </template>
-              <b-dropdown-item href="#">
-                Perfil
-              </b-dropdown-item>
-
-              <b-dropdown-item href="#">
-                Sair
-                <b-icon icon="power"></b-icon>
-              </b-dropdown-item>
-            </b-nav-item-dropdown>
-            <b-nav-item v-else to="login" variant="light">
+            <b-nav-item to="login" variant="light">
               Área administrativa
               <b-icon icon="person-fill"></b-icon>
             </b-nav-item>
@@ -62,7 +42,7 @@ export default {
     navItems: {
       type: Array,
       default: () => {
-        return ['eventos', 'equipamentos', 'calendário']
+        return ['agendar', 'sobre']
       }
     },
     user: {
@@ -73,19 +53,12 @@ export default {
     },
     navColor: {
       type: String,
-      default: 'dark'
+      default: 'danger'
     }
   },
   data() {
     return {}
   },
-  computed: {
-    isAdm() {
-      const admin = this.$route.name.includes('admin')
-      return admin
-    }
-  },
-
   methods: {}
 }
 </script>
