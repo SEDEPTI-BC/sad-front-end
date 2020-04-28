@@ -1,19 +1,17 @@
 <template>
   <div>
-    <NavBar />
-    <b-container>
-      <transition name="page" mode="out-in">
-        <nuxt />
-      </transition>
-    </b-container>
+    <NavBarAdmin />
+    <transition name="page" mode="out-in">
+      <nuxt />
+    </transition>
   </div>
 </template>
 
 <script>
-import NavBar from '~/components/NavBar'
+import NavBarAdmin from '~/components/NavBarAdmin'
 export default {
   name: 'Admin',
-  components: { NavBar }
+  components: { NavBarAdmin }
 }
 </script>
 
