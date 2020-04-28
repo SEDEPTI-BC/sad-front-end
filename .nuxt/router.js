@@ -3,12 +3,13 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _115c42b2 = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
 const _534a6886 = () => interopDefault(import('../pages/agendar.vue' /* webpackChunkName: "pages/agendar" */))
 const _7a989a89 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
 const _e255754e = () => interopDefault(import('../pages/sobre.vue' /* webpackChunkName: "pages/sobre" */))
 const _9c4ac398 = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
 const _6c911903 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
+const _5045f3de = () => interopDefault(import('../pages/admin/eventos.vue' /* webpackChunkName: "pages/admin/eventos" */))
+const _5ead3f1c = () => interopDefault(import('../pages/admin/perfil.vue' /* webpackChunkName: "pages/admin/perfil" */))
 const _9e1e111c = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
@@ -28,10 +29,6 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
-    path: "/admin",
-    component: _115c42b2,
-    name: "admin"
-  }, {
     path: "/agendar",
     component: _534a6886,
     name: "agendar"
@@ -51,6 +48,14 @@ export const routerOptions = {
     path: "/admin/equipamentos",
     component: _6c911903,
     name: "admin-equipamentos"
+  }, {
+    path: "/admin/eventos",
+    component: _5045f3de,
+    name: "admin-eventos"
+  }, {
+    path: "/admin/perfil",
+    component: _5ead3f1c,
+    name: "admin-perfil"
   }, {
     path: "/",
     component: _9e1e111c,

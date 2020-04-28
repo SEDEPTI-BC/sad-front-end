@@ -1,10 +1,13 @@
 <template>
-  <div>Equipamentos</div>
+  <div>
+    Eventos
+  </div>
 </template>
 
 <script>
 export default {
-  layout: 'admin'
+  layout: 'admin',
+  name: 'Eventos'
 }
 </script>
 

@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" :variant="navColor" :sticky="true">
       <b-container>
-        <b-navbar-brand to="/">
+        <b-navbar-brand href="/">
           <img src="~/static/sad-logo.png" :alt="title" style="height:48px" />
         </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -13,17 +13,29 @@
               v-for="(item, index) in navItems"
               :key="index"
               active-class="active"
-              :to="`${item}`"
+              :to="generateRoute(item)"
             >
               <b>{{ item | capitalize }}</b>
             </b-nav-item>
           </b-navbar-nav>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <b-nav-item to="login" variant="light">
-              Área administrativa
-              <b-icon icon="person-fill"></b-icon>
-            </b-nav-item>
+            <b-nav-item-dropdown right>
+              <!-- Using 'button-content' slot -->
+
+              <template v-slot:button-content>
+                {{ user.name | capitalize }}
+                <b-icon icon="person-fill"></b-icon>
+              </template>
+              <b-dropdown-item to="/admin/perfil">
+                Perfil
+              </b-dropdown-item>
+
+              <b-dropdown-item href="/">
+                Sair
+                <b-icon icon="power"></b-icon>
+              </b-dropdown-item>
+            </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
       </b-container>
@@ -33,7 +45,7 @@
 
 <script>
 export default {
-  name: 'NavBar',
+  name: 'NavBarAdmin',
   props: {
     title: {
       type: String,
@@ -42,7 +54,7 @@ export default {
     navItems: {
       type: Array,
       default: () => {
-        return ['agendar', 'sobre']
+        return ['eventos', 'equipamentos', 'calendário']
       }
     },
     user: {
@@ -53,13 +65,15 @@ export default {
     },
     navColor: {
       type: String,
-      default: 'danger'
+      default: 'dark'
     }
   },
-  data() {
-    return {}
-  },
-  methods: {}
+  methods: {
+    generateRoute(item) {
+      item = item === 'calendário' ? 'calendario' : item
+      return `/admin/${item}`
+    }
+  }
 }
 </script>
 

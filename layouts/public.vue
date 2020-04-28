@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar :nav-items="optionsNav" nav-color="danger" />
+    <NavBar />
     <div class="bg-public">
       <transition name="page" mode="out-in">
         <nuxt />
@@ -16,11 +16,6 @@ export default {
   name: 'Public',
   components: {
     NavBar
-  },
-  data() {
-    return {
-      optionsNav: ['agendar', 'sobre']
-    }
   }
 }
 </script>
