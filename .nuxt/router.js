@@ -3,14 +3,14 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _534a6886 = () => interopDefault(import('../pages/agendar.vue' /* webpackChunkName: "pages/agendar" */))
-const _7a989a89 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
-const _e255754e = () => interopDefault(import('../pages/sobre.vue' /* webpackChunkName: "pages/sobre" */))
-const _9c4ac398 = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
-const _6c911903 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
-const _5045f3de = () => interopDefault(import('../pages/admin/eventos.vue' /* webpackChunkName: "pages/admin/eventos" */))
-const _5ead3f1c = () => interopDefault(import('../pages/admin/perfil.vue' /* webpackChunkName: "pages/admin/perfil" */))
-const _9e1e111c = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _da56701e = () => interopDefault(import('../pages/agendar.vue' /* webpackChunkName: "pages/agendar" */))
+const _250c4e98 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
+const _01b68384 = () => interopDefault(import('../pages/sobre.vue' /* webpackChunkName: "pages/sobre" */))
+const _ad8531ae = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
+const _166578b8 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
+const _66f051ee = () => interopDefault(import('../pages/admin/eventos.vue' /* webpackChunkName: "pages/admin/eventos" */))
+const _185cca91 = () => interopDefault(import('../pages/admin/perfil.vue' /* webpackChunkName: "pages/admin/perfil" */))
+const _23d2359d = () => interopDefault(import('../pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 // TODO: remove in Nuxt 3
 const emptyFn = () => {}
@@ -30,35 +30,35 @@ export const routerOptions = {
 
   routes: [{
     path: "/agendar",
-    component: _534a6886,
+    component: _da56701e,
     name: "agendar"
   }, {
     path: "/login",
-    component: _7a989a89,
+    component: _250c4e98,
     name: "login"
   }, {
     path: "/sobre",
-    component: _e255754e,
+    component: _01b68384,
     name: "sobre"
   }, {
     path: "/admin/calendario",
-    component: _9c4ac398,
+    component: _ad8531ae,
     name: "admin-calendario"
   }, {
     path: "/admin/equipamentos",
-    component: _6c911903,
+    component: _166578b8,
     name: "admin-equipamentos"
   }, {
     path: "/admin/eventos",
-    component: _5045f3de,
+    component: _66f051ee,
     name: "admin-eventos"
   }, {
     path: "/admin/perfil",
-    component: _5ead3f1c,
+    component: _185cca91,
     name: "admin-perfil"
   }, {
     path: "/",
-    component: _9e1e111c,
+    component: _23d2359d,
     name: "index"
   }],
 

@@ -1,0 +1,38 @@
+<template>
+  <footer class="footer">
+    <div>
+      <p>
+        Universidade Federal do Pará
+      </p>
+      <p>Biblioteca Central Prof. Dr. Clodoaldo Beckmann</p>
+      <p>
+        End.: Rua Augusto Corrêa, n. 1 – CEP 66075-110 Belém – PA
+      </p>
+      <p>Desenvolvido e mantido por SEDEPTI.</p>
+    </div>
+
+    <img src="../assets/images/ufpa-logo.png" alt="logo-ufpa" class="logo" />
+  </footer>
+</template>
+
+<script>
+export default {
+  name: 'Footer'
+}
+</script>
+
+<style scoped>
+.footer {
+  background: #dc3545;
+  display: flex;
+  padding: 60px 40px;
+  flex-wrap: wrap;
+  color: #fbb;
+  font-size: 0.9em;
+  justify-content: space-around;
+}
+
+.logo {
+  height: 110px;
+}
+</style>
