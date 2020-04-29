@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <footer class="footer">
     <div>
       <p>
         Universidade Federal do Pará
@@ -12,7 +12,7 @@
     </div>
 
     <img src="../assets/images/ufpa-logo.png" alt="logo-ufpa" class="logo" />
-  </div>
+  </footer>
 </template>
 
 <script>
