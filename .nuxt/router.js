@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
+const _86fa16c6 = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
 const _da56701e = () => interopDefault(import('../pages/agendar.vue' /* webpackChunkName: "pages/agendar" */))
 const _250c4e98 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
 const _01b68384 = () => interopDefault(import('../pages/sobre.vue' /* webpackChunkName: "pages/sobre" */))
@@ -29,6 +30,10 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
+    path: "/admin",
+    component: _86fa16c6,
+    name: "admin"
+  }, {
     path: "/agendar",
     component: _da56701e,
     name: "agendar"
