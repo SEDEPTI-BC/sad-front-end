@@ -25,7 +25,7 @@
 
               <template v-slot:button-content>
                 {{ user.name | capitalize }}
-                <b-icon icon="person-fill"></b-icon>
+                <BIconPersonFill />
               </template>
               <b-dropdown-item to="/admin/perfil">
                 Perfil
@@ -33,7 +33,7 @@
 
               <b-dropdown-item href="/">
                 Sair
-                <b-icon icon="power"></b-icon>
+                <BIconPower />
               </b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
@@ -44,8 +44,13 @@
 </template>
 
 <script>
+import { BIconPersonFill, BIconPower } from 'bootstrap-vue'
 export default {
   name: 'NavBarAdmin',
+  components: {
+    BIconPersonFill,
+    BIconPower
+  },
   props: {
     title: {
       type: String,

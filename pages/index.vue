@@ -10,9 +10,9 @@
       </b-row>
 
       <b-row align-h="center">
-        <nuxt-link tag="button" to="agendar" class="btn large-btn mb-5"
-          >Agendar evento</nuxt-link
-        >
+        <nuxt-link tag="button" to="agendar" class="btn large-btn mb-5">
+          Agendar evento
+        </nuxt-link>
       </b-row>
     </b-container>
   </div>

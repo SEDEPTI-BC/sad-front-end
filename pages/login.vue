@@ -44,7 +44,9 @@ export default {
     }
   },
   methods: {
-    login() {}
+    login() {
+      this.$router.push('/admin')
+    }
   }
 }
 </script>

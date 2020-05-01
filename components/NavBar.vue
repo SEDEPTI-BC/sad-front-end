@@ -22,7 +22,7 @@
           <b-navbar-nav class="ml-auto">
             <b-nav-item to="login" variant="light">
               Área administrativa
-              <b-icon icon="person-fill"></b-icon>
+              <BIconPersonFill />
             </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -32,8 +32,12 @@
 </template>
 
 <script>
+import { BIconPersonFill } from 'bootstrap-vue'
 export default {
   name: 'NavBar',
+  components: {
+    BIconPersonFill
+  },
   props: {
     title: {
       type: String,
