@@ -1,6 +1,5 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue';
 
-Vue.use(BootstrapVueIcons, {})
-Vue.use(BootstrapVue, {})
+Vue.use(BootstrapVue, {});
