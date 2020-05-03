@@ -7,7 +7,14 @@
         <span>Adicionar novo</span>
       </button>
     </header>
-    <b-table-simple hover small caption-top responsive striped>
+    <b-table-simple
+      hover
+      small
+      caption-top
+      responsive
+      striped
+      class="rounded shadow-sm"
+    >
       <b-thead head-variant="dark" class="text-center">
         <b-tr>
           <b-th colspan="5" class="py-3">Equipamentos</b-th>
@@ -19,10 +26,10 @@
           <b-td>{{ item.name | capitalize }}</b-td>
           <b-td>
             <button class="btn">
-              <BIconTrash />
+              <BIconTrash class="trash" />
             </button>
             <button class="btn">
-              <BIconPencilSquare />
+              <BIconPencilSquare class="edit" />
             </button>
           </b-td>
         </b-tr>
