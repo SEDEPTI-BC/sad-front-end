@@ -24,3 +24,13 @@
 .page-leave-to {
   opacity: 0;
 }
+
+.trash:hover,
+.trash:active {
+  color: red;
+}
+
+.edit:hover,
+.edit:active {
+  color: blue;
+}
