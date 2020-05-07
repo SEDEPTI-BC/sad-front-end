@@ -17,8 +17,6 @@ export const actions = {
 
 export const getters = {
   equipments(state) {
-    let equipments = JSON.stringify(state.equipments)
-    equipments = JSON.parse(equipments)
-    return equipments
+    return state.equipments
   }
 }
