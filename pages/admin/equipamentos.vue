@@ -22,8 +22,8 @@
       </b-thead>
 
       <b-tbody style="background:#eee; ">
-        <b-tr v-for="(item, index) in items" :key="index">
-          <b-td>{{ item.name | capitalize }}</b-td>
+        <b-tr v-for="(equipment, index) in equipments" :key="index">
+          <b-td>{{ equipment.name | capitalize }}</b-td>
           <b-td>
             <button class="btn">
               <BIconTrash class="trash" />
@@ -40,6 +40,7 @@
 
 <script>
 import { BIconPlusCircle, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   layout: 'admin',
   name: 'Equipamentos',
@@ -68,6 +69,20 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      pagedEquipments: 'equipments/equipments'
+    }),
+    equipments() {
+      return this.pagedEquipments.equipments.data
+    }
+  },
+  created() {
+    this.getEquipments()
+  },
+  methods: {
+    ...mapActions({ getEquipments: 'equipments/getEquipments' })
   }
 }
 </script>
