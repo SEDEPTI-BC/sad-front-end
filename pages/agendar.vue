@@ -123,7 +123,13 @@ export default {
   layout: 'public',
   data() {
     return {
-      event: {},
+      event: {
+        name: '',
+        description: '',
+        owner: '',
+        email: ''
+      },
+
       equipments: [
         'notebook',
         'quadro interativo',
@@ -160,6 +166,7 @@ export default {
       eventDate: {}
     }
   },
+
   methods: {
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
@@ -169,7 +176,14 @@ export default {
     onContext(ctx) {
       this.context = ctx
     },
-    submitForm() {}
+    submitForm() {
+      const name = this.event.owner.split(' ').length >= 2
+      if (!name) {
+        alert('Digite seu nome completo')
+      } else {
+        alert('Evento enviado com sucesso')
+      }
+    }
   }
 }
 </script>
