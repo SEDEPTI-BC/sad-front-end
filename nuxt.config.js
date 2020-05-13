@@ -60,6 +60,10 @@ export default {
     extend(config, ctx) {}
   },
 
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3333/api/v1'
+  },
+
   server: {
     port: 8000,
     host: '0.0.0.0'

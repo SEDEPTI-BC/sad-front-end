@@ -1,7 +1,7 @@
 export default function({ $axios }, inject) {
-  const api = $axios.create()
-
-  api.setBaseURL('http://localhost:3333')
+  const api = $axios.create({
+    baseURL: process.env.baseUrl
+  })
 
   // Inject to context as $api
   inject('api', api)
