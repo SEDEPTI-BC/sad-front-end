@@ -45,7 +45,10 @@ export default {
   },
   methods: {
     login() {
-      this.$router.push('/admin')
+      const { email, password } = this
+      this.$store.dispatch('auth_request', { email, password }).then(() => {
+        this.$router.push('/admin')
+      })
     }
   }
 }
