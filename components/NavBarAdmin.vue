@@ -27,11 +27,9 @@
                 {{ user.name | capitalize }}
                 <BIconPersonFill />
               </template>
-              <b-dropdown-item to="/admin/perfil">
-                Perfil
-              </b-dropdown-item>
+              <b-dropdown-item to="/admin/perfil">Perfil</b-dropdown-item>
 
-              <b-dropdown-item href="/">
+              <b-dropdown-item @click="logout">
                 Sair
                 <BIconPower />
               </b-dropdown-item>
@@ -77,6 +75,12 @@ export default {
     generateRoute(item) {
       item = item === 'calendário' ? 'calendario' : item
       return `/admin/${item}`
+    },
+
+    logout() {
+      this.$store.dispatch('auth_logout').then(() => {
+        this.$router.push('/login')
+      })
     }
   }
 }
