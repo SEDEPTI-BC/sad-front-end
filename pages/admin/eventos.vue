@@ -12,22 +12,32 @@
       <div class="card-datas">
         <div>
           <strong>Dados</strong>
-          <p><b>Responsável</b>: {{ event.owner }}</p>
-          <p><b>E-mail</b>: {{ event.email }}</p>
           <p>
-            <b>Data</b>:
+            <b>Responsável</b>
+            : {{ event.owner }}
+          </p>
+          <p>
+            <b>E-mail</b>
+            : {{ event.email }}
+          </p>
+          <p>
+            <b>Data</b>
+            :
             {{ event.start.split(' ')[0] }}
           </p>
           <p>
-            <b>Inicio</b>:
+            <b>Inicio</b>
+            :
             {{ event.start.split(' ')[1] }}
           </p>
           <p>
-            <b>Fim</b>:
+            <b>Fim</b>
+            :
             {{ event.end.split(' ')[1] }}
           </p>
           <p>
-            <b>Solicitado em</b>:
+            <b>Solicitado em</b>
+            :
             {{ event.createdAt }}
           </p>
         </div>
@@ -46,6 +56,7 @@
 
 <script>
 export default {
+  middleware: 'auth',
   layout: 'admin',
   name: 'Eventos',
   data() {
