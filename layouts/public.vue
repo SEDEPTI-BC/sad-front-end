@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar />
+    <NavBar :user="$store.state.user" />
     <div class="bg-public">
       <transition name="page" mode="out-in">
         <nuxt />
