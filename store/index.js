@@ -1,11 +1,6 @@
 export const state = () => ({
   login: false,
-  user: {
-    id: '',
-    username: '',
-    email: '',
-    password: ''
-  }
+  user: null
 })
 
 export const mutations = {
@@ -35,11 +30,7 @@ export const actions = {
       })
   },
   logoutUser(context) {
-    context.commit('UPDATE_USER', {
-      usernome: '',
-      email: '',
-      password: ''
-    })
+    context.commit('UPDATE_USER', null)
     window.localStorage.token = ''
     context.commit('UPDATE_LOGIN', false)
   }
