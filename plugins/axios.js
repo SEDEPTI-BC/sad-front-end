@@ -2,12 +2,19 @@ export default function({ $axios }, inject) {
   const api = $axios.create({
     baseURL: process.env.baseUrl
   })
-  const token = localStorage.getItem('user-token')
-  if (token) {
-    // eslint-disable-next-line dot-notation
-    api.defaults.headers.common['Authorization'] = token
-  }
 
-  // Inject to context as $api
+  api.interceptors.request.use(
+    function(config) {
+      const token = window.localStorage.token
+      if (token) {
+        config.headers.Authorization = token
+      }
+      return config
+    },
+    function(error) {
+      return Promise.reject(error)
+    }
+  )
+
   inject('api', api)
 }

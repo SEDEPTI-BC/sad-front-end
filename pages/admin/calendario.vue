@@ -63,6 +63,7 @@
 <script>
 import { BIconCalendar, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
 export default {
+  middleware: 'auth',
   layout: 'admin',
   name: 'Calendario',
   components: {

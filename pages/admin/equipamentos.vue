@@ -42,6 +42,8 @@
 import { BIconPlusCircle, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
 import { mapGetters, mapActions } from 'vuex'
 export default {
+  middleware: 'auth',
+
   layout: 'admin',
   name: 'Equipamentos',
   components: {
