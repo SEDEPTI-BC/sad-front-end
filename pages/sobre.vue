@@ -82,6 +82,10 @@ export default {
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 0;
+}
+
 strong {
   display: block;
   margin-bottom: 20px;
