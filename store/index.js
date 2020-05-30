@@ -27,6 +27,7 @@ export const actions = {
       })
       .then(response => {
         window.localStorage.token = `Bearer ${response.data.token}`
+        context.dispatch('getUser')
       })
   },
   logoutUser(context) {
