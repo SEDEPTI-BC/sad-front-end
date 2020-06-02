@@ -1,5 +1,5 @@
-export default function({ store, error, redirect }) {
-  if (!store.state.login) {
+export default function({ error, redirect }) {
+  if (!window.localStorage.token) {
     error({
       message: 'Você não está autenticado',
       statusCode: 403
