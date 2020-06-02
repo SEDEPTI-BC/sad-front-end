@@ -1,5 +1,5 @@
 export const state = () => ({
-  login: false,
+  login: window.localStorage.token || false,
   user: null
 })
 
