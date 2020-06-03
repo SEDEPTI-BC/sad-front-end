@@ -64,10 +64,11 @@ export default {
       return this.$store.state.user
     }
   },
-  created() {
-    this.$store.dispatch('getUser')
-
-    this.page = { name: 'admin' }
+  async created() {
+    await this.$store.dispatch('getUser')
+    if (this.user) {
+      this.page = { name: 'admin' }
+    }
   }
 }
 </script>
