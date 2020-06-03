@@ -1,12 +1,12 @@
 <template>
-  <div class="content pt-3 ">
+  <div class="content pt-3">
     <h1 class="page-title">Log in</h1>
     <b-container>
       <b-card class="card-login mx-auto py-4">
         <label for="event-email">Email</label>
         <b-form-input
           id="event-email"
-          v-model="email"
+          v-model="login.email"
           placeholder="sad.admin@ufpa.br"
           class="mb-4"
           type="email"
@@ -17,7 +17,7 @@
         <label for="password">Senha</label>
         <b-form-input
           id="password"
-          v-model="password"
+          v-model="login.password"
           placeholder="Sua senha super secreta"
           class="mb-4"
           type="password"
@@ -25,7 +25,7 @@
           size="lg"
         ></b-form-input>
 
-        <b-button block variant="danger" size="lg" @click.prevent="login"
+        <b-button block variant="danger" size="lg" @click.prevent="loginUser"
           >Login</b-button
         >
       </b-card>
@@ -39,13 +39,17 @@ export default {
   name: 'Login',
   data() {
     return {
-      email: '',
-      password: ''
+      login: {
+        email: '',
+        password: ''
+      }
     }
   },
   methods: {
-    login() {
-      this.$router.push('/admin')
+    loginUser() {
+      this.$store.dispatch('logonUser', this.login).then(() => {
+        this.$router.push('/admin')
+      })
     }
   }
 }

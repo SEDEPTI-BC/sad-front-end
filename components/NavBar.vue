@@ -20,7 +20,7 @@
           </b-navbar-nav>
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <b-nav-item to="login" variant="light">
+            <b-nav-item :to="page" variant="light">
               Área administrativa
               <BIconPersonFill />
             </b-nav-item>
@@ -49,21 +49,28 @@ export default {
         return ['agendar', 'sobre']
       }
     },
-    user: {
-      type: Object,
-      default: () => {
-        return { name: 'Administrador' }
-      }
-    },
     navColor: {
       type: String,
       default: 'danger'
     }
   },
   data() {
-    return {}
+    return {
+      page: { name: 'login' }
+    }
   },
-  methods: {}
+  computed: {
+    user() {
+      return this.$store.state.user
+    }
+  },
+  created() {
+    this.$store.dispatch('getUser').then(() => {
+      if (this.user) {
+        this.page = { name: 'admin' }
+      }
+    })
+  }
 }
 </script>
 

@@ -1,8 +1,20 @@
 export default function({ $axios }, inject) {
-  const api = $axios.create()
+  const api = $axios.create({
+    baseURL: process.env.baseUrl
+  })
 
-  api.setBaseURL('http://localhost:3333')
+  api.interceptors.request.use(
+    function(config) {
+      const token = window.localStorage.token
+      if (token) {
+        config.headers.Authorization = token
+      }
+      return config
+    },
+    function(error) {
+      return Promise.reject(error)
+    }
+  )
 
-  // Inject to context as $api
   inject('api', api)
 }

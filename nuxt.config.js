@@ -20,7 +20,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#dc3545' },
   /*
    ** Global CSS
    */
@@ -58,6 +58,10 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3333/api/v1'
   },
 
   server: {

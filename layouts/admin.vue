@@ -11,7 +11,25 @@
 import NavBarAdmin from '~/components/NavBarAdmin'
 export default {
   name: 'Admin',
-  components: { NavBarAdmin }
+  components: { NavBarAdmin },
+  data() {
+    return {
+      user: null
+    }
+  },
+  watch: {
+    user() {
+      this.getUser()
+    }
+  },
+  created() {
+    this.getUser()
+  },
+  methods: {
+    getUser() {
+      this.$store.dispatch('getUser')
+    }
+  }
 }
 </script>
 
