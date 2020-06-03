@@ -13,11 +13,13 @@ export const mutations = {
 }
 
 export const actions = {
-  getUser({ commit }) {
-    return this.$api.$get('/me').then(response => {
-      commit('UPDATE_LOGIN', true)
-      commit('UPDATE_USER', response.data)
-    })
+  getUser({ commit }, { login }) {
+    if (login) {
+      return this.$api.$get('/me').then(response => {
+        commit('UPDATE_LOGIN', true)
+        commit('UPDATE_USER', response.data)
+      })
+    }
   },
   logonUser(context, payload) {
     return this.$api
