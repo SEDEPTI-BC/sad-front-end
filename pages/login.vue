@@ -48,7 +48,6 @@ export default {
   methods: {
     loginUser() {
       this.$store.dispatch('logonUser', this.login).then(() => {
-        this.$store.dispatch('getUser')
         this.$router.push('/admin')
       })
     }

@@ -1,5 +1,5 @@
 export const state = () => ({
-  login: !!window.localStorage.token,
+  login: !!window.localStorage.token || false,
   user: null
 })
 
@@ -7,21 +7,26 @@ export const mutations = {
   UPDATE_LOGIN(state, payload) {
     state.login = payload
   },
+
   UPDATE_USER(state, payload) {
-    state.user = Object.assign({}, state.user, payload)
+    if (payload) {
+      state.user = Object.assign({}, state.user, payload)
+    } else {
+      state.user = payload
+    }
   }
 }
 
 export const actions = {
-  getUser({ commit }, { login }) {
-    if (login) {
+  getUser({ commit, state }) {
+    if (state.login) {
       return this.$api.$get('/me').then(response => {
-        commit('UPDATE_LOGIN', true)
         commit('UPDATE_USER', response.data)
       })
     }
   },
-  logonUser(context, payload) {
+
+  logonUser({ commit, dispatch }, payload) {
     return this.$api
       .$post('/login', {
         email: payload.email,
@@ -29,12 +34,14 @@ export const actions = {
       })
       .then(response => {
         window.localStorage.token = `Bearer ${response.data.token}`
-        context.dispatch('getUser')
+        commit('UPDATE_LOGIN', true)
+        dispatch('getUser')
       })
   },
-  logoutUser(context) {
-    context.commit('UPDATE_USER', null)
-    window.localStorage.token = ''
-    context.commit('UPDATE_LOGIN', false)
+
+  logoutUser({ commit }) {
+    commit('UPDATE_USER', null)
+    commit('UPDATE_LOGIN', false)
+    window.localStorage.removeItem('token')
   }
 }
