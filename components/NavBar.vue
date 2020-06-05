@@ -70,6 +70,8 @@ export default {
         this.page = { name: 'admin' }
       }
     })
+
+    this.$store.dispatch('equipments/getEquipments')
   }
 }
 </script>
