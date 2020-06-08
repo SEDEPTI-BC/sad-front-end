@@ -10,14 +10,15 @@ export const mutations = {
 
 export const actions = {
   getEquipments({ commit }) {
-    this.$api.$get('/equipments').then(response => {
+    return this.$api.$get('/equipments').then(response => {
       commit('UPDATE_EQUIPMENTS', response.equipments)
+      window.localStorage.equipments = response.equipments
     })
   }
 }
 
 export const getters = {
   get(state) {
-    return state.paged
+    return state.paged || window.localStorage.equipments
   }
 }
