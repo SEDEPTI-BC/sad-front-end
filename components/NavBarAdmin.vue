@@ -71,6 +71,11 @@ export default {
       default: 'dark'
     }
   },
+
+  created() {
+    this.$store.dispatch('equipments/getEquipments')
+  },
+
   methods: {
     generateRoute(item) {
       item = item === 'calendário' ? 'calendario' : item

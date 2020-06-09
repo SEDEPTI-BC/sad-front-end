@@ -22,7 +22,7 @@
       </b-thead>
 
       <b-tbody style="background:#eee; ">
-        <b-tr v-for="(equipment, index) in equipments" :key="index">
+        <b-tr v-for="(equipment, index) in equipments.data" :key="index">
           <b-td>{{ equipment.name | capitalize }}</b-td>
           <b-td>
             <button class="btn">
@@ -40,7 +40,7 @@
 
 <script>
 import { BIconPlusCircle, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   middleware: 'auth',
 
@@ -51,40 +51,10 @@ export default {
     BIconPencilSquare,
     BIconTrash
   },
-  data() {
-    return {
-      items: [
-        {
-          name: 'quadro interativo'
-        },
-        {
-          name: 'notebook'
-        },
-        {
-          name: 'datashow'
-        },
-        {
-          name: 'piloto'
-        },
-        {
-          name: 'tv'
-        }
-      ]
-    }
-  },
   computed: {
     ...mapGetters({
-      pagedEquipments: 'equipments/equipments'
-    }),
-    equipments() {
-      return this.pagedEquipments.equipments.data
-    }
-  },
-  created() {
-    this.getEquipments()
-  },
-  methods: {
-    ...mapActions({ getEquipments: 'equipments/getEquipments' })
+      equipments: 'equipments/get'
+    })
   }
 }
 </script>

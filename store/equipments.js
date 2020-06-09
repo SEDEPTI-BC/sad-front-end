@@ -1,22 +1,24 @@
 export const state = () => ({
-  equipments: null
+  paged: null
 })
 
 export const mutations = {
-  ADD_EQUIPMENTS(state, payload) {
-    state.equipments = payload
+  UPDATE_EQUIPMENTS(state, payload) {
+    state.paged = payload
   }
 }
 
 export const actions = {
-  async getEquipments({ commit }) {
-    const equipmentsPages = await this.$api.$get('/equipments')
-    commit('ADD_EQUIPMENTS', equipmentsPages)
+  getEquipments({ commit }) {
+    return this.$api.$get('/equipments').then(response => {
+      commit('UPDATE_EQUIPMENTS', response.equipments)
+      window.localStorage.equipments = response.equipments
+    })
   }
 }
 
 export const getters = {
-  equipments(state) {
-    return state.equipments
+  get(state) {
+    return state.paged || window.localStorage.equipments
   }
 }
