@@ -282,4 +282,22 @@ span {
   margin: 0 auto;
   max-width: 900px;
 }
+
+@media screen and (max-width: 830px) and (min-width: 730px) {
+  .calendar-header {
+    border-radius: 4px 0 0 0;
+  }
+
+  .calendar-body {
+    border-radius: 0 0 0 4px;
+  }
+
+  .card-list-body {
+    border-radius: 0 0 4px 0;
+  }
+
+  .card-list-header {
+    border-radius: 0 4px 0 0;
+  }
+}
 </style>
