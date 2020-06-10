@@ -21,6 +21,7 @@ export const actions = {
   getUser({ commit, state }) {
     if (state.login) {
       return this.$api.$get('/me').then(response => {
+        window.localStorage.user = response.data
         commit('UPDATE_USER', response.data)
       })
     }
@@ -43,11 +44,12 @@ export const actions = {
     commit('UPDATE_USER', null)
     commit('UPDATE_LOGIN', false)
     window.localStorage.removeItem('token')
+    window.localStorage.removeItem('user')
   }
 }
 
 export const getters = {
   user(state) {
-    return state.user
+    return state.user || window.localStorage.getItem('user')
   }
 }
