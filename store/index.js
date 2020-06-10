@@ -45,3 +45,9 @@ export const actions = {
     window.localStorage.removeItem('token')
   }
 }
+
+export const getters = {
+  user(state) {
+    return state.user
+  }
+}
