@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container" @click="cancelEdit">
     <header class="header">
       <h1>Seus Dados</h1>
       <button v-if="!edit" class="btn btn-secondary" @click="toEdit">
@@ -38,6 +38,7 @@
         <label for="password">Nova senha</label>
         <b-form-input
           id="password"
+          v-model="newPassword"
           disabled
           placeholder="Sua senha super secreta"
           class="fields"
@@ -45,6 +46,21 @@
           input-type="email"
           size="lg"
         ></b-form-input>
+
+        <transition name="component" mode="out-in">
+          <div v-if="edit">
+            <label for="password">Senha Atual</label>
+            <b-form-input
+              id="old-password"
+              v-model="currentPassword"
+              placeholder="Confirme sua senha atual"
+              class="fields"
+              type="password"
+              input-type="email"
+              size="lg"
+            ></b-form-input>
+          </div>
+        </transition>
       </b-card>
     </div>
   </section>
@@ -63,7 +79,9 @@ export default {
   },
   data() {
     return {
-      edit: false
+      edit: false,
+      newPassword: '',
+      currentPassword: ''
     }
   },
   computed: {
@@ -79,11 +97,38 @@ export default {
         inputs[i].removeAttribute('disabled')
       }
     },
+
     updateProfile() {
-      this.edit = false
-      const inputs = document.getElementsByClassName('fields')
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i].disabled = true
+      const username = document.getElementById('user-name').value
+      const email = document.getElementById('user-email').value
+      this.$api
+        .$put('/user', {
+          username,
+          email,
+          newPassword: this.newPassword,
+          currentPassword: this.currentPassword
+        })
+        .then(response => {
+          this.edit = false
+          const inputs = document.getElementsByClassName('fields')
+          for (let i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = true
+          }
+          this.$store.dispatch('getUser')
+          // alterar depois
+          alert(response.message)
+        })
+        .catch(response => {
+          // alterar depois
+          alert(
+            'Falha ao atualizar dados. Verifique se os campos estão corretos.'
+          )
+        })
+    },
+
+    cancelEdit({ target, currentTarget }) {
+      if (target === currentTarget) {
+        this.edit = false
       }
     }
   }
@@ -92,8 +137,9 @@ export default {
 
 <style scoped>
 .body {
-  max-width: 700px;
+  max-width: 500px;
   margin: 0 auto;
+  padding-bottom: 30px;
 }
 
 input:focus {
@@ -109,7 +155,7 @@ input:focus {
 }
 
 .fields {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 header {
