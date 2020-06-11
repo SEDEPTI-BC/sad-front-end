@@ -25,6 +25,24 @@
   opacity: 0;
 }
 
+.component-enter {
+  transform: translate3d(0, -20px, 0);
+}
+
+.component-leave-to {
+  transform: translate3d(0, 20px, 0);
+}
+
+.component-enter,
+.component-leave-to {
+  opacity: 0;
+}
+
+.component-enter-active,
+.component-leave-active {
+  transition: all 0.3s;
+}
+
 .trash:hover,
 .trash:active {
   color: red;
