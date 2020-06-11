@@ -90,6 +90,20 @@ export default {
     })
   },
   methods: {
+    cancelEdit({ target, currentTarget }) {
+      if (target === currentTarget) {
+        this.disableFieds()
+      }
+    },
+
+    disableFieds() {
+      this.edit = false
+      const inputs = document.getElementsByClassName('fields')
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = true
+      }
+    },
+
     toEdit() {
       this.edit = true
       const inputs = document.getElementsByClassName('fields')
@@ -101,19 +115,16 @@ export default {
     updateProfile() {
       const username = document.getElementById('user-name').value
       const email = document.getElementById('user-email').value
+      const { newPassword, currentPassword } = this
       this.$api
         .$put('/user', {
           username,
           email,
-          newPassword: this.newPassword,
-          currentPassword: this.currentPassword
+          newPassword,
+          currentPassword
         })
         .then(response => {
-          this.edit = false
-          const inputs = document.getElementsByClassName('fields')
-          for (let i = 0; i < inputs.length; i++) {
-            inputs[i].disabled = true
-          }
+          this.disableFieds()
           this.$store.dispatch('getUser')
           // alterar depois
           alert(response.message)
@@ -124,12 +135,6 @@ export default {
             'Falha ao atualizar dados. Verifique se os campos estão corretos.'
           )
         })
-    },
-
-    cancelEdit({ target, currentTarget }) {
-      if (target === currentTarget) {
-        this.edit = false
-      }
     }
   }
 }
