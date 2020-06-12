@@ -69,6 +69,7 @@
 <script>
 import { BIconPencilSquare, BIconPersonCheck } from 'bootstrap-vue'
 import { mapGetters } from 'vuex'
+import { makeToast } from '~/plugins/toast.js'
 export default {
   middleware: 'auth',
   layout: 'admin',
@@ -126,16 +127,17 @@ export default {
         .then(response => {
           this.disableFieds()
           this.$store.dispatch('getUser')
-          // alterar depois
-          alert(response.message)
+
+          this.makeToast(response.message, 'success')
         })
         .catch(response => {
-          // alterar depois
-          alert(
-            'Falha ao atualizar dados. Verifique se os campos estão corretos.'
+          this.makeToast(
+            'Falha ao atualizar dados. Verifique se os campos estão corretos.',
+            'danger'
           )
         })
-    }
+    },
+    makeToast
   }
 }
 </script>
