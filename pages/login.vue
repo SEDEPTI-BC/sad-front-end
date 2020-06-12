@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { makeToast } from '~/plugins/toast.js'
+
 export default {
   layout: 'public',
   name: 'Login',
@@ -47,10 +49,16 @@ export default {
   },
   methods: {
     loginUser() {
-      this.$store.dispatch('logonUser', this.login).then(() => {
-        this.$router.push('/admin')
-      })
-    }
+      this.$store
+        .dispatch('logonUser', this.login)
+        .then(() => {
+          this.$router.push('/admin')
+        })
+        .catch(() => {
+          this.makeToast('Email ou senha incorretos!', 'danger', true)
+        })
+    },
+    makeToast
   }
 }
 </script>
