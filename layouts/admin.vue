@@ -1,17 +1,22 @@
 <template>
   <div>
     <NavBarAdmin />
-    <transition name="page" mode="out-in">
-      <nuxt />
-    </transition>
+    <div class="pages">
+      <transition name="page" mode="out-in">
+        <nuxt />
+      </transition>
+    </div>
+    <FooterAdmin />
   </div>
 </template>
 
 <script>
 import NavBarAdmin from '~/components/NavBarAdmin'
+import FooterAdmin from '~/components/FooterAdmin'
+
 export default {
   name: 'Admin',
-  components: { NavBarAdmin },
+  components: { NavBarAdmin, FooterAdmin },
   data() {
     return {
       user: null
@@ -34,6 +39,10 @@ export default {
 </script>
 
 <style scoped>
+.pages {
+  height: 100vh;
+}
+
 h1 {
   margin-bottom: 40px;
 }
