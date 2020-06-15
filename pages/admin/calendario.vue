@@ -208,7 +208,7 @@ span {
 }
 
 .calendar-header {
-  background: #6c757d;
+  background: #343a40;
   border-radius: 4px 4px 0 0;
   margin: 0;
   padding: 10px 5px;
@@ -266,7 +266,7 @@ span {
 }
 
 .card-list-header {
-  background: #6c757d;
+  background: #343a40;
   border-radius: 4px 4px 0 0;
   margin: 0;
   padding: 10px 5px;
