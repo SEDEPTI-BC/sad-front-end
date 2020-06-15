@@ -41,6 +41,7 @@ export default {
 <style scoped>
 .pages {
   min-height: 100vh;
+  padding-bottom: 30px;
 }
 
 h1 {
