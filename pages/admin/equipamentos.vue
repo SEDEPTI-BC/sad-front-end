@@ -2,7 +2,11 @@
   <section class="container">
     <header>
       <h1>Gerenciar Equipamentos</h1>
-      <button class="btn btn-secondary">
+      <button
+        id="show-btn"
+        class="btn btn-secondary"
+        @click="$bvModal.show('bv-modal-equipment')"
+      >
         <b-icon-plus-circle />
         <span>Adicionar novo</span>
       </button>
@@ -35,6 +39,32 @@
         </b-tr>
       </b-tbody>
     </b-table-simple>
+
+    <div class="modal">
+      <b-modal
+        id="bv-modal-equipment"
+        centered
+        hide-footer
+        hide-header
+        style="border: none;"
+      >
+        <div class="d-block">
+          <h4 class="mb-4"><strong>Adicionar novo equipamento</strong></h4>
+          <b-form-input
+            id="equipment-name"
+            v-model="equipmentName"
+            placeholder="Digite o nome do equipamento"
+            class="mb-4"
+            type="text"
+            input-type="text"
+            size="lg"
+          ></b-form-input>
+        </div>
+        <b-button class="mt-1" @click="$bvModal.hide('bv-modal-equipment')"
+          >Adicionar</b-button
+        >
+      </b-modal>
+    </div>
   </section>
 </template>
 
@@ -50,6 +80,11 @@ export default {
     BIconPlusCircle,
     BIconPencilSquare,
     BIconTrash
+  },
+  data() {
+    return {
+      equipmentName: ''
+    }
   },
   computed: {
     ...mapGetters({
@@ -69,6 +104,9 @@ header {
 
 span {
   margin-left: 5px;
+}
+#equipment-name {
+  background: #cfcfcf;
 }
 
 .btn {
