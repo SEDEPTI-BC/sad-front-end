@@ -25,11 +25,11 @@ export default {
 .footer {
   background: #dc3545;
   display: flex;
-  padding: 60px 40px;
   flex-wrap: wrap;
   color: #fbb;
   font-size: 0.9em;
   justify-content: space-around;
+  padding: 60px 40px;
 }
 
 .logo {
