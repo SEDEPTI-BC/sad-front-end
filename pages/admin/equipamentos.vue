@@ -29,7 +29,7 @@
         <b-tr v-for="(equipment, index) in equipments.data" :key="index">
           <b-td>{{ equipment.name | capitalize }}</b-td>
           <b-td>
-            <button class="btn">
+            <button class="btn" @click="deteleEquipment(equipment.id)">
               <BIconTrash class="trash" />
             </button>
             <button class="btn">
@@ -60,7 +60,10 @@
             size="lg"
           ></b-form-input>
         </div>
-        <b-button class="mt-1" @click="$bvModal.hide('bv-modal-equipment')"
+        <b-button
+          id="send-equipment-button"
+          class="mt-1"
+          @click="createEquipment"
           >Adicionar</b-button
         >
       </b-modal>
@@ -71,6 +74,7 @@
 <script>
 import { BIconPlusCircle, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
 import { mapGetters } from 'vuex'
+import { makeToast } from '~/plugins/toast.js'
 export default {
   middleware: 'auth',
 
@@ -90,6 +94,41 @@ export default {
     ...mapGetters({
       equipments: 'equipments/get'
     })
+  },
+  methods: {
+    createEquipment() {
+      const name = this.equipmentName
+      const sendButton = document.getElementById('send-equipment-button')
+      sendButton.disabled = true
+      this.$api
+        .$post('/equipments', {
+          name
+        })
+        .then(response => {
+          sendButton.disabled = false
+          this.$store.dispatch('equipments/getEquipments')
+          this.$bvModal.hide('bv-modal-equipment')
+          this.makeToast('Equipamento Adicionado!', 'success')
+        })
+        .catch(response => {
+          sendButton.disabled = false
+          this.makeToast('Erro ao adicionar equipamento', 'danger')
+        })
+    },
+    deteleEquipment(id) {
+      this.$api
+        .$delete(`/equipments/${id}`, {
+          name
+        })
+        .then(response => {
+          this.$store.dispatch('equipments/getEquipments')
+          this.makeToast('Equipamento deletado!', 'success')
+        })
+        .catch(response => {
+          this.makeToast('Erro ao deletar equipamento', 'danger')
+        })
+    },
+    makeToast
   }
 }
 </script>
