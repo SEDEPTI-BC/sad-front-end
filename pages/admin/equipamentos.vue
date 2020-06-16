@@ -179,11 +179,18 @@ header {
   justify-content: space-between;
 }
 
+input[type='text'],
+textarea {
+  outline: none;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 span {
   margin-left: 5px;
 }
 #equipment-name {
-  background: #cfcfcf;
+  background: #dfdfdf;
 }
 
 .btn {
