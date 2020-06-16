@@ -70,6 +70,7 @@
             type="text"
             input-type="text"
             size="lg"
+            autofocus
             @keyup.enter="createEquipment"
           ></b-form-input>
         </div>
@@ -141,9 +142,12 @@ export default {
     },
 
     edit(id) {
+      const equipmentNameInput = document.getElementById(id)
+
       this.$store.dispatch('equipments/getEquipments')
-      document.getElementById(id).disabled = !document.getElementById(id)
-        .disabled
+
+      equipmentNameInput.disabled = !equipmentNameInput.disabled
+      equipmentNameInput.focus()
       document.getElementById(`edit${id}`).classList.toggle('edit-active')
     },
 
