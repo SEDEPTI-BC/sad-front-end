@@ -27,12 +27,24 @@
 
       <b-tbody style="background:#eee; ">
         <b-tr v-for="(equipment, index) in equipments.data" :key="index">
-          <b-td>{{ equipment.name | capitalize }}</b-td>
+          <b-td
+            ><input
+              :id="equipment.id"
+              type="text"
+              class="input-edit"
+              :value="equipment.name | capitalize"
+              disabled
+              @keyup.enter="updateEquipment(equipment.id)"
+          /></b-td>
           <b-td>
             <button class="btn" @click="deteleEquipment(equipment.id)">
               <BIconTrash class="trash" />
             </button>
-            <button class="btn">
+            <button
+              :id="`edit${equipment.id}`"
+              class="btn"
+              @click="edit(equipment.id)"
+            >
               <BIconPencilSquare class="edit" />
             </button>
           </b-td>
@@ -58,6 +70,7 @@
             type="text"
             input-type="text"
             size="lg"
+            @keyup.enter="createEquipment"
           ></b-form-input>
         </div>
         <b-button
@@ -117,15 +130,37 @@ export default {
     },
     deteleEquipment(id) {
       this.$api
-        .$delete(`/equipments/${id}`, {
-          name
-        })
+        .$delete(`/equipments/${id}`)
         .then(response => {
           this.$store.dispatch('equipments/getEquipments')
           this.makeToast('Equipamento deletado!', 'success')
         })
         .catch(response => {
           this.makeToast('Erro ao deletar equipamento', 'danger')
+        })
+    },
+
+    edit(id) {
+      this.$store.dispatch('equipments/getEquipments')
+      document.getElementById(id).disabled = !document.getElementById(id)
+        .disabled
+      document.getElementById(`edit${id}`).classList.toggle('edit-active')
+    },
+
+    updateEquipment(id) {
+      const name = document.getElementById(id).value
+      this.$api
+        .$put(`/equipments/${id}`, {
+          name
+        })
+        .then(response => {
+          // alert(response.equipment.name)
+          this.edit(id)
+          this.$store.dispatch('equipments/getEquipments')
+          this.makeToast('Equipamento atualizado!', 'success')
+        })
+        .catch(response => {
+          this.makeToast('Erro ao atualizar equipamento', 'danger')
         })
     },
     makeToast
@@ -156,6 +191,17 @@ span {
   display: grid;
   margin: 0 auto;
   max-width: 900px;
+}
+
+.edit-active {
+  color: blue;
+}
+
+.input-edit {
+  border: none;
+  background: none;
+  width: 100%;
+  outline: none;
 }
 
 .table-sm th,
