@@ -154,7 +154,6 @@ export default {
           name
         })
         .then(response => {
-          // alert(response.equipment.name)
           this.edit(id)
           this.$store.dispatch('equipments/getEquipments')
           this.makeToast('Equipamento atualizado!', 'success')
