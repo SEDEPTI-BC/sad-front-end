@@ -53,13 +53,7 @@
     </b-table-simple>
 
     <div class="modal">
-      <b-modal
-        id="bv-modal-equipment"
-        centered
-        hide-footer
-        hide-header
-        style="border: none;"
-      >
+      <b-modal id="bv-modal-equipment" centered hide-footer hide-header>
         <div class="d-block">
           <h4 class="mb-4"><strong>Adicionar novo equipamento</strong></h4>
           <b-form-input
