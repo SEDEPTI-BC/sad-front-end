@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section v-if="events.length > 0" class="container">
     <header>
       <h1>Eventos Agendados</h1>
     </header>
@@ -38,56 +38,60 @@
           <p>
             <b>Solicitado em</b>
             :
-            {{ event.createdAt }}
+            {{ event.created_at.split(' ')[0] }}
           </p>
         </div>
         <div>
           <strong>Equipamentos</strong>
           <ul>
             <li v-for="(equipamento, index) in event.equipments" :key="index">
-              {{ equipamento | capitalize }}
+              {{ equipamento.name | capitalize }}
             </li>
           </ul>
         </div>
       </div>
     </div>
   </section>
+  <section v-else class="no-events">
+    <h1>Sem eventos agendados no momento</h1>
+    <CalendarCheck />
+  </section>
 </template>
 
 <script>
+import { makeToast } from '~/plugins/toast.js'
+import CalendarCheck from '~/components/CalendarCheck.vue'
 export default {
   middleware: 'auth',
   layout: 'admin',
   name: 'Eventos',
+  components: {
+    CalendarCheck
+  },
   data() {
     return {
-      events: [
-        {
-          id: 1,
-          title: 'Evento sobre o meio ambiente',
-          description:
-            'O meio ambiente é um assunto pra ser tratado com seriedade, sendo assim essa palestra visa conscientizar as pessoas dentro do campus da universidade',
-          owner: 'Luiz Flavio Bezerra',
-          email: 'luizinho@hotmail.com',
-          start: '2020-05-14 8:00:00',
-          end: '2020-05-14 10:00:00',
-          equipments: ['notebook', 'quadro interativo'],
-          createdAt: '2020-04-30 9:43:00'
-        },
-        {
-          id: 2,
-          title: 'Evento sobre trabalho remoto',
-          description:
-            'Após a pandemia de covid-19, o termo trabalho remoto se tronou popular e por isso essa palestra aborda...',
-          owner: 'Wilson Marlon Melo',
-          email: 'wmm@gmail.com',
-          start: '2020-05-28 12:00:00',
-          end: '2020-05-28 14:00:00',
-          equipments: ['notebook', 'quadro interativo', 'piloto'],
-          createdAt: '2020-05-03 3:43:00'
-        }
-      ]
+      events: [],
+      all: true,
+      limit: 3
     }
+  },
+  created() {
+    this.getEvents()
+  },
+  methods: {
+    getEvents() {
+      const { all, limit } = this
+      const params = { all, limit }
+      this.$api
+        .$get('/events', { params })
+        .then(response => {
+          this.events = response.events.data
+        })
+        .catch(() => {
+          this.makeToast('Erro ao carregar eventos', 'danger', true)
+        })
+    },
+    makeToast
   }
 }
 </script>
@@ -126,5 +130,14 @@ strong {
   padding: 40px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.no-events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  color: #414b54;
+  text-align: center;
 }
 </style>
