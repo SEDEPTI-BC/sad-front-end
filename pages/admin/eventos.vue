@@ -188,13 +188,6 @@ strong {
   text-align: center;
 }
 
-.page-item.active .page-link {
-  z-index: 3;
-  color: #fff;
-  background-color: red;
-  border-color: red;
-}
-
 h4 {
   color: #a0a0a0;
   text-align: center;
