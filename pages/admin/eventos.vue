@@ -74,7 +74,10 @@
           size="lg"
         ></b-pagination>
       </div>
-      <div v-else><h4>Isso é tudo</h4></div>
+      <div v-if="total < 1" class="no-events">
+        <CalendarCheck />
+        <h2>Sem eventos agendados no momento</h2>
+      </div>
     </div>
   </section>
 
@@ -185,12 +188,11 @@ strong {
   flex-direction: column;
   align-items: center;
   margin-top: 60px;
-  color: #414b54;
+  color: #a0a0a0;
   text-align: center;
 }
 
-h4 {
-  color: #a0a0a0;
-  text-align: center;
+.no-events h1 {
+  margin-bottom: 30px;
 }
 </style>
