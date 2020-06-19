@@ -8,11 +8,13 @@
           Visualizar
         </template>
         <b-dropdown-item id="future" active href="#" @click="toggleEvents"
-          >Eventos Futuros</b-dropdown-item
-        >
+          ><BIconClock />
+          Eventos Futuros
+        </b-dropdown-item>
         <b-dropdown-item id="past" href="#" @click="toggleEvents"
-          >Eventos Ocorridos</b-dropdown-item
-        >
+          ><BIconCalendar />
+          Eventos Ocorridos
+        </b-dropdown-item>
       </b-dropdown>
     </header>
     <div>
@@ -88,7 +90,7 @@
 </template>
 
 <script>
-import { BIconEye } from 'bootstrap-vue'
+import { BIconEye, BIconClock, BIconCalendar } from 'bootstrap-vue'
 import { makeToast } from '~/plugins/toast.js'
 import CalendarCheck from '~/components/CalendarCheck.vue'
 export default {
@@ -96,8 +98,10 @@ export default {
   layout: 'admin',
   name: 'Eventos',
   components: {
-    CalendarCheck,
-    BIconEye
+    BIconCalendar,
+    BIconClock,
+    BIconEye,
+    CalendarCheck
   },
   data() {
     return {
