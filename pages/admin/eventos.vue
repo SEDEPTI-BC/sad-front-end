@@ -2,6 +2,18 @@
   <section v-if="events" class="container">
     <header>
       <h1>Eventos Agendados</h1>
+      <b-dropdown class="p-1">
+        <template v-slot:button-content>
+          <BIconEye />
+          Ver
+        </template>
+        <b-dropdown-item id="future" active href="#" @click="toggleEvents"
+          >Eventos Futuros</b-dropdown-item
+        >
+        <b-dropdown-item id="past" href="#" @click="toggleEvents"
+          >Eventos Passados</b-dropdown-item
+        >
+      </b-dropdown>
     </header>
     <div>
       <div v-for="event in events.data" :key="event.id" class="event-card">
@@ -52,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div class="fill">
+      <div v-if="total > 3" class="fill">
         <b-pagination
           v-model="page"
           align="fill"
@@ -62,6 +74,7 @@
           size="lg"
         ></b-pagination>
       </div>
+      <div v-else><h4>Isso é tudo</h4></div>
     </div>
   </section>
 
@@ -72,6 +85,7 @@
 </template>
 
 <script>
+import { BIconEye } from 'bootstrap-vue'
 import { makeToast } from '~/plugins/toast.js'
 import CalendarCheck from '~/components/CalendarCheck.vue'
 export default {
@@ -79,11 +93,12 @@ export default {
   layout: 'admin',
   name: 'Eventos',
   components: {
-    CalendarCheck
+    CalendarCheck,
+    BIconEye
   },
   data() {
     return {
-      all: true,
+      all: false,
       page: 1,
       events: null,
       limit: 3,
@@ -116,7 +131,13 @@ export default {
           this.makeToast('Erro ao carregar eventos', 'danger', true)
         })
     },
-    makeToast
+    makeToast,
+    toggleEvents() {
+      this.all = !this.all
+      this.getEvents()
+      document.getElementById('future').classList.toggle('active')
+      document.getElementById('past').classList.toggle('active')
+    }
   }
 }
 </script>
@@ -126,6 +147,7 @@ header {
   display: flex;
   flex-wrap: wrap;
   margin: 40px 0;
+  justify-content: space-between;
 }
 
 strong {
@@ -163,6 +185,18 @@ strong {
   align-items: center;
   margin-top: 60px;
   color: #414b54;
+  text-align: center;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: red;
+  border-color: red;
+}
+
+h4 {
+  color: #a0a0a0;
   text-align: center;
 }
 </style>
