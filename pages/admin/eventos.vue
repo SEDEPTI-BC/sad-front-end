@@ -64,10 +64,10 @@
           </div>
         </div>
       </div>
-      <div v-if="total > 3" class="fill">
+      <div v-if="total > 3">
         <b-pagination
           v-model="page"
-          align="fill"
+          align="center"
           hide-goto-end-buttons
           :total-rows="total"
           :per-page="limit"
@@ -134,6 +134,7 @@ export default {
     makeToast,
     toggleEvents() {
       this.all = !this.all
+      this.page = 1
       this.getEvents()
       document.getElementById('future').classList.toggle('active')
       document.getElementById('past').classList.toggle('active')
