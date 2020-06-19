@@ -149,11 +149,6 @@ export default {
   padding-bottom: 30px;
 }
 
-input:focus {
-  border: solid 2px #c5737b;
-  box-shadow: 0px 0px 4px rgb(230, 141, 150);
-}
-
 .card-data {
   color: rgb(50, 50, 50);
   background: rgb(0, 0, 0, 0.2);
@@ -163,6 +158,12 @@ input:focus {
 
 .fields {
   margin-bottom: 20px;
+}
+
+input:focus,
+textarea:focus {
+  border: 1px #343a40;
+  box-shadow: 0px 0px 4px #343a40;
 }
 
 header {
