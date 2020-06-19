@@ -11,7 +11,7 @@
           >Eventos Futuros</b-dropdown-item
         >
         <b-dropdown-item id="past" href="#" @click="toggleEvents"
-          >Eventos Passados</b-dropdown-item
+          >Eventos Ocorridos</b-dropdown-item
         >
       </b-dropdown>
     </header>
