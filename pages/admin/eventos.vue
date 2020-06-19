@@ -100,14 +100,17 @@ export default {
   },
   methods: {
     getEvents() {
-      const { all, limit, page } = this
+      const { limit, page } = this
+      const all = this.all ? this.all : ''
       const params = { all, limit, page }
+
       this.$api
         .$get('/events', { params })
         .then(response => {
           this.events = response.events
           this.total = +response.events.total
           this.limit = +response.events.perPage
+          window.scrollTo({ top: 0, behavior: 'smooth' })
         })
         .catch(() => {
           this.makeToast('Erro ao carregar eventos', 'danger', true)
