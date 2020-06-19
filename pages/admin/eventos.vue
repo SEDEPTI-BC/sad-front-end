@@ -5,7 +5,7 @@
       <b-dropdown class="p-1">
         <template v-slot:button-content>
           <BIconEye />
-          Ver
+          Visualizar
         </template>
         <b-dropdown-item id="future" active href="#" @click="toggleEvents"
           >Eventos Futuros</b-dropdown-item
