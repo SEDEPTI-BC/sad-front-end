@@ -1,92 +1,150 @@
 <template>
-  <section class="container">
+  <section v-if="events" class="container">
     <header>
       <h1>Eventos Agendados</h1>
+      <b-dropdown class="p-1">
+        <template v-slot:button-content>
+          <BIconEye />
+          Visualizar
+        </template>
+        <b-dropdown-item id="future" active href="#" @click="toggleEvents"
+          ><BIconClock />
+          Eventos Futuros
+        </b-dropdown-item>
+        <b-dropdown-item id="past" href="#" @click="toggleEvents"
+          ><BIconCalendar />
+          Eventos Ocorridos
+        </b-dropdown-item>
+      </b-dropdown>
     </header>
-    <div v-for="event in events" :key="event.id" class="event-card">
-      <div>
-        <h3>{{ event.title }}</h3>
-        <strong>Descrição</strong>
-        <p>{{ event.description }}</p>
+    <div>
+      <div v-for="event in events.data" :key="event.id" class="event-card">
+        <div>
+          <h3>{{ event.title }}</h3>
+          <strong>Descrição</strong>
+          <p>{{ event.description }}</p>
+        </div>
+        <div class="card-datas">
+          <div>
+            <strong>Dados</strong>
+            <p>
+              <b>Responsável</b>
+              : {{ event.owner }}
+            </p>
+            <p>
+              <b>E-mail</b>
+              : {{ event.email }}
+            </p>
+            <p>
+              <b>Data</b>
+              :
+              {{ event.start.split(' ')[0] }}
+            </p>
+            <p>
+              <b>Inicio</b>
+              :
+              {{ event.start.split(' ')[1] }}
+            </p>
+            <p>
+              <b>Fim</b>
+              :
+              {{ event.end.split(' ')[1] }}
+            </p>
+            <p>
+              <b>Solicitado em</b>
+              :
+              {{ event.created_at.split(' ')[0] }}
+            </p>
+          </div>
+          <div>
+            <strong>Equipamentos</strong>
+            <ul>
+              <li v-for="(equipamento, index) in event.equipments" :key="index">
+                {{ equipamento.name | capitalize }}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="card-datas">
-        <div>
-          <strong>Dados</strong>
-          <p>
-            <b>Responsável</b>
-            : {{ event.owner }}
-          </p>
-          <p>
-            <b>E-mail</b>
-            : {{ event.email }}
-          </p>
-          <p>
-            <b>Data</b>
-            :
-            {{ event.start.split(' ')[0] }}
-          </p>
-          <p>
-            <b>Inicio</b>
-            :
-            {{ event.start.split(' ')[1] }}
-          </p>
-          <p>
-            <b>Fim</b>
-            :
-            {{ event.end.split(' ')[1] }}
-          </p>
-          <p>
-            <b>Solicitado em</b>
-            :
-            {{ event.createdAt }}
-          </p>
-        </div>
-        <div>
-          <strong>Equipamentos</strong>
-          <ul>
-            <li v-for="(equipamento, index) in event.equipments" :key="index">
-              {{ equipamento | capitalize }}
-            </li>
-          </ul>
-        </div>
+      <div v-if="total > 3">
+        <b-pagination
+          v-model="page"
+          align="center"
+          hide-goto-end-buttons
+          :total-rows="total"
+          :per-page="limit"
+          size="lg"
+        ></b-pagination>
+      </div>
+      <div v-if="total < 1" class="no-events">
+        <CalendarCheck />
+        <h2>Sem eventos agendados no momento</h2>
       </div>
     </div>
+  </section>
+
+  <section v-else class="no-events">
+    <h1>Sem eventos agendados no momento</h1>
+    <CalendarCheck />
   </section>
 </template>
 
 <script>
+import { BIconEye, BIconClock, BIconCalendar } from 'bootstrap-vue'
+import { makeToast } from '~/plugins/toast.js'
+import CalendarCheck from '~/components/CalendarCheck.vue'
 export default {
   middleware: 'auth',
   layout: 'admin',
   name: 'Eventos',
+  components: {
+    BIconCalendar,
+    BIconClock,
+    BIconEye,
+    CalendarCheck
+  },
   data() {
     return {
-      events: [
-        {
-          id: 1,
-          title: 'Evento sobre o meio ambiente',
-          description:
-            'O meio ambiente é um assunto pra ser tratado com seriedade, sendo assim essa palestra visa conscientizar as pessoas dentro do campus da universidade',
-          owner: 'Luiz Flavio Bezerra',
-          email: 'luizinho@hotmail.com',
-          start: '2020-05-14 8:00:00',
-          end: '2020-05-14 10:00:00',
-          equipments: ['notebook', 'quadro interativo'],
-          createdAt: '2020-04-30 9:43:00'
-        },
-        {
-          id: 2,
-          title: 'Evento sobre trabalho remoto',
-          description:
-            'Após a pandemia de covid-19, o termo trabalho remoto se tronou popular e por isso essa palestra aborda...',
-          owner: 'Wilson Marlon Melo',
-          email: 'wmm@gmail.com',
-          start: '2020-05-28 12:00:00',
-          end: '2020-05-28 14:00:00',
-          equipments: ['notebook', 'quadro interativo', 'piloto'],
-          createdAt: '2020-05-03 3:43:00'
-        }
-      ]
+      all: false,
+      page: 1,
+      events: null,
+      limit: 3,
+      total: 1
+    }
+  },
+  watch: {
+    page() {
+      this.getEvents()
+    }
+  },
+  created() {
+    this.getEvents()
+  },
+  methods: {
+    getEvents() {
+      const { limit, page } = this
+      const all = this.all ? this.all : ''
+      const params = { all, limit, page }
+
+      this.$api
+        .$get('/events', { params })
+        .then(response => {
+          this.events = response.events
+          this.total = +response.events.total
+          this.limit = +response.events.perPage
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        })
+        .catch(() => {
+          this.makeToast('Erro ao carregar eventos', 'danger', true)
+        })
+    },
+    makeToast,
+    toggleEvents() {
+      this.all = !this.all
+      this.page = 1
+      this.getEvents()
+      document.getElementById('future').classList.toggle('active')
+      document.getElementById('past').classList.toggle('active')
     }
   }
 }
@@ -97,6 +155,7 @@ header {
   display: flex;
   flex-wrap: wrap;
   margin: 40px 0;
+  justify-content: space-between;
 }
 
 strong {
@@ -126,5 +185,18 @@ strong {
   padding: 40px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.no-events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  color: #a0a0a0;
+  text-align: center;
+}
+
+.no-events h1 {
+  margin-bottom: 30px;
 }
 </style>

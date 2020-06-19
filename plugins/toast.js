@@ -1,5 +1,5 @@
 export function makeToast(
-  message,
+  message = '',
   variant = null,
   noAutoHide = false,
   title = 'SAD-BC'

@@ -189,12 +189,6 @@ export default {
 </script>
 
 <style scoped>
-input:focus,
-textarea:focus {
-  border: solid 2px #c5737b;
-  box-shadow: 0px 0px 4px rgb(230, 141, 150);
-}
-
 .card-form {
   color: rgb(50, 50, 50);
   max-width: 500px;
@@ -214,5 +208,11 @@ textarea:focus {
   height: 100%;
   color: white;
   background-image: linear-gradient(to bottom, rgb(0, 0, 0, 0.5), transparent);
+}
+
+input:focus,
+textarea:focus {
+  border: 1px #343a40;
+  box-shadow: 0px 0px 4px #343a40;
 }
 </style>
