@@ -1,57 +1,70 @@
 <template>
-  <section v-if="events.length > 0" class="container">
+  <section v-if="events" class="container">
     <header>
       <h1>Eventos Agendados</h1>
     </header>
-    <div v-for="event in events" :key="event.id" class="event-card">
-      <div>
-        <h3>{{ event.title }}</h3>
-        <strong>Descrição</strong>
-        <p>{{ event.description }}</p>
+    <div>
+      <div v-for="event in events.data" :key="event.id" class="event-card">
+        <div>
+          <h3>{{ event.title }}</h3>
+          <strong>Descrição</strong>
+          <p>{{ event.description }}</p>
+        </div>
+        <div class="card-datas">
+          <div>
+            <strong>Dados</strong>
+            <p>
+              <b>Responsável</b>
+              : {{ event.owner }}
+            </p>
+            <p>
+              <b>E-mail</b>
+              : {{ event.email }}
+            </p>
+            <p>
+              <b>Data</b>
+              :
+              {{ event.start.split(' ')[0] }}
+            </p>
+            <p>
+              <b>Inicio</b>
+              :
+              {{ event.start.split(' ')[1] }}
+            </p>
+            <p>
+              <b>Fim</b>
+              :
+              {{ event.end.split(' ')[1] }}
+            </p>
+            <p>
+              <b>Solicitado em</b>
+              :
+              {{ event.created_at.split(' ')[0] }}
+            </p>
+          </div>
+          <div>
+            <strong>Equipamentos</strong>
+            <ul>
+              <li v-for="(equipamento, index) in event.equipments" :key="index">
+                {{ equipamento.name | capitalize }}
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="card-datas">
-        <div>
-          <strong>Dados</strong>
-          <p>
-            <b>Responsável</b>
-            : {{ event.owner }}
-          </p>
-          <p>
-            <b>E-mail</b>
-            : {{ event.email }}
-          </p>
-          <p>
-            <b>Data</b>
-            :
-            {{ event.start.split(' ')[0] }}
-          </p>
-          <p>
-            <b>Inicio</b>
-            :
-            {{ event.start.split(' ')[1] }}
-          </p>
-          <p>
-            <b>Fim</b>
-            :
-            {{ event.end.split(' ')[1] }}
-          </p>
-          <p>
-            <b>Solicitado em</b>
-            :
-            {{ event.created_at.split(' ')[0] }}
-          </p>
-        </div>
-        <div>
-          <strong>Equipamentos</strong>
-          <ul>
-            <li v-for="(equipamento, index) in event.equipments" :key="index">
-              {{ equipamento.name | capitalize }}
-            </li>
-          </ul>
-        </div>
+      <div class="fill">
+        <b-pagination
+          v-model="page"
+          align="fill"
+          hide-goto-end-buttons
+          :total-rows="total"
+          :per-page="limit"
+          size="lg"
+        ></b-pagination>
       </div>
     </div>
   </section>
+
   <section v-else class="no-events">
     <h1>Sem eventos agendados no momento</h1>
     <CalendarCheck />
@@ -70,9 +83,16 @@ export default {
   },
   data() {
     return {
-      events: [],
       all: true,
-      limit: 3
+      page: 1,
+      events: null,
+      limit: 3,
+      total: 1
+    }
+  },
+  watch: {
+    page() {
+      this.getEvents()
     }
   },
   created() {
@@ -80,12 +100,14 @@ export default {
   },
   methods: {
     getEvents() {
-      const { all, limit } = this
-      const params = { all, limit }
+      const { all, limit, page } = this
+      const params = { all, limit, page }
       this.$api
         .$get('/events', { params })
         .then(response => {
-          this.events = response.events.data
+          this.events = response.events
+          this.total = +response.events.total
+          this.limit = +response.events.perPage
         })
         .catch(() => {
           this.makeToast('Erro ao carregar eventos', 'danger', true)
