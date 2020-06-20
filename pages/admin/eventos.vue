@@ -174,8 +174,10 @@ strong {
   flex-wrap: wrap;
 }
 
-.card-datas div {
-  margin-right: 60px;
+@media screen and (min-width: 500px) {
+  .card-datas div {
+    margin-right: 60px;
+  }
 }
 
 .event-card {
