@@ -12,7 +12,7 @@
           Eventos Futuros
         </b-dropdown-item>
         <b-dropdown-item id="past" href="#" @click="toggleEvents"
-          ><BIconCalendar />
+          ><BIconCalendarCheck />
           Eventos Ocorridos
         </b-dropdown-item>
       </b-dropdown>
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { BIconEye, BIconClock, BIconCalendar } from 'bootstrap-vue'
+import { BIconEye, BIconClock, BIconCalendarCheck } from 'bootstrap-vue'
 import { makeToast } from '~/plugins/toast.js'
 import CalendarCheck from '~/components/CalendarCheck.vue'
 export default {
@@ -99,7 +99,7 @@ export default {
   layout: 'admin',
   name: 'Eventos',
   components: {
-    BIconCalendar,
+    BIconCalendarCheck,
     BIconClock,
     BIconEye,
     CalendarCheck
