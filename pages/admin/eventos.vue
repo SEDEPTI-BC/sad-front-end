@@ -12,7 +12,7 @@
           Eventos Futuros
         </b-dropdown-item>
         <b-dropdown-item id="past" href="#" @click="toggleEvents"
-          ><BIconCalendar />
+          ><BIconCalendarCheck />
           Eventos Ocorridos
         </b-dropdown-item>
       </b-dropdown>
@@ -76,13 +76,14 @@
           size="lg"
         ></b-pagination>
       </div>
-      <div v-if="total < 1" class="no-events">
-        <CalendarCheck />
-        <h2>Sem eventos agendados no momento</h2>
-      </div>
+      <transition name="component" mode="out-in">
+        <div v-if="total < 1" class="no-events">
+          <CalendarCheck />
+          <h2>Sem eventos agendados no momento</h2>
+        </div>
+      </transition>
     </div>
   </section>
-
   <section v-else class="no-events">
     <h1>Sem eventos agendados no momento</h1>
     <CalendarCheck />
@@ -90,7 +91,7 @@
 </template>
 
 <script>
-import { BIconEye, BIconClock, BIconCalendar } from 'bootstrap-vue'
+import { BIconEye, BIconClock, BIconCalendarCheck } from 'bootstrap-vue'
 import { makeToast } from '~/plugins/toast.js'
 import CalendarCheck from '~/components/CalendarCheck.vue'
 export default {
@@ -98,7 +99,7 @@ export default {
   layout: 'admin',
   name: 'Eventos',
   components: {
-    BIconCalendar,
+    BIconCalendarCheck,
     BIconClock,
     BIconEye,
     CalendarCheck
@@ -173,8 +174,10 @@ strong {
   flex-wrap: wrap;
 }
 
-.card-datas div {
-  margin-right: 60px;
+@media screen and (min-width: 500px) {
+  .card-datas div {
+    margin-right: 60px;
+  }
 }
 
 .event-card {
