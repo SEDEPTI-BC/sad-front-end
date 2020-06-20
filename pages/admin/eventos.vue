@@ -76,13 +76,14 @@
           size="lg"
         ></b-pagination>
       </div>
-      <div v-if="total < 1" class="no-events">
-        <CalendarCheck />
-        <h2>Sem eventos agendados no momento</h2>
-      </div>
+      <transition name="component" mode="out-in">
+        <div v-if="total < 1" class="no-events">
+          <CalendarCheck />
+          <h2>Sem eventos agendados no momento</h2>
+        </div>
+      </transition>
     </div>
   </section>
-
   <section v-else class="no-events">
     <h1>Sem eventos agendados no momento</h1>
     <CalendarCheck />
