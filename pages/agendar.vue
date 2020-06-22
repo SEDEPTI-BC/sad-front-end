@@ -56,11 +56,11 @@
             <!-- checklist aqui -->
             <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
               <b-form-checkbox
-                v-for="(equipment, index) in equipments"
-                :key="index"
-                :value="equipment"
+                v-for="equipment in equipments.data"
+                :key="equipment.id"
+                :value="equipment.name"
                 style="display: block;"
-                >{{ equipment | capitalize }}</b-form-checkbox
+                >{{ equipment.name | capitalize }}</b-form-checkbox
               >
             </b-form-checkbox-group>
           </b-dropdown-text>
@@ -118,6 +118,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Agendar',
   layout: 'public',
@@ -129,15 +131,6 @@ export default {
         owner: '',
         email: ''
       },
-
-      equipments: [
-        'notebook',
-        'quadro interativo',
-        'TV',
-        'datashow',
-        'tablet',
-        'piloto'
-      ],
       labels: {
         weekdayHeaderFormat: 'long',
         labelPrevDecade: 'Década anterior',
@@ -165,6 +158,11 @@ export default {
       ],
       eventDate: {}
     }
+  },
+  computed: {
+    ...mapGetters({
+      equipments: 'equipments/get'
+    })
   },
 
   methods: {
