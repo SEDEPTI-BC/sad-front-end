@@ -123,6 +123,7 @@ export default {
           this.makeToast('Erro ao adicionar equipamento', 'danger')
         })
     },
+
     deteleEquipment(id) {
       this.$api
         .$delete(`/equipments/${id}`)
