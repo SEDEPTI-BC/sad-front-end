@@ -12,7 +12,7 @@
         <label for="event-name">Nome do evento</label>
         <b-form-input
           id="event-name"
-          v-model="event.name"
+          v-model="event.title"
           placeholder="Palestra Sobre Sustentabilidade"
           class="mb-4"
         ></b-form-input>
@@ -119,6 +119,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { makeToast } from '~/plugins/toast.js'
 
 export default {
   name: 'Agendar',
@@ -126,10 +127,12 @@ export default {
   data() {
     return {
       event: {
-        name: '',
+        title: '',
         description: '',
         owner: '',
-        email: ''
+        email: '',
+        start: '',
+        end: ''
       },
       labels: {
         weekdayHeaderFormat: 'long',
@@ -171,16 +174,28 @@ export default {
       const day = date.getDate()
       return weekday === 0 || weekday === 6 || day === 13
     },
+
+    makeToast,
+
     onContext(ctx) {
       this.context = ctx
     },
+
     submitForm() {
-      const name = this.event.owner.split(' ').length >= 2
-      if (!name) {
-        alert('Digite seu nome completo')
-      } else {
-        alert('Evento enviado com sucesso')
-      }
+      const event = this.event
+      event.start = `${this.eventDate.dateBegin} ${this.eventDate.timeStart}`
+      event.end = `${this.eventDate.dateBegin} ${this.eventDate.timeEnd}`
+
+      this.$api
+        .$post('/events', {
+          ...event
+        })
+        .then(response => {
+          this.makeToast('Evento criado com sucesso', 'success')
+        })
+        .catch(response => {
+          this.makeToast('Erro ao criar evento', 'danger')
+        })
     }
   }
 }
