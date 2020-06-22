@@ -22,42 +22,37 @@
         <div>
           <h3>{{ event.title }}</h3>
           <strong>Descrição</strong>
+
           <p>{{ event.description }}</p>
         </div>
         <div class="card-datas">
           <div>
             <strong>Dados</strong>
+
+            <p><b>Responsável</b>: {{ event.owner }}</p>
+            <p><b>E-mail</b>: {{ event.email }}</p>
             <p>
-              <b>Responsável</b>
-              : {{ event.owner }}
+              <b>Data</b>:
+              {{ new Date(event.start) | dateFormat('DD/MM/YYYY') }}
             </p>
             <p>
-              <b>E-mail</b>
-              : {{ event.email }}
+              <b>Inicio</b>: {{ new Date(event.start) | dateFormat('HH') }}h{{
+                new Date(event.start) | dateFormat('mm')
+              }}
             </p>
             <p>
-              <b>Data</b>
-              :
-              {{ event.start.split(' ')[0] }}
+              <b>Fim</b>: {{ new Date(event.end) | dateFormat('HH') }}h{{
+                new Date(event.end) | dateFormat('mm')
+              }}
             </p>
             <p>
-              <b>Inicio</b>
-              :
-              {{ event.start.split(' ')[1] }}
-            </p>
-            <p>
-              <b>Fim</b>
-              :
-              {{ event.end.split(' ')[1] }}
-            </p>
-            <p>
-              <b>Solicitado em</b>
-              :
-              {{ event.created_at.split(' ')[0] }}
+              <b>Solicitado em</b>:
+              {{ new Date(event.created_at) | dateFormat('DD/MM/YYYY') }}
             </p>
           </div>
           <div>
             <strong>Equipamentos</strong>
+
             <ul>
               <li v-for="(equipamento, index) in event.equipments" :key="index">
                 {{ equipamento.name | capitalize }}
