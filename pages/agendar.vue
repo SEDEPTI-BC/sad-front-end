@@ -74,6 +74,7 @@
           id="date-picker"
           v-model="eventDate.dateBegin"
           :date-disabled-fn="dateDisabled"
+          :min="min"
           locale="pt"
           :weekdays="weekdays"
           today-variant="danger"
@@ -125,6 +126,8 @@ export default {
   name: 'Agendar',
   layout: 'public',
   data() {
+    const now = new Date()
+    const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     return {
       event: {
         title: '',
@@ -150,6 +153,7 @@ export default {
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
       },
+      min: minDate,
       weekdays: [
         { value: 0, text: 'Domingo' },
         { value: 1, text: 'Segunda-feira' },
@@ -167,12 +171,26 @@ export default {
       equipments: 'equipments/get'
     })
   },
+  created() {
+    this.getDisabledDays()
+  },
 
   methods: {
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
       const day = date.getDate()
       return weekday === 0 || weekday === 6 || day === 13
+    },
+
+    getDisabledDays() {
+      const params = { month: 6, year: 2020 }
+      this.$api
+        .$get('/disable_days_current_month', { params })
+        .then(response => {
+          // const days = response.disabled_days.map(el =>
+          //   new Date(el.start).getDate()
+          // )
+        })
     },
 
     makeToast,
