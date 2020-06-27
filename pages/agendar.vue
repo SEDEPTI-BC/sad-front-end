@@ -83,6 +83,7 @@
           class="mb-4"
           selected-variant="danger"
           v-bind="labels"
+          @context="onContext"
         ></b-form-datepicker>
 
         <b-row>
@@ -132,6 +133,7 @@ export default {
     const now = new Date()
     const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     return {
+      context: null,
       event: {
         title: '',
         description: '',
