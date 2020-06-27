@@ -75,6 +75,7 @@
           v-model="eventDate.dateBegin"
           :date-disabled-fn="dateDisabled"
           :min="min"
+          no-close-on-select
           locale="pt"
           :weekdays="weekdays"
           today-variant="danger"
