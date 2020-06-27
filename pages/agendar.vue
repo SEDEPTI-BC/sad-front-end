@@ -76,6 +76,7 @@
           :date-disabled-fn="dateDisabled"
           :min="min"
           no-close-on-select
+          hide-header
           locale="pt"
           :weekdays="weekdays"
           today-variant="danger"
