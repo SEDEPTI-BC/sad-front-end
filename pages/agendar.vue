@@ -95,7 +95,9 @@
               locale="pt"
               min="08:00"
               max="21:00"
-            ></b-form-input>
+            >
+              <nav-this-month>proximo</nav-this-month>
+            </b-form-input>
           </b-col>
           <b-col mb="auto">
             <label for="time_end">Até às</label>
@@ -140,7 +142,7 @@ export default {
         end: ''
       },
       labels: {
-        weekdayHeaderFormat: 'long',
+        weekdayHeaderFormat: 'short',
         labelPrevDecade: 'Década anterior',
         labelPrevYear: 'Ano anterior',
         labelPrevMonth: 'Mês anterior',
@@ -180,8 +182,11 @@ export default {
   methods: {
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
+      const month = date.getMonth()
       const day = date.getDate()
-      return weekday === 0 || weekday === 6 || day === 13
+      return weekday === 0 || weekday === 6 || [10, 11].includes(month)
+        ? [28, 29, 30].includes(day)
+        : ''
     },
 
     getDisabledDays() {
