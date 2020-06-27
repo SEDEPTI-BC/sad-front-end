@@ -96,7 +96,6 @@
               min="08:00"
               max="21:00"
             >
-              <nav-this-month>proximo</nav-this-month>
             </b-form-input>
           </b-col>
           <b-col mb="auto">
