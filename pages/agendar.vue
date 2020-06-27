@@ -134,6 +134,7 @@ export default {
     const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     return {
       context: null,
+      disabledDays: [],
       event: {
         title: '',
         description: '',
@@ -176,6 +177,11 @@ export default {
       equipments: 'equipments/get'
     })
   },
+  watch: {
+    context() {
+      this.getDisabledDays()
+    }
+  },
   created() {
     this.getDisabledDays()
   },
@@ -183,21 +189,28 @@ export default {
   methods: {
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
-      const month = date.getMonth()
       const day = date.getDate()
-      return weekday === 0 || weekday === 6 || [10, 11].includes(month)
-        ? [28, 29, 30].includes(day)
-        : ''
+      return weekday === 0 || weekday === 6 || this.disabledDays.includes(day)
     },
 
     getDisabledDays() {
-      const params = { month: 6, year: 2020 }
+      const month = this.context
+        ? this.context.activeYMD.split('-')[1]
+        : new Date().getMonth() + 1
+
+      const year = this.context
+        ? this.context.activeYMD.split('-')[0]
+        : new Date().getFullYear()
+
+      const params = { month, year }
+
       this.$api
         .$get('/disable_days_current_month', { params })
         .then(response => {
-          // const days = response.disabled_days.map(el =>
-          //   new Date(el.start).getDate()
-          // )
+          const days = response.disabled_days.map(el => {
+            return +el.start.split('T')[0].split('-')[2]
+          })
+          this.disabledDays = days
         })
     },
 
