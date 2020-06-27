@@ -131,7 +131,7 @@ export default {
       value: '',
       context: null,
       labels: {
-        weekdayHeaderFormat: 'long',
+        weekdayHeaderFormat: 'short',
         labelPrevDecade: 'Década anterior',
         labelPrevYear: 'Ano anterior',
         labelPrevMonth: 'Mês anterior',
