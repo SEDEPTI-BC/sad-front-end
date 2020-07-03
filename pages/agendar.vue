@@ -53,7 +53,6 @@
           class="mb-4"
         >
           <b-dropdown-text style="max-width: 300px;">
-            <!-- checklist aqui -->
             <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
               <b-form-checkbox
                 v-for="equipment in equipments.data"
@@ -72,7 +71,7 @@
         <label for="date-picker">Data do evento</label>
         <b-form-datepicker
           id="date-picker"
-          v-model="eventDate.dateBegin"
+          v-model="event.date"
           :date-disabled-fn="dateDisabled"
           :min="min"
           no-close-on-select
@@ -86,16 +85,38 @@
           @context="onContext"
         ></b-form-datepicker>
 
+        <label for="dropdown-check">Horário</label>
+        <b-dropdown
+          id="dropdown-check"
+          text="Selecionar horários"
+          style="width: 100%; "
+          class="mb-4"
+        >
+          <b-dropdown-text style="max-width: 300px;">
+            <b-form-checkbox-group id="checkboxes" v-model="event.schedules">
+              <b-form-checkbox
+                v-for="schedule in schedules"
+                :key="schedule.id"
+                :value="schedule.hour"
+                style="display: block;"
+                >{{ `${schedule.hour}h00` }}</b-form-checkbox
+              >
+            </b-form-checkbox-group>
+          </b-dropdown-text>
+
+          <b-dropdown-divider></b-dropdown-divider>
+          <b-dropdown-item-button>Pronto</b-dropdown-item-button>
+        </b-dropdown>
+
         <b-row>
           <b-col mb="auto">
             <label for="time_start">Hora de início</label>
             <b-form-input
               id="time_start"
-              v-model="eventDate.timeStart"
+              :value="'08:00'"
               type="time"
               locale="pt"
-              min="08:00"
-              max="21:00"
+              readonly
             >
             </b-form-input>
           </b-col>
@@ -103,18 +124,21 @@
             <label for="time_end">Até às</label>
             <b-form-input
               id="time_end"
-              v-model="eventDate.timeEnd"
+              :value="'09:00'"
               type="time"
               locale="pt"
-              min="08:00"
-              max="21:00"
+              readonly
             ></b-form-input>
           </b-col>
         </b-row>
 
         <hr class="my-4" />
 
-        <button class="btn btn-danger py-3" @click.prevent="submitForm">
+        <button
+          class="btn btn-danger py-3"
+          style="display: block;"
+          @click.prevent="submitForm"
+        >
           Confirmar agendamento
         </button>
       </b-card>
@@ -140,8 +164,9 @@ export default {
         description: '',
         owner: '',
         email: '',
-        start: '',
-        end: ''
+        date: '',
+        equipments: [],
+        schedules: []
       },
       labels: {
         weekdayHeaderFormat: 'short',
@@ -168,13 +193,13 @@ export default {
         { value: 4, text: 'Quinta-feira' },
         { value: 5, text: 'Sexta-feira' },
         { value: 6, text: 'Sábado' }
-      ],
-      eventDate: {}
+      ]
     }
   },
   computed: {
     ...mapGetters({
-      equipments: 'equipments/get'
+      equipments: 'equipments/get',
+      schedules: 'schedules/get'
     })
   },
   watch: {
@@ -194,24 +219,21 @@ export default {
     },
 
     getDisabledDays() {
-      const month = this.context
-        ? this.context.activeYMD.split('-')[1]
-        : new Date().getMonth() + 1
-
-      const year = this.context
-        ? this.context.activeYMD.split('-')[0]
-        : new Date().getFullYear()
-
-      const params = { month, year }
-
-      this.$api
-        .$get('/disable_days_current_month', { params })
-        .then(response => {
-          const days = response.disabled_days.map(el => {
-            return +el.start.split('T')[0].split('-')[2]
-          })
-          this.disabledDays = days
-        })
+      // const month = this.context
+      //   ? this.context.activeYMD.split('-')[1]
+      //   : new Date().getMonth() + 1
+      // const year = this.context
+      //   ? this.context.activeYMD.split('-')[0]
+      //   : new Date().getFullYear()
+      // const params = { month, year }
+      // this.$api
+      //   .$get('/disable_days_current_month', { params })
+      //   .then(response => {
+      //     const days = response.disabled_days.map(el => {
+      //       return +el.start.split('T')[0].split('-')[2]
+      //     })
+      //     this.disabledDays = days
+      //   })
     },
 
     makeToast,
@@ -222,8 +244,6 @@ export default {
 
     submitForm() {
       const event = this.event
-      event.start = `${this.eventDate.dateBegin} ${this.eventDate.timeStart}`
-      event.end = `${this.eventDate.dateBegin} ${this.eventDate.timeEnd}`
 
       this.$api
         .$post('/events', {

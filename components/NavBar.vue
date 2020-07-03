@@ -72,6 +72,7 @@ export default {
     })
 
     this.$store.dispatch('equipments/getEquipments')
+    this.$store.dispatch('schedules/getSchedules')
   }
 }
 </script>
