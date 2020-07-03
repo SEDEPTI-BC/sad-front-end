@@ -33,16 +33,13 @@
             <p><b>E-mail</b>: {{ event.email }}</p>
             <p>
               <b>Data</b>:
-              {{ new Date(event.start) | dateFormat('DD/MM/YYYY') }}
+              {{ new Date(event.date) | dateFormat('DD/MM/YYYY') }}
             </p>
+            <p><b>Inicio</b>: {{ `${event.schedules[0].hour}h00` }}</p>
             <p>
-              <b>Inicio</b>: {{ new Date(event.start) | dateFormat('HH') }}h{{
-                new Date(event.start) | dateFormat('mm')
-              }}
-            </p>
-            <p>
-              <b>Fim</b>: {{ new Date(event.end) | dateFormat('HH') }}h{{
-                new Date(event.end) | dateFormat('mm')
+              <b>Fim</b>:
+              {{
+                `${+event.schedules[event.schedules.length - 1].hour + 1}h00`
               }}
             </p>
             <p>
