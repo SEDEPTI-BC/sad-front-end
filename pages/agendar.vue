@@ -231,21 +231,26 @@ export default {
     },
 
     getDisabledDays() {
-      // const month = this.context
-      //   ? this.context.activeYMD.split('-')[1]
-      //   : new Date().getMonth() + 1
-      // const year = this.context
-      //   ? this.context.activeYMD.split('-')[0]
-      //   : new Date().getFullYear()
-      // const params = { month, year }
-      // this.$api
-      //   .$get('/disable_days_current_month', { params })
-      //   .then(response => {
-      //     const days = response.disabled_days.map(el => {
-      //       return +el.start.split('T')[0].split('-')[2]
-      //     })
-      //     this.disabledDays = days
-      //   })
+      const month = this.context
+        ? this.context.activeYMD.split('-')[1]
+        : new Date().getMonth() + 1
+
+      const year = this.context
+        ? this.context.activeYMD.split('-')[0]
+        : new Date().getFullYear()
+
+      const params = { month, year }
+
+      this.$api
+        .$get('/disable_days_current_month', { params })
+        .then(response => {
+          const days = response.disabledDays
+            .filter(day => day.full_day)
+            .map(day => {
+              return +day.date.split('T')[0].split('-')[2]
+            })
+          this.disabledDays = days
+        })
     },
 
     makeToast,
