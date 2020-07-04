@@ -12,7 +12,7 @@
         <label for="event-name">Nome do evento</label>
         <b-form-input
           id="event-name"
-          v-model="event.name"
+          v-model="event.title"
           placeholder="Palestra Sobre Sustentabilidade"
           class="mb-4"
         ></b-form-input>
@@ -53,14 +53,13 @@
           class="mb-4"
         >
           <b-dropdown-text style="max-width: 300px;">
-            <!-- checklist aqui -->
             <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
               <b-form-checkbox
-                v-for="(equipment, index) in equipments"
-                :key="index"
-                :value="equipment"
+                v-for="equipment in equipments.data"
+                :key="equipment.id"
+                :value="equipment.name"
                 style="display: block;"
-                >{{ equipment | capitalize }}</b-form-checkbox
+                >{{ equipment.name | capitalize }}</b-form-checkbox
               >
             </b-form-checkbox-group>
           </b-dropdown-text>
@@ -72,44 +71,74 @@
         <label for="date-picker">Data do evento</label>
         <b-form-datepicker
           id="date-picker"
-          v-model="eventDate.dateBegin"
+          v-model="event.date"
           :date-disabled-fn="dateDisabled"
+          :min="min"
+          no-close-on-select
+          hide-header
           locale="pt"
           :weekdays="weekdays"
           today-variant="danger"
           class="mb-4"
           selected-variant="danger"
           v-bind="labels"
+          @context="onContext"
         ></b-form-datepicker>
+
+        <label for="dropdown-check">Horário</label>
+        <b-dropdown
+          id="dropdown-check"
+          text="Selecionar horários"
+          style="width: 100%; "
+          class="mb-4"
+        >
+          <b-dropdown-text style="max-width: 300px;">
+            <b-form-checkbox-group id="checkboxes" v-model="event.schedules">
+              <b-form-checkbox
+                v-for="schedule in availableSchedules"
+                :key="schedule.id"
+                :value="schedule.hour"
+                style="display: block;"
+                >{{ `${schedule.hour}h00` }}</b-form-checkbox
+              >
+            </b-form-checkbox-group>
+          </b-dropdown-text>
+
+          <b-dropdown-divider></b-dropdown-divider>
+          <b-dropdown-item-button>Pronto</b-dropdown-item-button>
+        </b-dropdown>
 
         <b-row>
           <b-col mb="auto">
             <label for="time_start">Hora de início</label>
             <b-form-input
               id="time_start"
-              v-model="eventDate.timeStart"
-              type="time"
+              :value="begin"
+              type="text"
               locale="pt"
-              min="08:00"
-              max="21:00"
-            ></b-form-input>
+              readonly
+            >
+            </b-form-input>
           </b-col>
           <b-col mb="auto">
             <label for="time_end">Até às</label>
             <b-form-input
               id="time_end"
-              v-model="eventDate.timeEnd"
-              type="time"
+              :value="end"
+              type="text"
               locale="pt"
-              min="08:00"
-              max="21:00"
+              readonly
             ></b-form-input>
           </b-col>
         </b-row>
 
         <hr class="my-4" />
 
-        <button class="btn btn-danger py-3" @click.prevent="submitForm">
+        <button
+          class="btn btn-danger py-3"
+          style="display: block;"
+          @click.prevent="submitForm"
+        >
           Confirmar agendamento
         </button>
       </b-card>
@@ -118,28 +147,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { makeToast } from '~/plugins/toast.js'
+
 export default {
   name: 'Agendar',
   layout: 'public',
   data() {
+    const now = new Date()
+    const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     return {
+      availableSchedules: this.schedules,
+      context: null,
+      disabledDays: [],
       event: {
-        name: '',
+        title: '',
         description: '',
         owner: '',
-        email: ''
+        email: '',
+        date: '',
+        equipments: [],
+        schedules: []
       },
-
-      equipments: [
-        'notebook',
-        'quadro interativo',
-        'TV',
-        'datashow',
-        'tablet',
-        'piloto'
-      ],
       labels: {
-        weekdayHeaderFormat: 'long',
+        weekdayHeaderFormat: 'short',
         labelPrevDecade: 'Década anterior',
         labelPrevYear: 'Ano anterior',
         labelPrevMonth: 'Mês anterior',
@@ -154,6 +185,7 @@ export default {
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
       },
+      min: minDate,
       weekdays: [
         { value: 0, text: 'Domingo' },
         { value: 1, text: 'Segunda-feira' },
@@ -162,27 +194,95 @@ export default {
         { value: 4, text: 'Quinta-feira' },
         { value: 5, text: 'Sexta-feira' },
         { value: 6, text: 'Sábado' }
-      ],
-      eventDate: {}
+      ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      equipments: 'equipments/get',
+      schedules: 'schedules/get'
+    }),
+
+    begin() {
+      return this.event.schedules.length > 0
+        ? `${this.event.schedules[0]}h00`
+        : '-- : --'
+    },
+
+    end() {
+      return this.event.schedules.length > 0
+        ? `${this.event.schedules[this.event.schedules.length - 1] + 1}h00`
+        : '-- : --'
+    }
+  },
+  watch: {
+    context() {
+      this.getDisabledDays()
+
+      this.getAvailableSchedules()
+    }
+  },
+  created() {
+    this.getDisabledDays()
   },
 
   methods: {
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
       const day = date.getDate()
-      return weekday === 0 || weekday === 6 || day === 13
+      return weekday === 0 || weekday === 6 || this.disabledDays.includes(day)
     },
+
+    getDisabledDays() {
+      const month = this.context
+        ? this.context.activeYMD.split('-')[1]
+        : new Date().getMonth() + 1
+
+      const year = this.context
+        ? this.context.activeYMD.split('-')[0]
+        : new Date().getFullYear()
+
+      const params = { month, year }
+
+      this.$api
+        .$get('/disable_days_current_month', { params })
+        .then(response => {
+          const days = response.disabledDays
+            .filter(day => day.full_day)
+            .map(day => {
+              return +day.date.split('T')[0].split('-')[2]
+            })
+          this.disabledDays = days
+        })
+    },
+
+    getAvailableSchedules() {
+      const date = this.context.selectedYMD
+      const params = { date }
+      this.$api
+        .$get('/disabled_schedules', { params })
+        .then(response => (this.availableSchedules = response.schedules))
+    },
+
+    makeToast,
+
     onContext(ctx) {
       this.context = ctx
     },
+
     submitForm() {
-      const name = this.event.owner.split(' ').length >= 2
-      if (!name) {
-        alert('Digite seu nome completo')
-      } else {
-        alert('Evento enviado com sucesso')
-      }
+      const event = this.event
+
+      this.$api
+        .$post('/events', {
+          ...event
+        })
+        .then(response => {
+          this.makeToast('Evento criado com sucesso', 'success')
+        })
+        .catch(response => {
+          this.makeToast('Erro ao criar evento', 'danger')
+        })
     }
   }
 }

@@ -16,6 +16,7 @@ import nuxt_plugin_bootstrapvue_3d1bd8e0 from 'nuxt_plugin_bootstrapvue_3d1bd8e0
 import nuxt_plugin_axios_64712661 from 'nuxt_plugin_axios_64712661' // Source: ./axios.js (mode: 'all')
 import nuxt_plugin_filters_2b4f519a from 'nuxt_plugin_filters_2b4f519a' // Source: ../plugins/filters.js (mode: 'all')
 import nuxt_plugin_axios_54e49ad0 from 'nuxt_plugin_axios_54e49ad0' // Source: ../plugins/axios.js (mode: 'all')
+import nuxt_plugin_vueFilterDateForm_330d4c04 from 'nuxt_plugin_vueFilterDateForm_330d4c04' // Source: ../plugins/vueFilterDateForm.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -187,6 +188,10 @@ async function createApp (ssrContext) {
 
   if (typeof nuxt_plugin_axios_54e49ad0 === 'function') {
     await nuxt_plugin_axios_54e49ad0(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vueFilterDateForm_330d4c04 === 'function') {
+    await nuxt_plugin_vueFilterDateForm_330d4c04(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

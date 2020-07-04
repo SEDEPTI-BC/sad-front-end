@@ -74,6 +74,7 @@ export default {
 
   created() {
     this.$store.dispatch('equipments/getEquipments')
+    this.$store.dispatch('schedules/getSchedules')
   },
 
   methods: {
