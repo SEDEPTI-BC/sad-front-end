@@ -113,8 +113,8 @@
             <label for="time_start">Hora de início</label>
             <b-form-input
               id="time_start"
-              :value="'08:00'"
-              type="time"
+              :value="begin"
+              type="text"
               locale="pt"
               readonly
             >
@@ -124,8 +124,8 @@
             <label for="time_end">Até às</label>
             <b-form-input
               id="time_end"
-              :value="'09:00'"
-              type="time"
+              :value="end"
+              type="text"
               locale="pt"
               readonly
             ></b-form-input>
@@ -200,7 +200,19 @@ export default {
     ...mapGetters({
       equipments: 'equipments/get',
       schedules: 'schedules/get'
-    })
+    }),
+
+    begin() {
+      return this.event.schedules.length > 0
+        ? `${this.event.schedules[0]}h00`
+        : '-- : --'
+    },
+
+    end() {
+      return this.event.schedules.length > 0
+        ? `${this.event.schedules[this.event.schedules.length - 1] + 1}h00`
+        : '-- : --'
+    }
   },
   watch: {
     context() {
