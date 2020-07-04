@@ -95,7 +95,7 @@
           <b-dropdown-text style="max-width: 300px;">
             <b-form-checkbox-group id="checkboxes" v-model="event.schedules">
               <b-form-checkbox
-                v-for="schedule in schedules"
+                v-for="schedule in availableSchedules"
                 :key="schedule.id"
                 :value="schedule.hour"
                 style="display: block;"
@@ -157,6 +157,7 @@ export default {
     const now = new Date()
     const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     return {
+      availableSchedules: this.schedules,
       context: null,
       disabledDays: [],
       event: {
@@ -217,6 +218,8 @@ export default {
   watch: {
     context() {
       this.getDisabledDays()
+
+      this.getAvailableSchedules()
     }
   },
   created() {
@@ -251,6 +254,14 @@ export default {
             })
           this.disabledDays = days
         })
+    },
+
+    getAvailableSchedules() {
+      const date = this.context.selectedYMD
+      const params = { date }
+      this.$api
+        .$get('/disabled_schedules', { params })
+        .then(response => (this.availableSchedules = response.schedules))
     },
 
     makeToast,
