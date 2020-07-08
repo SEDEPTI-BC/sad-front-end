@@ -23,11 +23,13 @@ export default {
   components: {
     Tick
   },
-  data() {
-    return {}
+  created() {
+    this.toTop()
   },
   methods: {
-    login() {}
+    toTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 }
 </script>
