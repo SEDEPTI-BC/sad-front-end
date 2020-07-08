@@ -55,7 +55,7 @@
             id="dropdown-check"
             text="Selecionar equipamentos"
             style="width: 100%; "
-            class="mb-4"
+            class="mb-3"
           >
             <b-dropdown-text style="max-width: 300px;">
               <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
@@ -73,6 +73,15 @@
             <b-dropdown-item-button>Pronto</b-dropdown-item-button>
           </b-dropdown>
 
+          <b-form-input
+            id="time_start"
+            :value="equipmentsList"
+            type="text"
+            class="mb-4"
+            readonly
+          >
+          </b-form-input>
+
           <label for="date-picker">Data do evento</label>
           <b-form-datepicker
             id="date-picker"
@@ -86,7 +95,6 @@
             class="mb-4"
             selected-variant="danger"
             v-bind="labels"
-            required
             @context="onContext"
           ></b-form-datepicker>
 
@@ -217,6 +225,13 @@ export default {
       return this.event.schedules.length > 0
         ? `${this.event.schedules[this.event.schedules.length - 1] + 1}h00`
         : '-- : --'
+    },
+
+    equipmentsList() {
+      if (this.event.equipments.length > 0) {
+        return this.event.equipments.join(', ')
+      }
+      return 'Sem equipamentos selecionados'
     }
   },
   watch: {
@@ -280,17 +295,33 @@ export default {
       evt.preventDefault()
       const event = this.event
 
-      this.$api
-        .$post('/events', {
-          ...event
-        })
-        .then(response => {
-          this.makeToast('Evento criado com sucesso', 'success')
-          this.onReset()
-        })
-        .catch(response => {
-          this.makeToast('Erro ao criar evento', 'danger')
-        })
+      if (this.event.date && this.event.schedules.length > 0) {
+        this.$api
+          .$post('/events', {
+            ...event
+          })
+          .then(response => {
+            this.makeToast('Evento criado com sucesso', 'success')
+            this.event.title = ''
+            this.event.description = ''
+            this.event.owner = ''
+            this.event.email = ''
+            this.event.date = ''
+            this.event.equipments = []
+            this.event.schedules = []
+            this.show = false
+            this.$nextTick(() => {
+              this.show = true
+            })
+          })
+          .catch(response => {
+            this.makeToast('Erro ao criar evento', 'danger')
+          })
+      } else if (!this.event.date) {
+        this.makeToast('Selecione a data do evento', 'warning')
+      } else if (this.event.schedules.length < 1) {
+        this.makeToast('Selecione o horário do evento', 'warning')
+      }
     },
 
     onReset(evt) {
