@@ -1,5 +1,8 @@
 <template>
   <div class="content pt-3 pb-5">
+    <div v-if="loading" class="loading-background">
+      <Loading />
+    </div>
     <h1 class="page-title">Agendar Evento</h1>
     <b-container>
       <b-form v-if="show" @submit="submitForm" @reset="onReset">
@@ -160,10 +163,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import { makeToast } from '~/plugins/toast.js'
+import Loading from '~/components/Loading.vue'
 
 export default {
   name: 'Agendar',
   layout: 'public',
+  components: {
+    Loading
+  },
   data() {
     const now = new Date()
     const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -196,6 +203,7 @@ export default {
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
       },
+      loading: true,
       min: minDate,
       weekdays: [
         { value: 0, text: 'Domingo' },
@@ -294,22 +302,24 @@ export default {
     submitForm(evt) {
       evt.preventDefault()
       const event = this.event
-
+      this.loading = true
       if (this.event.date && this.event.schedules.length > 0) {
         this.$api
           .$post('/events', {
             ...event
           })
           .then(response => {
-            this.makeToast('Evento criado com sucesso', 'success')
             this.$router.push('/agendamento-confirmado')
           })
           .catch(response => {
+            this.loading = false
             this.makeToast('Erro ao criar evento', 'danger')
           })
       } else if (!this.event.date) {
+        this.loading = false
         this.makeToast('Selecione a data do evento', 'warning')
       } else if (this.event.schedules.length < 1) {
+        this.loading = false
         this.makeToast('Selecione o horário do evento', 'warning')
       }
     },
@@ -340,18 +350,30 @@ export default {
   border: rgb(0, 0, 0, 0.5);
 }
 
+.content {
+  height: 100%;
+  color: white;
+  background-image: linear-gradient(to bottom, rgb(0, 0, 0, 0.5), transparent);
+}
+
+.loading-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10000000;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
 .page-title {
   color: #ffff;
   font-weight: bold;
   max-width: 700px;
   margin: 20px auto 60px auto;
   text-align: center;
-}
-
-.content {
-  height: 100%;
-  color: white;
-  background-image: linear-gradient(to bottom, rgb(0, 0, 0, 0.5), transparent);
 }
 
 input:focus,
