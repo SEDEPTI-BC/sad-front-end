@@ -203,7 +203,7 @@ export default {
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
       },
-      loading: true,
+      loading: false,
       min: minDate,
       weekdays: [
         { value: 0, text: 'Domingo' },
