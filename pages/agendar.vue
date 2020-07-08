@@ -2,146 +2,149 @@
   <div class="content pt-3 pb-5">
     <h1 class="page-title">Agendar Evento</h1>
     <b-container>
-      <b-card
-        class="card-form mx-auto"
-        title="Agendar Evento"
-        sub-title="Preencha o formulário para agendar seu evento"
-      >
-        <hr class="my-4" />
-
-        <label for="event-name">Nome do evento</label>
-        <b-form-input
-          id="event-name"
-          v-model="event.title"
-          placeholder="Palestra Sobre Sustentabilidade"
-          class="mb-4"
-        ></b-form-input>
-
-        <label for="description">Descrição do evento</label>
-        <b-form-textarea
-          id="description"
-          v-model="event.description"
-          placeholder="Sustentabilidade é a capacidade de sustentação ou conservação de um processo ou sistema."
-          rows="4"
-          max-rows="6"
-          class="mb-4"
-        ></b-form-textarea>
-
-        <label for="event-owner">Nome completo</label>
-        <b-form-input
-          id="event-owner"
-          v-model="event.owner"
-          placeholder="Paula K. Spencer"
-          class="mb-4"
-        ></b-form-input>
-
-        <label for="event-email">Email</label>
-        <b-form-input
-          id="event-email"
-          v-model="event.email"
-          placeholder="PaulaKSpencer@teleworm.us"
-          class="mb-4"
-          type="email"
-          input-type="email"
-        ></b-form-input>
-
-        <label for="dropdown-check">Equipamentos</label>
-        <b-dropdown
-          id="dropdown-check"
-          text="Selecionar equipamentos"
-          style="width: 100%; "
-          class="mb-4"
+      <b-form v-if="show" @submit="submitForm" @reset="onReset">
+        <b-card
+          class="card-form mx-auto"
+          title="Agendar Evento"
+          sub-title="Preencha o formulário para agendar seu evento"
         >
-          <b-dropdown-text style="max-width: 300px;">
-            <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
-              <b-form-checkbox
-                v-for="equipment in equipments.data"
-                :key="equipment.id"
-                :value="equipment.name"
-                style="display: block;"
-                >{{ equipment.name | capitalize }}</b-form-checkbox
+          <hr class="my-4" />
+
+          <label for="event-name">Nome do evento</label>
+          <b-form-input
+            id="event-name"
+            v-model="event.title"
+            placeholder="Palestra Sobre Sustentabilidade"
+            class="mb-4"
+            required
+          ></b-form-input>
+
+          <label for="description">Descrição do evento</label>
+          <b-form-textarea
+            id="description"
+            v-model="event.description"
+            placeholder="Sustentabilidade é a capacidade de sustentação ou conservação de um processo ou sistema."
+            rows="4"
+            max-rows="6"
+            class="mb-4"
+            required
+          ></b-form-textarea>
+
+          <label for="event-owner">Nome completo</label>
+          <b-form-input
+            id="event-owner"
+            v-model="event.owner"
+            placeholder="Paula K. Spencer"
+            class="mb-4"
+            required
+          ></b-form-input>
+
+          <label for="event-email">Email</label>
+          <b-form-input
+            id="event-email"
+            v-model="event.email"
+            placeholder="PaulaKSpencer@teleworm.us"
+            class="mb-4"
+            type="email"
+            input-type="email"
+            required
+          ></b-form-input>
+
+          <label for="dropdown-check">Equipamentos</label>
+          <b-dropdown
+            id="dropdown-check"
+            text="Selecionar equipamentos"
+            style="width: 100%; "
+            class="mb-4"
+          >
+            <b-dropdown-text style="max-width: 300px;">
+              <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
+                <b-form-checkbox
+                  v-for="equipment in equipments.data"
+                  :key="equipment.id"
+                  :value="equipment.name"
+                  style="display: block;"
+                  >{{ equipment.name | capitalize }}</b-form-checkbox
+                >
+              </b-form-checkbox-group>
+            </b-dropdown-text>
+
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-item-button>Pronto</b-dropdown-item-button>
+          </b-dropdown>
+
+          <label for="date-picker">Data do evento</label>
+          <b-form-datepicker
+            id="date-picker"
+            v-model="event.date"
+            :date-disabled-fn="dateDisabled"
+            :min="min"
+            hide-header
+            locale="pt"
+            :weekdays="weekdays"
+            today-variant="danger"
+            class="mb-4"
+            selected-variant="danger"
+            v-bind="labels"
+            required
+            @context="onContext"
+          ></b-form-datepicker>
+
+          <label for="dropdown-check">Horário</label>
+          <b-dropdown
+            id="dropdown-check"
+            text="Selecionar horários"
+            style="width: 100%; "
+            class="mb-4"
+          >
+            <b-dropdown-text style="max-width: 300px;">
+              <b-form-checkbox-group id="checkboxes" v-model="event.schedules">
+                <b-form-checkbox
+                  v-for="schedule in availableSchedules"
+                  :key="schedule.id"
+                  :value="schedule.hour"
+                  style="display: block;"
+                  >{{ `${schedule.hour}h00` }}</b-form-checkbox
+                >
+              </b-form-checkbox-group>
+            </b-dropdown-text>
+
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-item-button>Pronto</b-dropdown-item-button>
+          </b-dropdown>
+
+          <b-row>
+            <b-col mb="auto">
+              <label for="time_start">Hora de início</label>
+              <b-form-input
+                id="time_start"
+                :value="begin"
+                type="text"
+                locale="pt"
+                readonly
               >
-            </b-form-checkbox-group>
-          </b-dropdown-text>
+              </b-form-input>
+            </b-col>
+            <b-col mb="auto">
+              <label for="time_end">Até às</label>
+              <b-form-input
+                id="time_end"
+                :value="end"
+                type="text"
+                locale="pt"
+                readonly
+              ></b-form-input>
+            </b-col>
+          </b-row>
 
-          <b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item-button>Pronto</b-dropdown-item-button>
-        </b-dropdown>
+          <hr class="my-4" />
 
-        <label for="date-picker">Data do evento</label>
-        <b-form-datepicker
-          id="date-picker"
-          v-model="event.date"
-          :date-disabled-fn="dateDisabled"
-          :min="min"
-          no-close-on-select
-          hide-header
-          locale="pt"
-          :weekdays="weekdays"
-          today-variant="danger"
-          class="mb-4"
-          selected-variant="danger"
-          v-bind="labels"
-          @context="onContext"
-        ></b-form-datepicker>
-
-        <label for="dropdown-check">Horário</label>
-        <b-dropdown
-          id="dropdown-check"
-          text="Selecionar horários"
-          style="width: 100%; "
-          class="mb-4"
-        >
-          <b-dropdown-text style="max-width: 300px;">
-            <b-form-checkbox-group id="checkboxes" v-model="event.schedules">
-              <b-form-checkbox
-                v-for="schedule in availableSchedules"
-                :key="schedule.id"
-                :value="schedule.hour"
-                style="display: block;"
-                >{{ `${schedule.hour}h00` }}</b-form-checkbox
-              >
-            </b-form-checkbox-group>
-          </b-dropdown-text>
-
-          <b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item-button>Pronto</b-dropdown-item-button>
-        </b-dropdown>
-
-        <b-row>
-          <b-col mb="auto">
-            <label for="time_start">Hora de início</label>
-            <b-form-input
-              id="time_start"
-              :value="begin"
-              type="text"
-              locale="pt"
-              readonly
-            >
-            </b-form-input>
-          </b-col>
-          <b-col mb="auto">
-            <label for="time_end">Até às</label>
-            <b-form-input
-              id="time_end"
-              :value="end"
-              type="text"
-              locale="pt"
-              readonly
-            ></b-form-input>
-          </b-col>
-        </b-row>
-
-        <hr class="my-4" />
-
-        <button
-          class="btn btn-danger py-3"
-          style="display: block;"
-          @click.prevent="submitForm"
-        >
-          Confirmar agendamento
-        </button>
-      </b-card>
+          <b-button class="btn btn-primary py-3" type="submit"
+            >Confirmar</b-button
+          >
+          <b-button class="btn btn-danger py-3" type="reset">Cancelar</b-button>
+        </b-card>
+      </b-form>
     </b-container>
   </div>
 </template>
@@ -194,7 +197,8 @@ export default {
         { value: 4, text: 'Quinta-feira' },
         { value: 5, text: 'Sexta-feira' },
         { value: 6, text: 'Sábado' }
-      ]
+      ],
+      show: true
     }
   },
   computed: {
@@ -259,9 +263,11 @@ export default {
     getAvailableSchedules() {
       const date = this.context.selectedYMD
       const params = { date }
-      this.$api
-        .$get('/disabled_schedules', { params })
-        .then(response => (this.availableSchedules = response.schedules))
+      if (date) {
+        this.$api
+          .$get('/disabled_schedules', { params })
+          .then(response => (this.availableSchedules = response.schedules))
+      }
     },
 
     makeToast,
@@ -270,7 +276,8 @@ export default {
       this.context = ctx
     },
 
-    submitForm() {
+    submitForm(evt) {
+      evt.preventDefault()
       const event = this.event
 
       this.$api
@@ -279,10 +286,26 @@ export default {
         })
         .then(response => {
           this.makeToast('Evento criado com sucesso', 'success')
+          this.onReset()
         })
         .catch(response => {
           this.makeToast('Erro ao criar evento', 'danger')
         })
+    },
+
+    onReset(evt) {
+      evt.preventDefault()
+      this.event.title = ''
+      this.event.description = ''
+      this.event.owner = ''
+      this.event.email = ''
+      this.event.date = ''
+      this.event.equipments = []
+      this.event.schedules = []
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
     }
   }
 }
