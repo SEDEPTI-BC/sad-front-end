@@ -4,6 +4,7 @@ import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
 const _86fa16c6 = () => interopDefault(import('../pages/admin/index.vue' /* webpackChunkName: "pages/admin/index" */))
+const _0c896839 = () => interopDefault(import('../pages/agendamento-confirmado.vue' /* webpackChunkName: "pages/agendamento-confirmado" */))
 const _da56701e = () => interopDefault(import('../pages/agendar.vue' /* webpackChunkName: "pages/agendar" */))
 const _250c4e98 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
 const _01b68384 = () => interopDefault(import('../pages/sobre.vue' /* webpackChunkName: "pages/sobre" */))
@@ -33,6 +34,10 @@ export const routerOptions = {
     path: "/admin",
     component: _86fa16c6,
     name: "admin"
+  }, {
+    path: "/agendamento-confirmado",
+    component: _0c896839,
+    name: "agendamento-confirmado"
   }, {
     path: "/agendar",
     component: _da56701e,
