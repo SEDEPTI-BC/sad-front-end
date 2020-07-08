@@ -309,6 +309,7 @@ export default {
             ...event
           })
           .then(response => {
+            this.loading = false
             this.$router.push('/agendamento-confirmado')
           })
           .catch(response => {
