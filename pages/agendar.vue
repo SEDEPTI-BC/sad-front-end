@@ -302,17 +302,7 @@ export default {
           })
           .then(response => {
             this.makeToast('Evento criado com sucesso', 'success')
-            this.event.title = ''
-            this.event.description = ''
-            this.event.owner = ''
-            this.event.email = ''
-            this.event.date = ''
-            this.event.equipments = []
-            this.event.schedules = []
-            this.show = false
-            this.$nextTick(() => {
-              this.show = true
-            })
+            this.$router.push('/agendamento-confirmado')
           })
           .catch(response => {
             this.makeToast('Erro ao criar evento', 'danger')
