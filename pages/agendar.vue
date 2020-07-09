@@ -225,13 +225,13 @@ export default {
 
     begin() {
       return this.event.schedules.length > 0
-        ? `${this.event.schedules[0]}h00`
+        ? `${Math.min(...this.event.schedules)}h00`
         : '-- : --'
     },
 
     end() {
       return this.event.schedules.length > 0
-        ? `${this.event.schedules[this.event.schedules.length - 1] + 1}h00`
+        ? `${Math.max(...this.event.schedules)}h00`
         : '-- : --'
     },
 
