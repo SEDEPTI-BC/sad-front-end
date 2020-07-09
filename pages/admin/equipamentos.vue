@@ -5,6 +5,8 @@
       <button
         id="show-btn"
         class="btn btn-secondary"
+        data-message="Gerenciar Equipamentos"
+        tabindex="0"
         @click="$bvModal.show('bv-modal-equipment')"
       >
         <b-icon-plus-circle />
