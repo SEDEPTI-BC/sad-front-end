@@ -150,9 +150,12 @@
 
           <hr class="my-4" />
 
-          <b-button class="btn btn-primary py-3" type="submit"
-            >Confirmar</b-button
-          >
+          <b-button
+            aria-describedby="confirmar"
+            class="btn btn-primary py-3"
+            type="submit"
+            >Confirmar <span id="confirmar"></span
+          ></b-button>
           <b-button class="btn btn-danger py-3" type="reset">Cancelar</b-button>
         </b-card>
       </b-form>
