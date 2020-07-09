@@ -1,5 +1,5 @@
 <template>
-  <div class="content pt-3">
+  <div class="content pt-5 pb-3">
     <h1 class="page-title">Log in</h1>
     <b-container>
       <b-card class="card-login mx-auto py-4">
