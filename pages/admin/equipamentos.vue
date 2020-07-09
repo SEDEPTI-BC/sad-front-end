@@ -49,9 +49,12 @@
             </button>
             <button
               :id="`edit${equipment.id}`"
+              aria-describedby="edit"
               class="btn"
               @click="edit(equipment.id)"
             >
+              <span id="edit">Editar Equipamento</span>
+
               <BIconPencilSquare class="edit" />
             </button>
           </b-td>
