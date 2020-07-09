@@ -300,9 +300,13 @@ export default {
     },
 
     submitForm(evt) {
+      this.loading = true
+
       evt.preventDefault()
       const event = this.event
-      this.loading = true
+
+      event.schedules = event.schedules.sort((a, b) => a - b)
+
       if (this.event.date && this.event.schedules.length > 0) {
         this.$api
           .$post('/events', {
