@@ -225,13 +225,13 @@ export default {
 
     begin() {
       return this.event.schedules.length > 0
-        ? `${this.event.schedules[0]}h00`
+        ? `${Math.min(...this.event.schedules)}h00`
         : '-- : --'
     },
 
     end() {
       return this.event.schedules.length > 0
-        ? `${this.event.schedules[this.event.schedules.length - 1] + 1}h00`
+        ? `${Math.max(...this.event.schedules)}h00`
         : '-- : --'
     },
 
@@ -300,9 +300,13 @@ export default {
     },
 
     submitForm(evt) {
+      this.loading = true
+
       evt.preventDefault()
       const event = this.event
-      this.loading = true
+
+      event.schedules = event.schedules.sort((a, b) => a - b)
+
       if (this.event.date && this.event.schedules.length > 0) {
         this.$api
           .$post('/events', {
