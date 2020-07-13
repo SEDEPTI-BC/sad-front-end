@@ -52,7 +52,7 @@
       </b-tbody>
     </b-table-simple>
 
-    <div v-if="total > 10">
+    <div v-if="total > limit">
       <b-pagination
         v-model="page"
         align="center"
