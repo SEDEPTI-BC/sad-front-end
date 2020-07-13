@@ -117,7 +117,8 @@ export default {
     getEvents() {
       const { limit, page } = this
       const all = this.all ? this.all : ''
-      const params = { all, limit, page }
+      const order = 'asc'
+      const params = { all, limit, page, order }
 
       this.$api
         .$get('/events', { params })
