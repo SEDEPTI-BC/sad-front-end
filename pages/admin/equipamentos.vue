@@ -45,7 +45,7 @@
               @click="deteleEquipment(equipment.id)"
             >
               <BIconTrash class="trash" />
-              <span id="delete">Deletar Equipamento</span>
+              <span id="delete"></span>
             </button>
             <button
               :id="`edit${equipment.id}`"
@@ -53,7 +53,7 @@
               class="btn"
               @click="edit(equipment.id)"
             >
-              <span id="edit">Editar Equipamento</span>
+              <span id="edit"></span>
 
               <BIconPencilSquare class="edit" />
             </button>
