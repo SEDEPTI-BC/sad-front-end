@@ -52,6 +52,17 @@
       </b-tbody>
     </b-table-simple>
 
+    <div v-if="total > limit">
+      <b-pagination
+        v-model="page"
+        align="center"
+        hide-goto-end-buttons
+        :total-rows="total"
+        :per-page="limit"
+        size="lg"
+      ></b-pagination>
+    </div>
+
     <div class="modal">
       <b-modal id="bv-modal-equipment" centered hide-footer hide-header>
         <div class="d-block">
@@ -95,7 +106,10 @@ export default {
   },
   data() {
     return {
-      equipmentName: ''
+      equipmentName: '',
+      page: 1,
+      limit: 10,
+      total: 1
     }
   },
   computed: {
@@ -103,8 +117,24 @@ export default {
       equipments: 'equipments/get'
     })
   },
+  watch: {
+    page() {
+      const { limit, page } = this
+      this.$store.dispatch('equipments/getEquipments', { limit, page })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  },
+  updated() {
+    this.total = this.equipments.total
+  },
+  created() {
+    this.total = this.equipments.total
+  },
   methods: {
     createEquipment() {
+      const { limit } = this
+      let { page } = this
+      page = 1
       const name = this.equipmentName
       const sendButton = document.getElementById('send-equipment-button')
       sendButton.disabled = true
@@ -116,6 +146,7 @@ export default {
           sendButton.disabled = false
           this.$store.dispatch('equipments/getEquipments')
           this.$bvModal.hide('bv-modal-equipment')
+          this.$store.dispatch('equipments/getEquipments', { limit, page })
           this.makeToast('Equipamento Adicionado!', 'success')
         })
         .catch(response => {
