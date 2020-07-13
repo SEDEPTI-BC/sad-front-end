@@ -9,8 +9,8 @@ export const mutations = {
 }
 
 export const actions = {
-  getEquipments({ commit }) {
-    return this.$api.$get('/equipments').then(response => {
+  getEquipments({ commit }, params) {
+    return this.$api.$get('/equipments', { params }).then(response => {
       commit('UPDATE_EQUIPMENTS', response.equipments)
       window.localStorage.equipments = response.equipments
     })
