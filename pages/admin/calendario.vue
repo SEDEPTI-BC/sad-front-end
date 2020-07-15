@@ -50,8 +50,10 @@
             </header>
             <p>{{ day.description }}</p>
             <div style="font-size:0.8rem;">
-              <div><b>De</b>: {{ day.start }}</div>
-              <div><b>Até</b>: {{ day.end }}</div>
+              <div>
+                <b>Data</b>:
+                {{ new Date(day.date) | dateFormat('DD/MM/YYYY') }}
+              </div>
             </div>
           </div>
         </div>
@@ -62,6 +64,8 @@
 
 <script>
 import { BIconCalendar, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
+import { makeToast } from '~/plugins/toast.js'
+
 export default {
   middleware: 'auth',
   layout: 'admin',
@@ -77,55 +81,66 @@ export default {
         {
           id: 1,
           user_id: 1,
-          start: '2020-05-10 08:00:00',
-          end: '2020-05-11 00:00:00',
-          title: 'dia das mães',
+          date: '2020-01-06 21:00:00',
+          title: 'sadpom',
+          full_day: true,
           description:
-            'Dia das Mães ou Dia da Mãe é uma data comemorativa que homenageia anualmente a figura familiar materna e a maternidade. A data de comemoração varia de acordo com o país.',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
+            'Ecu lehom beuf adoer ise okucaker riv caj tokitce vuvveb.',
+          created_at: '2020-07-08 16:07:17',
+          updated_at: '2020-07-08 16:07:17'
         },
         {
           id: 2,
-          user_id: 5,
-          start: '2020-06-11 00:00:00',
-          end: '2020-06-12 00:00:00',
-          title: 'corpus christi',
+          user_id: 2,
+          date: '2020-11-23 21:00:00',
+          title: 'imu',
+          full_day: false,
           description:
-            'Corpus Christi, ou Corpus Domini e generalizada em Portugal como Corpo de Deus, é uma comemoração litúrgica católica que ocorre na quinta-feira seguinte ao domingo da Santíssima Trindade, que, por sua vez, acontece no domingo seguinte ao de Pentecostes.',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
+            'Ni powvur ollu mip ruvmol dugobe hotakode ma najob zirsina.',
+          created_at: '2020-07-08 16:07:17',
+          updated_at: '2020-07-08 16:07:17'
         },
         {
           id: 3,
           user_id: 3,
-          start: '2020-06-12 00:00:00',
-          end: '2020-06-13 00:00:00',
-          title: 'Dia dos namorados',
-          description: '',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
+          date: '2020-01-10 21:00:00',
+          title: 'ubiero',
+          full_day: false,
+          description: 'Daije con puw uvso nob nuor gaaf se nekub uhiwibhal.',
+          created_at: '2020-07-08 16:07:17',
+          updated_at: '2020-07-08 16:07:17'
         },
         {
           id: 4,
-          user_id: 2,
-          start: '2020-04-19 05:00:00',
-          end: '2020-04-19 09:00:00',
-          title: 'Dia dos pais',
+          user_id: 4,
+          date: '2020-05-20 21:00:00',
+          title: 'itaeca',
+          full_day: false,
           description:
-            'Dia dos Pais ou Dia do Pai é uma data comemorativa que homenageia anualmente a figura familiar paterna. A data varia de acordo com os países.',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
+            'Kuspoj egwuc lujerpa owimocwav catu ribu vavhapbi lonelobi ekakos gubgad.',
+          created_at: '2020-07-08 16:07:17',
+          updated_at: '2020-07-08 16:07:17'
         },
         {
           id: 5,
-          user_id: 4,
-          start: '2020-09-05 08:00:00',
-          end: '2020-09-05 12:00:00',
-          title: 'Desratização',
-          description: '',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
+          user_id: 5,
+          date: '2020-10-12 21:00:00',
+          title: 'ma',
+          full_day: true,
+          description:
+            'Varmerjok hol uzuzin lowuv ob omebus ajsu noufdab cowe zuros.',
+          created_at: '2020-07-08 16:07:18',
+          updated_at: '2020-07-08 16:07:18'
+        },
+        {
+          id: 6,
+          user_id: 1,
+          date: '2020-07-28 21:00:00',
+          title: 'feriado até 12h',
+          full_day: false,
+          description: 'feriadao que todo br gosta',
+          created_at: '2020-07-15 11:41:38',
+          updated_at: '2020-07-15 11:41:38'
         }
       ],
       value: '',
@@ -163,6 +178,7 @@ export default {
       const day = date.getDate()
       return weekday === 0 || weekday === 6 || day === 13
     },
+    makeToast,
     onContext(ctx) {
       this.context = ctx
     }
