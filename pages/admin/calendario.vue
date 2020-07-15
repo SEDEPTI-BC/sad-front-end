@@ -33,7 +33,7 @@
         </header>
         <div class="card-list-body">
           <div
-            v-for="day in disableDays"
+            v-for="day in disableDays.data"
             :key="day.id"
             class="card-list-content"
           >
@@ -52,7 +52,9 @@
             <div style="font-size:0.8rem;">
               <div>
                 <b>Data</b>:
-                {{ new Date(day.date) | dateFormat('DD/MM/YYYY') }}
+                {{ new Date(day.date) | dateFormat('DD/MM/YYYY') }}, de
+                {{ Math.min(...day.schedules) }}h00 ás
+                {{ Math.max(...day.schedules) }}h00
               </div>
             </div>
           </div>
@@ -77,72 +79,80 @@ export default {
   },
   data() {
     return {
-      disableDays: [
-        {
-          id: 1,
-          user_id: 1,
-          date: '2020-01-06 21:00:00',
-          title: 'sadpom',
-          full_day: true,
-          description:
-            'Ecu lehom beuf adoer ise okucaker riv caj tokitce vuvveb.',
-          created_at: '2020-07-08 16:07:17',
-          updated_at: '2020-07-08 16:07:17'
-        },
-        {
-          id: 2,
-          user_id: 2,
-          date: '2020-11-23 21:00:00',
-          title: 'imu',
-          full_day: false,
-          description:
-            'Ni powvur ollu mip ruvmol dugobe hotakode ma najob zirsina.',
-          created_at: '2020-07-08 16:07:17',
-          updated_at: '2020-07-08 16:07:17'
-        },
-        {
-          id: 3,
-          user_id: 3,
-          date: '2020-01-10 21:00:00',
-          title: 'ubiero',
-          full_day: false,
-          description: 'Daije con puw uvso nob nuor gaaf se nekub uhiwibhal.',
-          created_at: '2020-07-08 16:07:17',
-          updated_at: '2020-07-08 16:07:17'
-        },
-        {
-          id: 4,
-          user_id: 4,
-          date: '2020-05-20 21:00:00',
-          title: 'itaeca',
-          full_day: false,
-          description:
-            'Kuspoj egwuc lujerpa owimocwav catu ribu vavhapbi lonelobi ekakos gubgad.',
-          created_at: '2020-07-08 16:07:17',
-          updated_at: '2020-07-08 16:07:17'
-        },
-        {
-          id: 5,
-          user_id: 5,
-          date: '2020-10-12 21:00:00',
-          title: 'ma',
-          full_day: true,
-          description:
-            'Varmerjok hol uzuzin lowuv ob omebus ajsu noufdab cowe zuros.',
-          created_at: '2020-07-08 16:07:18',
-          updated_at: '2020-07-08 16:07:18'
-        },
-        {
-          id: 6,
-          user_id: 1,
-          date: '2020-07-28 21:00:00',
-          title: 'feriado até 12h',
-          full_day: false,
-          description: 'feriadao que todo br gosta',
-          created_at: '2020-07-15 11:41:38',
-          updated_at: '2020-07-15 11:41:38'
-        }
-      ],
+      disableDays: {
+        data: [
+          {
+            id: 1,
+            user_id: 1,
+            date: '2020-01-06 21:00:00',
+            title: 'sadpom',
+            full_day: true,
+            schedules: [8, 9, 10, 11, 12],
+            description:
+              'Ecu lehom beuf adoer ise okucaker riv caj tokitce vuvveb.',
+            created_at: '2020-07-08 16:07:17',
+            updated_at: '2020-07-08 16:07:17'
+          },
+          {
+            id: 2,
+            user_id: 2,
+            date: '2020-11-23 21:00:00',
+            title: 'imu',
+            full_day: false,
+            schedules: [8, 9, 10, 11, 12],
+            description:
+              'Ni powvur ollu mip ruvmol dugobe hotakode ma najob zirsina.',
+            created_at: '2020-07-08 16:07:17',
+            updated_at: '2020-07-08 16:07:17'
+          },
+          {
+            id: 3,
+            user_id: 3,
+            date: '2020-01-10 21:00:00',
+            title: 'ubiero',
+            full_day: false,
+            schedules: [8, 9, 10, 11, 12],
+            description: 'Daije con puw uvso nob nuor gaaf se nekub uhiwibhal.',
+            created_at: '2020-07-08 16:07:17',
+            updated_at: '2020-07-08 16:07:17'
+          },
+          {
+            id: 4,
+            user_id: 4,
+            date: '2020-05-20 21:00:00',
+            title: 'itaeca',
+            full_day: false,
+            schedules: [8, 9, 10, 11, 12],
+            description:
+              'Kuspoj egwuc lujerpa owimocwav catu ribu vavhapbi lonelobi ekakos gubgad.',
+            created_at: '2020-07-08 16:07:17',
+            updated_at: '2020-07-08 16:07:17'
+          },
+          {
+            id: 5,
+            user_id: 5,
+            date: '2020-10-12 21:00:00',
+            title: 'ma',
+            full_day: true,
+            schedules: [8, 9, 10, 11, 12],
+            description:
+              'Varmerjok hol uzuzin lowuv ob omebus ajsu noufdab cowe zuros.',
+            created_at: '2020-07-08 16:07:18',
+            updated_at: '2020-07-08 16:07:18'
+          },
+          {
+            id: 6,
+            user_id: 1,
+            date: '2020-07-28 21:00:00',
+            title: 'feriado até 12h',
+            full_day: false,
+            schedules: [8, 9, 10, 11, 12],
+            description: 'feriadao que todo br gosta',
+            created_at: '2020-07-15 11:41:38',
+            updated_at: '2020-07-15 11:41:38'
+          }
+        ]
+      },
       value: '',
       context: null,
       labels: {
@@ -172,6 +182,7 @@ export default {
       ]
     }
   },
+
   methods: {
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
