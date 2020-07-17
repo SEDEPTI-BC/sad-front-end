@@ -16,6 +16,7 @@
           <b-calendar
             v-model="value"
             block
+            :date-info-fn="dayDisabled"
             :date-disabled-fn="dateDisabled"
             hide-header
             locale="pt-BR"
@@ -100,6 +101,7 @@ export default {
   },
   data() {
     return {
+      days: null,
       disableDays: {},
       value: '',
       context: null,
@@ -142,10 +144,15 @@ export default {
   },
 
   methods: {
+    dayDisabled(ymd, date) {
+      const day = date.getDate()
+      const days = this.days ? this.days : []
+      return days.includes(day) ? 'table-secondary' : ''
+    },
+
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
-      const day = date.getDate()
-      return weekday === 0 || weekday === 6 || day === 13
+      return weekday === 0 || weekday === 6
     },
 
     getDisabledDays() {
@@ -163,6 +170,9 @@ export default {
         .$get('/disable_days_current_month', { params })
         .then(response => {
           this.disableDays = response.disabledDays
+          this.days = response.disabledDays.map(
+            day => +day.date.split('T')[0].split('-')[2]
+          )
         })
     },
     makeToast,
