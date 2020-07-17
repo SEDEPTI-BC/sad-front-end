@@ -51,7 +51,7 @@
               <header>
                 <strong>{{ day.title | capitalize }}</strong>
                 <div>
-                  <button class="btn">
+                  <button class="btn" @click="deteleDisableDay(day.id)">
                     <b-icon-trash class="trash" />
                   </button>
                   <button class="btn">
@@ -153,6 +153,18 @@ export default {
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
       return weekday === 0 || weekday === 6
+    },
+
+    deteleDisableDay(id) {
+      this.$api
+        .$delete(`/disable_days/${id}`)
+        .then(() => {
+          this.getDisabledDays()
+          this.makeToast('Deletado com sucesso!', 'success')
+        })
+        .catch(() => {
+          this.makeToast('Ocorreu um erro ao deletar', 'danger')
+        })
     },
 
     getDisabledDays() {
