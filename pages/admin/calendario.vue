@@ -62,7 +62,13 @@
               <div style="font-size:0.8rem;">
                 <div>
                   <b>Data</b>:
-                  {{ new Date(day.date) | dateFormat('DD/MM/YYYY') }}, de
+                  {{
+                    day.date
+                      .split('T')[0]
+                      .split('-')
+                      .reverse()
+                      .join('/')
+                  }}, de
                   {{
                     Math.min(...day.schedules.map(schedule => schedule.hour))
                   }}h00 ás
