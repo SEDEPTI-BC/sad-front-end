@@ -42,7 +42,7 @@
               <p class="message">Não há dias desativados este mês.</p>
             </b-badge>
           </transition>
-          <transition name="component" mode="out-in">
+          <transition-group name="component" mode="out-in">
             <div
               v-for="day in disableDays"
               :key="day.id"
@@ -69,17 +69,23 @@
                       .split('-')
                       .reverse()
                       .join('/')
-                  }}, de
-                  {{
-                    Math.min(...day.schedules.map(schedule => schedule.hour))
-                  }}h00 ás
-                  {{
-                    Math.max(...day.schedules.map(schedule => schedule.hour))
-                  }}h00
+                  }},
+                  <div v-if="day.full_day" style="display: inline-block;">
+                    O dia inteiro
+                  </div>
+                  <div v-else style="display: inline-block;">
+                    de
+                    {{
+                      Math.min(...day.schedules.map(schedule => schedule.hour))
+                    }}h00 ás
+                    {{
+                      Math.max(...day.schedules.map(schedule => schedule.hour))
+                    }}h00
+                  </div>
                 </div>
               </div>
             </div>
-          </transition>
+          </transition-group>
         </div>
       </div>
     </div>
@@ -196,6 +202,11 @@ export default {
 </script>
 
 <style scoped>
+[mode='out-in'] {
+  margin: 0;
+  padding: 0;
+}
+
 header {
   display: flex;
   flex-wrap: wrap;
