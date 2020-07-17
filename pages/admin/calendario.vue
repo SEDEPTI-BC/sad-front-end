@@ -33,7 +33,7 @@
         </header>
         <div class="card-list-body">
           <div
-            v-for="day in disableDays.data"
+            v-for="day in disableDays"
             :key="day.id"
             class="card-list-content"
           >
@@ -110,6 +110,12 @@ export default {
     }
   },
 
+  watch: {
+    context() {
+      this.getDisabledDays()
+    }
+  },
+
   created() {
     this.getDisabledDays()
   },
@@ -135,12 +141,7 @@ export default {
       this.$api
         .$get('/disable_days_current_month', { params })
         .then(response => {
-          const days = response.disabledDays
-            .filter(day => day.full_day)
-            .map(day => {
-              return +day.date.split('T')[0].split('-')[2]
-            })
-          this.disableDays = days
+          this.disableDays = response.disabledDays
         })
     },
     makeToast,
