@@ -63,8 +63,12 @@
                 <div>
                   <b>Data</b>:
                   {{ new Date(day.date) | dateFormat('DD/MM/YYYY') }}, de
-                  {{ Math.min(...day.schedules) }}h00 ás
-                  {{ Math.max(...day.schedules) }}h00
+                  {{
+                    Math.min(...day.schedules.map(schedule => schedule.hour))
+                  }}h00 ás
+                  {{
+                    Math.max(...day.schedules.map(schedule => schedule.hour))
+                  }}h00
                 </div>
               </div>
             </div>
