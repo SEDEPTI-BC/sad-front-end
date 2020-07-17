@@ -32,32 +32,43 @@
           <strong>Dias desativados</strong>
         </header>
         <div class="card-list-body">
-          <div
-            v-for="day in disableDays"
-            :key="day.id"
-            class="card-list-content"
-          >
-            <header>
-              <strong>{{ day.title | capitalize }}</strong>
-              <div>
-                <button class="btn">
-                  <b-icon-trash class="trash" />
-                </button>
-                <button class="btn">
-                  <b-icon-pencil-square class="edit" />
-                </button>
-              </div>
-            </header>
-            <p>{{ day.description }}</p>
-            <div style="font-size:0.8rem;">
-              <div>
-                <b>Data</b>:
-                {{ new Date(day.date) | dateFormat('DD/MM/YYYY') }}, de
-                {{ Math.min(...day.schedules) }}h00 ás
-                {{ Math.max(...day.schedules) }}h00
+          <transition name="component" mode="out-in">
+            <b-badge
+              v-if="disableDays.length < 1"
+              variant="secondary mx-2 mt-2"
+              style="display:block; "
+            >
+              <p class="message">Não há dias desativados este mês.</p>
+            </b-badge>
+          </transition>
+          <transition name="component" mode="out-in">
+            <div
+              v-for="day in disableDays"
+              :key="day.id"
+              class="card-list-content"
+            >
+              <header>
+                <strong>{{ day.title | capitalize }}</strong>
+                <div>
+                  <button class="btn">
+                    <b-icon-trash class="trash" />
+                  </button>
+                  <button class="btn">
+                    <b-icon-pencil-square class="edit" />
+                  </button>
+                </div>
+              </header>
+              <p>{{ day.description }}</p>
+              <div style="font-size:0.8rem;">
+                <div>
+                  <b>Data</b>:
+                  {{ new Date(day.date) | dateFormat('DD/MM/YYYY') }}, de
+                  {{ Math.min(...day.schedules) }}h00 ás
+                  {{ Math.max(...day.schedules) }}h00
+                </div>
               </div>
             </div>
-          </div>
+          </transition>
         </div>
       </div>
     </div>
@@ -203,7 +214,7 @@ span {
 
 .card-list {
   height: 350px;
-  max-width: 400px;
+  width: 400px;
   margin-bottom: 40px;
 }
 
@@ -263,6 +274,11 @@ span {
   display: grid;
   margin: 0 auto;
   max-width: 900px;
+}
+
+.message {
+  margin: 5px;
+  padding: 5px;
 }
 
 @media screen and (max-width: 830px) and (min-width: 730px) {
