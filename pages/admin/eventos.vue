@@ -38,9 +38,7 @@
             <p><b>Inicio</b>: {{ `${event.schedules[0].hour}h00` }}</p>
             <p>
               <b>Fim</b>:
-              {{
-                `${+event.schedules[event.schedules.length - 1].hour + 1}h00`
-              }}
+              {{ `${+event.schedules[event.schedules.length - 1].hour}h00` }}
             </p>
             <p>
               <b>Solicitado em</b>:
