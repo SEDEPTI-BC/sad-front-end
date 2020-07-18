@@ -122,6 +122,17 @@
             class="mb-4 grey-bg"
             @keyup.enter="createDisableDay"
           ></b-form-textarea>
+
+          <b-form-checkbox
+            v-model="full_day"
+            name="full_day"
+            size="lg"
+            button-variant="secondary"
+            switch
+          >
+            <p v-if="full_day"><b>O dia inteiro</b></p>
+            <p v-else>O dia inteiro</p>
+          </b-form-checkbox>
         </div>
         <b-button
           id="send-disable-day-button"
@@ -151,6 +162,7 @@ export default {
     return {
       days: null,
       disableDays: {},
+      full_day: true,
       value: '',
       context: null,
       labels: {
