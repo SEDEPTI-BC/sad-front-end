@@ -123,20 +123,44 @@
             @keyup.enter="createDisableDay"
           ></b-form-textarea>
 
-          <b-form-checkbox
-            v-model="full_day"
-            name="full_day"
-            size="lg"
-            button-variant="secondary"
-            switch
-          >
+          <b-form-checkbox v-model="full_day" name="full_day" size="lg" switch>
             <p v-if="full_day"><b>O dia inteiro</b></p>
             <p v-else>O dia inteiro</p>
           </b-form-checkbox>
+
+          <transition name="component" mode="out-in">
+            <div v-if="!full_day" class="schedules-row">
+              <div style="width: 49%;">
+                <label for="schedule-start" style="display: block;"
+                  ><b>Começa</b></label
+                >
+                <b-form-select
+                  v-model="schedule.start"
+                  class="grey-bg"
+                  :options="options"
+                  size="lg"
+                ></b-form-select>
+              </div>
+
+              <div style="width: 49%;">
+                <label for="schedule-end" style="display: block;"
+                  ><b>Termina</b></label
+                >
+                <b-form-select
+                  v-model="schedule.end"
+                  class="grey-bg"
+                  :options="options"
+                  size="lg"
+                ></b-form-select>
+              </div>
+            </div>
+          </transition>
         </div>
         <b-button
           id="send-disable-day-button"
           class="mt-1"
+          block
+          size="lg"
           @click="createDisableDay"
           >Desativar</b-button
         >
@@ -147,6 +171,7 @@
 
 <script>
 import { BIconCalendar, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
+import { mapGetters } from 'vuex'
 import { makeToast } from '~/plugins/toast.js'
 
 export default {
@@ -181,6 +206,11 @@ export default {
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
       },
+      options: null,
+      schedule: {
+        start: null,
+        end: null
+      },
       selectedDay: {
         title: null,
         description: null,
@@ -199,10 +229,22 @@ export default {
       ]
     }
   },
-
+  computed: {
+    ...mapGetters({
+      schedules: 'schedules/get'
+    })
+  },
   watch: {
     context() {
       this.getDisabledDays()
+    },
+
+    full_day() {
+      this.options = this.schedules.map(schedule => ({
+        value: schedule.hour,
+        text: `${schedule.hour}h00`
+      }))
+      this.options.push({ value: null, text: '-- : --' })
     }
   },
 
@@ -271,6 +313,7 @@ export default {
 }
 
 input[type='text'],
+select,
 textarea {
   outline: none;
   box-shadow: none !important;
@@ -399,6 +442,12 @@ span {
 .message {
   margin: 5px;
   padding: 5px;
+}
+
+.schedules-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
 }
 
 @media screen and (max-width: 830px) and (min-width: 730px) {
