@@ -2,7 +2,12 @@
   <section class="container">
     <header>
       <h1>Gerenciar datas e horários</h1>
-      <button class="btn btn-secondary">
+
+      <button
+        id="show-btn"
+        class="btn btn-secondary"
+        @click="$bvModal.show('bv-modal-disableday')"
+      >
         <b-icon-calendar />
         <span>Desativar dia</span>
       </button>
@@ -89,6 +94,43 @@
         </div>
       </div>
     </div>
+
+    <div class="modal">
+      <b-modal id="bv-modal-disableday" centered hide-footer hide-header>
+        <div class="d-block">
+          <h4 class="mb-4"><strong>Desativar dia</strong></h4>
+          <label for="disable-day-title"><b>Título</b></label>
+          <b-form-input
+            id="disable-day-title"
+            v-model="selectedDay.title"
+            placeholder="Véspera de Natal"
+            class="mb-4 grey-bg"
+            type="text"
+            input-type="text"
+            size="lg"
+            autofocus
+            @keyup.enter="createDisableDay"
+          ></b-form-input>
+
+          <label for="disable-day-description"><b>Descrição</b></label>
+          <b-form-textarea
+            id="disable-day-description"
+            v-model="selectedDay.description"
+            placeholder="Véspera de Natal refere-se à noite ou todo dia que precede o dia de Natal e é amplamente vista como um feriado, total ou parcial, em antecipação ao dia de Natal, festival que comemora o nascimento de Jesus de Nazaré."
+            rows="4"
+            max-rows="6"
+            class="mb-4 grey-bg"
+            @keyup.enter="createDisableDay"
+          ></b-form-textarea>
+        </div>
+        <b-button
+          id="send-disable-day-button"
+          class="mt-1"
+          @click="createDisableDay"
+          >Desativar</b-button
+        >
+      </b-modal>
+    </div>
   </section>
 </template>
 
@@ -127,6 +169,13 @@ export default {
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
       },
+      selectedDay: {
+        title: null,
+        description: null,
+        full_day: null,
+        date: null,
+        schedules: null
+      },
       weekdays: [
         { value: 0, text: 'Domingo' },
         { value: 1, text: 'Segunda-feira' },
@@ -150,6 +199,8 @@ export default {
   },
 
   methods: {
+    createDisableDay() {},
+
     dayDisabled(ymd, date) {
       const day = date.getDate()
       const days = this.days ? this.days : []
@@ -205,6 +256,13 @@ export default {
 [mode='out-in'] {
   margin: 0;
   padding: 0;
+}
+
+input[type='text'],
+textarea {
+  outline: none;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 header {
@@ -317,6 +375,13 @@ span {
   display: grid;
   margin: 0 auto;
   max-width: 900px;
+}
+
+.grey-bg {
+  background: #dfdfdf;
+  width: 100%;
+  border: none;
+  outline: none;
 }
 
 .message {
