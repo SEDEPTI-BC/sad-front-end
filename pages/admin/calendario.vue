@@ -5,8 +5,8 @@
 
       <button
         id="show-btn"
-        class="btn btn-secondary"
-        @click="$bvModal.show('bv-modal-disableday')"
+        :class="{ btn: true, 'btn-secondary': !value, 'btn-danger': value }"
+        @click="activeDisableButton"
       >
         <b-icon-calendar />
         <span>Desativar dia</span>
@@ -253,6 +253,14 @@ export default {
   },
 
   methods: {
+    activeDisableButton() {
+      if (this.value) {
+        this.$bvModal.show('bv-modal-disableday')
+      } else {
+        this.makeToast('Selecione um dia no calendário', 'warning')
+      }
+    },
+
     createDisableDay() {},
 
     dayDisabled(ymd, date) {
