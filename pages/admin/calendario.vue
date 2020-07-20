@@ -228,10 +228,7 @@ export default {
       },
       selectedDay: {
         title: null,
-        description: null,
-        full_day: null,
-        date: null,
-        schedules: null
+        description: null
       },
       weekdays: [
         { value: 0, text: 'Domingo' },
@@ -277,7 +274,26 @@ export default {
       }
     },
 
-    createDisableDay() {},
+    createDisableDay() {
+      const data = {
+        title: this.selectedDay.title,
+        description: this.selectedDay.description,
+        full_day: this.full_day,
+        date: this.value,
+        schedules: [this.schedule.start, this.schedule.end]
+      }
+
+      this.$api
+        .$post('/disable_days', data)
+        .then(response => {
+          this.makeToast('Dia desativado!', 'success')
+          this.getDisabledDays()
+          this.$bvModal.hide('bv-modal-disableday')
+        })
+        .catch(response => {
+          this.makeToast('Erro ao desativar dia', 'danger')
+        })
+    },
 
     dayDisabled(ymd, date) {
       const day = date.getDate()
