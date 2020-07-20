@@ -99,6 +99,7 @@
       <b-modal id="bv-modal-disableday" centered hide-footer hide-header>
         <div class="d-block">
           <h4 class="mb-4"><strong>Desativar dia</strong></h4>
+
           <label for="disable-day-title"><b>Título</b></label>
           <b-form-input
             id="disable-day-title"
@@ -122,6 +123,19 @@
             class="mb-4 grey-bg"
             @keyup.enter="createDisableDay"
           ></b-form-textarea>
+
+          <label for="disabled-day-date"><b>Data</b></label>
+          <b-form-input
+            id="disabled-day-date"
+            :value="activeFormatted"
+            class="mb-4 grey-bg"
+            type="text"
+            input-type="text"
+            size="lg"
+            autofocus
+            readonly
+            @keyup.enter="createDisableDay"
+          ></b-form-input>
 
           <b-form-checkbox v-model="full_day" name="full_day" size="lg" switch>
             <p v-if="full_day"><b>O dia inteiro</b></p>
@@ -185,6 +199,7 @@ export default {
   },
   data() {
     return {
+      activeFormatted: '',
       days: null,
       disableDays: {},
       full_day: true,
@@ -237,6 +252,7 @@ export default {
   watch: {
     context() {
       this.getDisabledDays()
+      this.activeFormatted = this.context.activeFormatted
     },
 
     full_day() {
