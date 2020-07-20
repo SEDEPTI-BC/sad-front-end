@@ -97,87 +97,95 @@
 
     <div class="modal">
       <b-modal id="bv-modal-disableday" centered hide-footer hide-header>
-        <div class="d-block">
-          <h4 class="mb-4"><strong>Desativar dia</strong></h4>
+        <b-form @submit="createDisableDay">
+          <div class="d-block">
+            <h4 class="mb-4"><strong>Desativar dia</strong></h4>
 
-          <label for="disable-day-title"><b>Título</b></label>
-          <b-form-input
-            id="disable-day-title"
-            v-model="selectedDay.title"
-            placeholder="Véspera de Natal"
-            class="mb-4 grey-bg"
-            type="text"
-            input-type="text"
-            size="lg"
-            autofocus
-            @keyup.enter="createDisableDay"
-          ></b-form-input>
+            <label for="disable-day-title"><b>Título</b></label>
+            <b-form-input
+              id="disable-day-title"
+              v-model="selectedDay.title"
+              placeholder="Véspera de Natal"
+              class="mb-4 grey-bg"
+              type="text"
+              input-type="text"
+              size="lg"
+              autofocus
+              required
+            ></b-form-input>
 
-          <label for="disable-day-description"><b>Descrição</b></label>
-          <b-form-textarea
-            id="disable-day-description"
-            v-model="selectedDay.description"
-            placeholder="Véspera de Natal refere-se à noite ou todo dia que precede o dia de Natal e é amplamente vista como um feriado, total ou parcial, em antecipação ao dia de Natal, festival que comemora o nascimento de Jesus de Nazaré."
-            rows="4"
-            max-rows="6"
-            class="mb-4 grey-bg"
-            @keyup.enter="createDisableDay"
-          ></b-form-textarea>
+            <label for="disable-day-description"><b>Descrição</b></label>
+            <b-form-textarea
+              id="disable-day-description"
+              v-model="selectedDay.description"
+              placeholder="Véspera de Natal refere-se à noite ou todo dia que precede o dia de Natal e é amplamente vista como um feriado, total ou parcial."
+              rows="4"
+              max-rows="6"
+              class="mb-4 grey-bg"
+              size="lg"
+            ></b-form-textarea>
 
-          <label for="disabled-day-date"><b>Data</b></label>
-          <b-form-input
-            id="disabled-day-date"
-            :value="activeFormatted"
-            class="mb-4 grey-bg"
-            type="text"
-            input-type="text"
-            size="lg"
-            autofocus
-            readonly
-            @keyup.enter="createDisableDay"
-          ></b-form-input>
+            <label for="disabled-day-date"><b>Data</b></label>
+            <b-form-input
+              id="disabled-day-date"
+              :value="activeFormatted"
+              class="mb-4 grey-bg"
+              type="text"
+              input-type="text"
+              size="lg"
+              autofocus
+              readonly
+              required
+            ></b-form-input>
 
-          <b-form-checkbox v-model="full_day" name="full_day" size="lg" switch>
-            <p v-if="full_day"><b>O dia inteiro</b></p>
-            <p v-else>O dia inteiro</p>
-          </b-form-checkbox>
+            <b-form-checkbox
+              v-model="full_day"
+              name="full_day"
+              size="lg"
+              switch
+            >
+              <p v-if="full_day"><b>O dia inteiro</b></p>
+              <p v-else>O dia inteiro</p>
+            </b-form-checkbox>
 
-          <transition name="component" mode="out-in">
-            <div v-if="!full_day" class="schedules-row">
-              <div style="width: 49%;">
-                <label for="schedule-start" style="display: block;"
-                  ><b>Começa</b></label
-                >
-                <b-form-select
-                  v-model="schedule.start"
-                  class="grey-bg"
-                  :options="options"
-                  size="lg"
-                ></b-form-select>
+            <transition name="component" mode="out-in">
+              <div v-if="!full_day" class="schedules-row">
+                <div style="width: 49%;">
+                  <label for="schedule-start" style="display: block;"
+                    ><b>Começa</b></label
+                  >
+                  <b-form-select
+                    v-model="schedule.start"
+                    class="grey-bg"
+                    :options="options"
+                    size="lg"
+                  ></b-form-select>
+                </div>
+
+                <div style="width: 49%;">
+                  <label for="schedule-end" style="display: block;"
+                    ><b>Termina</b></label
+                  >
+                  <b-form-select
+                    v-model="schedule.end"
+                    class="grey-bg"
+                    :options="options"
+                    size="lg"
+                  ></b-form-select>
+                </div>
               </div>
-
-              <div style="width: 49%;">
-                <label for="schedule-end" style="display: block;"
-                  ><b>Termina</b></label
-                >
-                <b-form-select
-                  v-model="schedule.end"
-                  class="grey-bg"
-                  :options="options"
-                  size="lg"
-                ></b-form-select>
-              </div>
-            </div>
-          </transition>
-        </div>
-        <b-button
-          id="send-disable-day-button"
-          class="mt-1"
-          block
-          size="lg"
-          @click="createDisableDay"
-          >Desativar</b-button
-        >
+            </transition>
+          </div>
+          <b-button
+            id="send-disable-day-button"
+            class="mt-1"
+            block
+            size="lg"
+            type="submit"
+          >
+            Desativar
+          </b-button>
+        </b-form>
       </b-modal>
     </div>
   </section>
@@ -274,7 +282,9 @@ export default {
       }
     },
 
-    createDisableDay() {
+    createDisableDay(evt) {
+      evt.preventDefault()
+
       const data = {
         title: this.selectedDay.title,
         description: this.selectedDay.description,
@@ -283,16 +293,31 @@ export default {
         schedules: [this.schedule.start, this.schedule.end]
       }
 
-      this.$api
-        .$post('/disable_days', data)
-        .then(response => {
-          this.makeToast('Dia desativado!', 'success')
-          this.getDisabledDays()
-          this.$bvModal.hide('bv-modal-disableday')
-        })
-        .catch(response => {
-          this.makeToast('Erro ao desativar dia', 'danger')
-        })
+      if (this.full_day) {
+        this.$api
+          .$post('/disable_days', data)
+          .then(response => {
+            this.makeToast('Dia desativado!', 'success')
+            this.getDisabledDays()
+            this.$bvModal.hide('bv-modal-disableday')
+          })
+          .catch(response => {
+            this.makeToast('Erro ao desativar dia', 'danger')
+          })
+      } else if (this.schedule.start && this.schedule.end) {
+        this.$api
+          .$post('/disable_days', data)
+          .then(response => {
+            this.makeToast('Dia desativado!', 'success')
+            this.getDisabledDays()
+            this.$bvModal.hide('bv-modal-disableday')
+          })
+          .catch(response => {
+            this.makeToast('Erro ao desativar dia', 'danger')
+          })
+      } else {
+        this.makeToast('Selecione os horários', 'warning')
+      }
     },
 
     dayDisabled(ymd, date) {
