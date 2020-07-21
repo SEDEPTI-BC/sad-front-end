@@ -49,14 +49,14 @@
           </transition>
           <transition-group name="component" mode="out-in">
             <div
-              v-for="day in disableDays"
-              :key="day.id"
+              v-for="disabled in disableDays"
+              :key="disabled.id"
               class="card-list-content"
             >
               <header>
-                <strong>{{ day.title | capitalize }}</strong>
+                <strong>{{ disabled.title | capitalize }}</strong>
                 <div>
-                  <button class="btn" @click="deteleDisableDay(day.id)">
+                  <button class="btn" @click="deteleDisableDay(disabled.id)">
                     <b-icon-trash class="trash" />
                   </button>
                   <button class="btn">
@@ -64,27 +64,31 @@
                   </button>
                 </div>
               </header>
-              <p>{{ day.description }}</p>
+              <p>{{ disabled.description }}</p>
               <div style="font-size:0.8rem;">
                 <div>
                   <b>Data</b>:
                   {{
-                    day.date
+                    disabled.date
                       .split('T')[0]
                       .split('-')
                       .reverse()
                       .join('/')
                   }},
-                  <div v-if="day.full_day" style="display: inline-block;">
+                  <div v-if="disabled.full_day" style="display: inline-block;">
                     O dia inteiro
                   </div>
                   <div v-else style="display: inline-block;">
                     de
                     {{
-                      Math.min(...day.schedules.map(schedule => schedule.hour))
+                      Math.min(
+                        ...disabled.schedules.map(schedule => schedule.hour)
+                      )
                     }}h00 ás
                     {{
-                      Math.max(...day.schedules.map(schedule => schedule.hour))
+                      Math.max(
+                        ...disabled.schedules.map(schedule => schedule.hour)
+                      )
                     }}h00
                   </div>
                 </div>
