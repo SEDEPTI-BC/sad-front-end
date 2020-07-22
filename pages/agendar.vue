@@ -54,36 +54,38 @@
           ></b-form-input>
 
           <label for="dropdown-check">Equipamentos</label>
-          <b-dropdown
-            id="dropdown-check"
-            text="Selecionar equipamentos"
-            style="width: 100%; "
-            class="mb-3"
-          >
-            <b-dropdown-text style="max-width: 300px;">
-              <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
-                <b-form-checkbox
-                  v-for="equipment in equipments.data"
-                  :key="equipment.id"
-                  :value="equipment.name"
-                  style="display: block;"
-                  >{{ equipment.name | capitalize }}</b-form-checkbox
-                >
-              </b-form-checkbox-group>
-            </b-dropdown-text>
 
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item-button>Pronto</b-dropdown-item-button>
-          </b-dropdown>
+          <b-input-group>
+            <b-form-input
+              id="time_start"
+              :value="equipmentsList"
+              type="text"
+              class="mb-4"
+              readonly
+            >
+            </b-form-input>
+            <template v-slot:prepend>
+              <b-dropdown id="dropdown-check" class="mb-4">
+                <b-dropdown-text style="max-width: 300px;">
+                  <b-form-checkbox-group
+                    id="checkboxes"
+                    v-model="event.equipments"
+                  >
+                    <b-form-checkbox
+                      v-for="equipment in equipments.data"
+                      :key="equipment.id"
+                      :value="equipment.name"
+                      style="display: block;"
+                      >{{ equipment.name | capitalize }}</b-form-checkbox
+                    >
+                  </b-form-checkbox-group>
+                </b-dropdown-text>
 
-          <b-form-input
-            id="time_start"
-            :value="equipmentsList"
-            type="text"
-            class="mb-4"
-            readonly
-          >
-          </b-form-input>
+                <b-dropdown-divider></b-dropdown-divider>
+                <b-dropdown-item-button>Pronto</b-dropdown-item-button>
+              </b-dropdown>
+            </template>
+          </b-input-group>
 
           <label for="date-picker">Data do evento</label>
           <b-form-datepicker
