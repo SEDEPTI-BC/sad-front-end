@@ -101,50 +101,25 @@
             @context="onContext"
           ></b-form-datepicker>
 
-          <label for="dropdown-check">Horário</label>
-          <b-dropdown
-            id="dropdown-check"
-            text="Selecionar horários"
-            style="width: 100%; "
-            class="mb-4"
-          >
-            <b-dropdown-text style="max-width: 300px;">
-              <b-form-checkbox-group id="checkboxes" v-model="event.schedules">
-                <b-form-checkbox
-                  v-for="schedule in availableSchedules"
-                  :key="schedule.id"
-                  :value="schedule.hour"
-                  style="display: block;"
-                  >{{ `${schedule.hour}h00` }}</b-form-checkbox
-                >
-              </b-form-checkbox-group>
-            </b-dropdown-text>
-
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item-button>Pronto</b-dropdown-item-button>
-          </b-dropdown>
-
           <b-row>
-            <b-col mb="auto">
-              <label for="time_start">Hora de início</label>
-              <b-form-input
-                id="time_start"
-                :value="begin"
-                type="text"
-                locale="pt"
-                readonly
-              >
-              </b-form-input>
+            <b-col>
+              <label for="start">Começa</label>
+              <b-form-select
+                id="start"
+                v-model="start"
+                :options="options"
+                size="lg"
+              ></b-form-select>
             </b-col>
-            <b-col mb="auto">
-              <label for="time_end">Até às</label>
-              <b-form-input
-                id="time_end"
-                :value="end"
-                type="text"
-                locale="pt"
-                readonly
-              ></b-form-input>
+
+            <b-col>
+              <label for="end">Termina</label>
+              <b-form-select
+                id="end"
+                v-model="end"
+                :options="options"
+                size="lg"
+              ></b-form-select>
             </b-col>
           </b-row>
 
@@ -175,9 +150,9 @@ export default {
     const now = new Date()
     const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     return {
-      availableSchedules: this.schedules,
       context: null,
       disabledDays: [],
+      end: null,
       event: {
         title: '',
         description: '',
@@ -205,6 +180,7 @@ export default {
       },
       loading: false,
       min: minDate,
+      options: null,
       weekdays: [
         { value: 0, text: 'Domingo' },
         { value: 1, text: 'Segunda-feira' },
@@ -214,26 +190,14 @@ export default {
         { value: 5, text: 'Sexta-feira' },
         { value: 6, text: 'Sábado' }
       ],
-      show: true
+      show: true,
+      start: null
     }
   },
   computed: {
     ...mapGetters({
-      equipments: 'equipments/get',
-      schedules: 'schedules/get'
+      equipments: 'equipments/get'
     }),
-
-    begin() {
-      return this.event.schedules.length > 0
-        ? `${Math.min(...this.event.schedules)}h00`
-        : '-- : --'
-    },
-
-    end() {
-      return this.event.schedules.length > 0
-        ? `${Math.max(...this.event.schedules)}h00`
-        : '-- : --'
-    },
 
     equipmentsList() {
       if (this.event.equipments.length > 0) {
@@ -287,9 +251,24 @@ export default {
       const date = this.context.selectedYMD
       const params = { date }
       if (date) {
-        this.$api
-          .$get('/disabled_schedules', { params })
-          .then(response => (this.availableSchedules = response.schedules))
+        this.$api.$get('/disabled_schedules', { params }).then(response => {
+          this.options = response.schedules.map(schedule => {
+            if (schedule.available) {
+              return {
+                value: schedule.hour,
+                text: `${schedule.hour}h00`
+              }
+            } else {
+              return {
+                value: schedule.hour,
+                text: `${schedule.hour}h00 horário indisponível`,
+                disabled: true
+              }
+            }
+          })
+
+          this.options.push({ value: null, text: '-- : --' })
+        })
       }
     },
 
@@ -304,6 +283,8 @@ export default {
 
       evt.preventDefault()
       const event = this.event
+
+      event.schedules.push(this.start, this.end)
 
       event.schedules = event.schedules.sort((a, b) => a - b)
 

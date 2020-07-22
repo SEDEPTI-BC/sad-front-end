@@ -159,6 +159,7 @@
                     ><b>Começa</b></label
                   >
                   <b-form-select
+                    id="schedule-start"
                     v-model="schedule.start"
                     class="grey-bg"
                     :options="options"
@@ -171,6 +172,7 @@
                     ><b>Termina</b></label
                   >
                   <b-form-select
+                    id="schedule-end"
                     v-model="schedule.end"
                     class="grey-bg"
                     :options="options"
