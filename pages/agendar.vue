@@ -100,28 +100,29 @@
             v-bind="labels"
             @context="onContext"
           ></b-form-datepicker>
+          <transition name="component" mode="out-in">
+            <b-row v-if="event.date">
+              <b-col>
+                <label for="start">Começa</label>
+                <b-form-select
+                  id="start"
+                  v-model="start"
+                  :options="options"
+                  size="lg"
+                ></b-form-select>
+              </b-col>
 
-          <b-row>
-            <b-col>
-              <label for="start">Começa</label>
-              <b-form-select
-                id="start"
-                v-model="start"
-                :options="options"
-                size="lg"
-              ></b-form-select>
-            </b-col>
-
-            <b-col>
-              <label for="end">Termina</label>
-              <b-form-select
-                id="end"
-                v-model="end"
-                :options="options"
-                size="lg"
-              ></b-form-select>
-            </b-col>
-          </b-row>
+              <b-col>
+                <label for="end">Termina</label>
+                <b-form-select
+                  id="end"
+                  v-model="end"
+                  :options="options"
+                  size="lg"
+                ></b-form-select>
+              </b-col>
+            </b-row>
+          </transition>
 
           <hr class="my-4" />
 
@@ -261,7 +262,7 @@ export default {
             } else {
               return {
                 value: schedule.hour,
-                text: `${schedule.hour}h00 horário indisponível`,
+                text: `${schedule.hour}h00 indisponível`,
                 disabled: true
               }
             }
@@ -285,10 +286,9 @@ export default {
       const event = this.event
 
       event.schedules.push(this.start, this.end)
-
       event.schedules = event.schedules.sort((a, b) => a - b)
 
-      if (this.event.date && this.event.schedules.length > 0) {
+      if (this.event.date && this.start && this.end) {
         this.$api
           .$post('/events', {
             ...event
@@ -304,7 +304,7 @@ export default {
       } else if (!this.event.date) {
         this.loading = false
         this.makeToast('Selecione a data do evento', 'warning')
-      } else if (this.event.schedules.length < 1) {
+      } else if (!this.start || !this.end) {
         this.loading = false
         this.makeToast('Selecione o horário do evento', 'warning')
       }
@@ -363,7 +363,8 @@ export default {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border: 1px #343a40;
   box-shadow: 0px 0px 4px #343a40;
 }
