@@ -287,9 +287,9 @@ export default {
       evt.preventDefault()
       const event = this.event
 
-      event.schedules.push(this.start, this.end)
+      event.schedules[0] = this.start
+      event.schedules[1] = this.end
       event.schedules = event.schedules.sort((a, b) => a - b)
-
       if (this.event.date && this.start && this.end) {
         this.$api
           .$post('/events', {
