@@ -59,7 +59,7 @@
                   <button class="btn" @click="deteleDisableDay(disabled.id)">
                     <b-icon-trash class="trash" />
                   </button>
-                  <button class="btn">
+                  <button class="btn" @click="editDisableDay(disabled)">
                     <b-icon-pencil-square class="edit" />
                   </button>
                 </div>
@@ -183,6 +183,7 @@
             </transition>
           </div>
           <b-button
+            v-if="!editingId"
             id="send-disable-day-button"
             class="mt-1"
             block
@@ -190,6 +191,17 @@
             type="submit"
           >
             Desativar
+          </b-button>
+
+          <b-button
+            v-if="editingId"
+            id="send-disable-day-button"
+            class="mt-1"
+            block
+            size="lg"
+            @click="updateDiableDay"
+          >
+            Atualizar
           </b-button>
         </b-form>
       </b-modal>
@@ -216,6 +228,7 @@ export default {
       activeFormatted: '',
       days: null,
       disableDays: {},
+      editingId: null,
       full_day: true,
       value: '',
       context: null,
@@ -288,6 +301,16 @@ export default {
       }
     },
 
+    clearForm() {
+      this.editingId = null
+      this.$bvModal.hide('bv-modal-disableday')
+      this.selectedDay.title = ''
+      this.selectedDay.description = ''
+      this.value = null
+      this.schedule.start = null
+      this.schedule.end = null
+    },
+
     createDisableDay(evt) {
       evt.preventDefault()
 
@@ -349,6 +372,17 @@ export default {
         })
     },
 
+    editDisableDay(disabled) {
+      this.editingId = disabled.id
+      this.value = disabled.date
+      this.selectedDay.title = disabled.title
+      this.selectedDay.description = disabled.description || ''
+      this.schedule.start = disabled.schedules[0] || null
+      this.schedule.end = disabled.schedules[1] || null
+
+      this.$bvModal.show('bv-modal-disableday')
+    },
+
     getDisabledDays() {
       const month = this.context
         ? this.context.activeYMD.split('-')[1]
@@ -369,9 +403,32 @@ export default {
           )
         })
     },
+
     makeToast,
+
     onContext(ctx) {
       this.context = ctx
+    },
+
+    updateDiableDay() {
+      const data = {
+        title: this.selectedDay.title,
+        description: this.selectedDay.description,
+        full_day: this.full_day,
+        date: this.value,
+        schedules: [this.schedule.start, this.schedule.end]
+      }
+
+      this.$api
+        .$put(`/disable_days/${this.editingId}`, { data })
+        .then(response => {
+          this.makeToast('Atualizado!', 'success')
+          this.clearForm()
+          this.getDisabledDays()
+        })
+        .catch(response => {
+          this.makeToast('Erro ao atualizar dia', 'danger')
+        })
     }
   }
 }
