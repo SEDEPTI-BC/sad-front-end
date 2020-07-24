@@ -399,16 +399,18 @@ export default {
     },
 
     editDisableDay(disabled) {
+      const start = Math.min(
+        ...disabled.schedules.map(schedule => schedule.hour)
+      )
+      const end = Math.max(...disabled.schedules.map(schedule => schedule.hour))
+
       this.editingId = disabled.id
       this.value = disabled.date
       this.selectedDay.title = disabled.title
       this.selectedDay.description = disabled.description || ''
-      this.schedule.start = Math.min(
-        ...disabled.schedules.map(schedule => schedule.hour)
-      )
-      this.schedule.end = Math.max(
-        ...disabled.schedules.map(schedule => schedule.hour)
-      )
+      this.schedule.start = typeof start !== 'number' ? start : 8
+      this.schedule.end = typeof end !== 'number' ? end : 12
+
       this.$bvModal.show('bv-modal-disableday')
     },
 
