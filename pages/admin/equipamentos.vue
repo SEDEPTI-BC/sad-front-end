@@ -5,6 +5,8 @@
       <button
         id="show-btn"
         class="btn btn-secondary"
+        data-message="Gerenciar Equipamentos"
+        tabindex="0"
         @click="$bvModal.show('bv-modal-equipment')"
       >
         <b-icon-plus-circle />
@@ -37,14 +39,22 @@
               @keyup.enter="updateEquipment(equipment.id)"
           /></b-td>
           <b-td>
-            <button class="btn" @click="deteleEquipment(equipment.id)">
+            <button
+              aria-describedby="delete"
+              class="btn"
+              @click="deteleEquipment(equipment.id)"
+            >
               <BIconTrash class="trash" />
+              <span id="delete"></span>
             </button>
             <button
               :id="`edit${equipment.id}`"
+              aria-describedby="edit"
               class="btn"
               @click="edit(equipment.id)"
             >
+              <span id="edit"></span>
+
               <BIconPencilSquare class="edit" />
             </button>
           </b-td>
@@ -70,6 +80,7 @@
           <b-form-input
             id="equipment-name"
             v-model="equipmentName"
+            aria-describedby="add"
             placeholder="Digite o nome do equipamento"
             class="mb-4"
             type="text"
@@ -154,7 +165,6 @@ export default {
           this.makeToast('Erro ao adicionar equipamento', 'danger')
         })
     },
-
     deteleEquipment(id) {
       this.$api
         .$delete(`/equipments/${id}`)
