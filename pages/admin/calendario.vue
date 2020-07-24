@@ -56,7 +56,7 @@
               <header>
                 <strong>{{ disabled.title | capitalize }}</strong>
                 <div>
-                  <button class="btn" @click="deteleDisableDay(disabled.id)">
+                  <button class="btn" @click="confirmDeletion(disabled)">
                     <b-icon-trash class="trash" />
                   </button>
                   <button class="btn" @click="editDisableDay(disabled)">
@@ -226,6 +226,7 @@ export default {
   data() {
     return {
       activeFormatted: '',
+      confirm: false,
       days: null,
       disableDays: {},
       editingId: null,
@@ -311,6 +312,29 @@ export default {
       this.schedule.end = null
     },
 
+    confirmDeletion(disabled) {
+      this.confirm = ''
+      this.$bvModal
+        .msgBoxConfirm(
+          `Você deseja realmente apagar o dia "${disabled.title}"?`,
+          {
+            title: 'Confirmar deleção',
+            size: 'sm',
+            buttonSize: 'sm',
+            okVariant: 'danger',
+            okTitle: 'Confirmar',
+            cancelTitle: 'Cancelar',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+          }
+        )
+        .then(value => {
+          this.confirm = value
+          this.deteleDisableDay(disabled.id)
+        })
+    },
+
     createDisableDay(evt) {
       evt.preventDefault()
 
@@ -361,15 +385,17 @@ export default {
     },
 
     deteleDisableDay(id) {
-      this.$api
-        .$delete(`/disable_days/${id}`)
-        .then(() => {
-          this.getDisabledDays()
-          this.makeToast('Deletado com sucesso!', 'success')
-        })
-        .catch(() => {
-          this.makeToast('Ocorreu um erro ao deletar', 'danger')
-        })
+      if (this.confirm) {
+        this.$api
+          .$delete(`/disable_days/${id}`)
+          .then(() => {
+            this.getDisabledDays()
+            this.makeToast('Deletado com sucesso!', 'success')
+          })
+          .catch(() => {
+            this.makeToast('Ocorreu um erro ao deletar', 'danger')
+          })
+      }
     },
 
     editDisableDay(disabled) {
