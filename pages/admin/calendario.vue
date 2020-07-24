@@ -100,8 +100,15 @@
     </div>
 
     <div class="modal">
-      <b-modal id="bv-modal-disableday" centered hide-footer hide-header>
-        <b-form @submit="createDisableDay">
+      <b-modal
+        id="bv-modal-disableday"
+        centered
+        hide-footer
+        no-close-on-esc
+        no-close-on-backdrop
+        hide-header
+      >
+        <b-form v-if="show" @submit="createDisableDay" @reset="onReset">
           <div class="d-block">
             <h4 class="mb-4"><strong>Desativar dia</strong></h4>
 
@@ -188,9 +195,20 @@
             class="mt-1"
             block
             size="lg"
+            variant="danger"
             type="submit"
           >
             Desativar
+          </b-button>
+          <b-button
+            v-if="!editingId"
+            id="send-disable-day-button"
+            class="mt-1"
+            block
+            size="lg"
+            type="reset"
+          >
+            Cancelar
           </b-button>
 
           <b-button
@@ -199,9 +217,20 @@
             class="mt-1"
             block
             size="lg"
+            variant="danger"
             @click="updateDiableDay"
           >
             Atualizar
+          </b-button>
+          <b-button
+            v-if="editingId"
+            id="send-disable-day-button"
+            class="mt-1"
+            block
+            size="lg"
+            @click="clearForm"
+          >
+            Cancelar
           </b-button>
         </b-form>
       </b-modal>
@@ -258,6 +287,7 @@ export default {
         title: null,
         description: null
       },
+      show: true,
       weekdays: [
         { value: 0, text: 'Domingo' },
         { value: 1, text: 'Segunda-feira' },
@@ -318,14 +348,14 @@ export default {
         .msgBoxConfirm(
           `Você deseja realmente apagar o dia "${disabled.title}"?`,
           {
-            title: 'Confirmar deleção',
-            size: 'sm',
-            buttonSize: 'sm',
+            title: 'Deletar dia',
+            size: 'md',
+            buttonSize: 'lg',
             okVariant: 'danger',
             okTitle: 'Confirmar',
             cancelTitle: 'Cancelar',
             footerClass: 'p-2',
-            hideHeaderClose: false,
+            hideHeaderClose: true,
             centered: true
           }
         )
@@ -439,6 +469,21 @@ export default {
 
     onContext(ctx) {
       this.context = ctx
+    },
+
+    onReset(evt) {
+      evt.preventDefault()
+      this.$bvModal.hide('bv-modal-disableday')
+      this.editingId = null
+      this.selectedDay.title = ''
+      this.selectedDay.description = ''
+      this.value = null
+      this.schedule.start = null
+      this.schedule.end = null
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
     },
 
     updateDiableDay() {
