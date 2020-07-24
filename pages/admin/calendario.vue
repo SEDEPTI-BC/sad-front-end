@@ -2,7 +2,12 @@
   <section class="container">
     <header>
       <h1>Gerenciar datas e horários</h1>
-      <button class="btn btn-secondary">
+
+      <button
+        id="show-btn"
+        :class="{ btn: true, 'btn-secondary': !value, 'btn-danger': value }"
+        @click="activeDisableButton"
+      >
         <b-icon-calendar />
         <span>Desativar dia</span>
       </button>
@@ -16,6 +21,7 @@
           <b-calendar
             v-model="value"
             block
+            :date-info-fn="dayDisabled"
             :date-disabled-fn="dateDisabled"
             hide-header
             locale="pt-BR"
@@ -32,36 +38,182 @@
           <strong>Dias desativados</strong>
         </header>
         <div class="card-list-body">
-          <div
-            v-for="day in disableDays"
-            :key="day.id"
-            class="card-list-content"
-          >
-            <header>
-              <strong>{{ day.title | capitalize }}</strong>
-              <div>
-                <button class="btn">
-                  <b-icon-trash class="trash" />
-                </button>
-                <button class="btn">
-                  <b-icon-pencil-square class="edit" />
-                </button>
+          <transition name="component" mode="out-in">
+            <b-badge
+              v-if="disableDays.length < 1"
+              variant="secondary mx-2 mt-2"
+              style="display:block; "
+            >
+              <p class="message">Não há dias desativados este mês.</p>
+            </b-badge>
+          </transition>
+          <transition-group name="component" mode="out-in">
+            <div
+              v-for="disabled in disableDays"
+              :key="disabled.id"
+              class="card-list-content"
+            >
+              <header>
+                <strong>{{ disabled.title | capitalize }}</strong>
+                <div class="buttons">
+                  <button class="btn" @click="confirmDeletion(disabled)">
+                    <b-icon-trash class="trash" />
+                  </button>
+                  <button class="btn" @click="editDisableDay(disabled)">
+                    <b-icon-pencil-square class="edit" />
+                  </button>
+                </div>
+              </header>
+              <p>{{ disabled.description }}</p>
+              <div style="font-size:0.8rem;">
+                <div>
+                  <b>Data</b>:
+                  {{
+                    disabled.date
+                      .split('T')[0]
+                      .split('-')
+                      .reverse()
+                      .join('/')
+                  }},
+                  <div v-if="disabled.full_day" style="display: inline-block;">
+                    O dia inteiro
+                  </div>
+                  <div v-else style="display: inline-block;">
+                    de
+                    {{
+                      Math.min(
+                        ...disabled.schedules.map(schedule => schedule.hour)
+                      )
+                    }}h00 ás
+                    {{
+                      Math.max(
+                        ...disabled.schedules.map(schedule => schedule.hour)
+                      )
+                    }}h00
+                  </div>
+                </div>
               </div>
-            </header>
-            <p>{{ day.description }}</p>
-            <div style="font-size:0.8rem;">
-              <div><b>De</b>: {{ day.start }}</div>
-              <div><b>Até</b>: {{ day.end }}</div>
             </div>
-          </div>
+          </transition-group>
         </div>
       </div>
+    </div>
+
+    <div class="modal">
+      <b-modal id="bv-modal-disableday" centered hide-footer hide-header>
+        <b-form @submit="createDisableDay">
+          <div class="d-block">
+            <h4 class="mb-4"><strong>Desativar dia</strong></h4>
+
+            <label for="disable-day-title"><b>Título</b></label>
+            <b-form-input
+              id="disable-day-title"
+              v-model="selectedDay.title"
+              placeholder="Véspera de Natal"
+              class="mb-4 grey-bg"
+              type="text"
+              input-type="text"
+              size="lg"
+              autofocus
+              required
+            ></b-form-input>
+
+            <label for="disable-day-description"><b>Descrição</b></label>
+            <b-form-textarea
+              id="disable-day-description"
+              v-model="selectedDay.description"
+              placeholder="Véspera de Natal refere-se à noite ou todo dia que precede o dia de Natal e é amplamente vista como um feriado, total ou parcial."
+              rows="4"
+              max-rows="6"
+              class="mb-4 grey-bg"
+              size="lg"
+            ></b-form-textarea>
+
+            <label for="disabled-day-date"><b>Data</b></label>
+            <b-form-input
+              id="disabled-day-date"
+              :value="activeFormatted"
+              class="mb-4 grey-bg"
+              type="text"
+              input-type="text"
+              size="lg"
+              autofocus
+              readonly
+              required
+            ></b-form-input>
+
+            <b-form-checkbox
+              v-model="full_day"
+              name="full_day"
+              size="lg"
+              switch
+            >
+              <p v-if="full_day"><b>O dia inteiro</b></p>
+              <p v-else>O dia inteiro</p>
+            </b-form-checkbox>
+
+            <transition name="component" mode="out-in">
+              <div v-if="!full_day" class="schedules-row">
+                <div style="width: 49%;">
+                  <label for="schedule-start" style="display: block;"
+                    ><b>Começa</b></label
+                  >
+                  <b-form-select
+                    id="schedule-start"
+                    v-model="schedule.start"
+                    class="grey-bg"
+                    :options="options"
+                    size="lg"
+                  ></b-form-select>
+                </div>
+
+                <div style="width: 49%;">
+                  <label for="schedule-end" style="display: block;">
+                    <b>Termina</b>
+                  </label>
+                  <b-form-select
+                    id="schedule-end"
+                    v-model="schedule.end"
+                    class="grey-bg"
+                    :options="options"
+                    size="lg"
+                  ></b-form-select>
+                </div>
+              </div>
+            </transition>
+          </div>
+          <b-button
+            v-if="!editingId"
+            id="send-disable-day-button"
+            class="mt-1"
+            block
+            size="lg"
+            type="submit"
+          >
+            Desativar
+          </b-button>
+
+          <b-button
+            v-if="editingId"
+            id="send-disable-day-button"
+            class="mt-1"
+            block
+            size="lg"
+            @click="updateDiableDay"
+          >
+            Atualizar
+          </b-button>
+        </b-form>
+      </b-modal>
     </div>
   </section>
 </template>
 
 <script>
 import { BIconCalendar, BIconPencilSquare, BIconTrash } from 'bootstrap-vue'
+import { mapGetters } from 'vuex'
+import { makeToast } from '~/plugins/toast.js'
+
 export default {
   middleware: 'auth',
   layout: 'admin',
@@ -73,61 +225,12 @@ export default {
   },
   data() {
     return {
-      disableDays: [
-        {
-          id: 1,
-          user_id: 1,
-          start: '2020-05-10 08:00:00',
-          end: '2020-05-11 00:00:00',
-          title: 'dia das mães',
-          description:
-            'Dia das Mães ou Dia da Mãe é uma data comemorativa que homenageia anualmente a figura familiar materna e a maternidade. A data de comemoração varia de acordo com o país.',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
-        },
-        {
-          id: 2,
-          user_id: 5,
-          start: '2020-06-11 00:00:00',
-          end: '2020-06-12 00:00:00',
-          title: 'corpus christi',
-          description:
-            'Corpus Christi, ou Corpus Domini e generalizada em Portugal como Corpo de Deus, é uma comemoração litúrgica católica que ocorre na quinta-feira seguinte ao domingo da Santíssima Trindade, que, por sua vez, acontece no domingo seguinte ao de Pentecostes.',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
-        },
-        {
-          id: 3,
-          user_id: 3,
-          start: '2020-06-12 00:00:00',
-          end: '2020-06-13 00:00:00',
-          title: 'Dia dos namorados',
-          description: '',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
-        },
-        {
-          id: 4,
-          user_id: 2,
-          start: '2020-04-19 05:00:00',
-          end: '2020-04-19 09:00:00',
-          title: 'Dia dos pais',
-          description:
-            'Dia dos Pais ou Dia do Pai é uma data comemorativa que homenageia anualmente a figura familiar paterna. A data varia de acordo com os países.',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
-        },
-        {
-          id: 5,
-          user_id: 4,
-          start: '2020-09-05 08:00:00',
-          end: '2020-09-05 12:00:00',
-          title: 'Desratização',
-          description: '',
-          created_at: '2020-04-15 12:09:59',
-          updated_at: '2020-04-15 12:09:59'
-        }
-      ],
+      activeFormatted: '',
+      confirm: false,
+      days: null,
+      disableDays: {},
+      editingId: null,
+      full_day: true,
       value: '',
       context: null,
       labels: {
@@ -146,6 +249,15 @@ export default {
         labelNav: 'Navegação do calendário',
         labelHelp: 'Use as teclas de seta para navegar pelo calendário'
       },
+      options: null,
+      schedule: {
+        start: null,
+        end: null
+      },
+      selectedDay: {
+        title: null,
+        description: null
+      },
       weekdays: [
         { value: 0, text: 'Domingo' },
         { value: 1, text: 'Segunda-feira' },
@@ -157,20 +269,216 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters({
+      schedules: 'schedules/get'
+    })
+  },
+  watch: {
+    context() {
+      this.getDisabledDays()
+      this.activeFormatted = this.context.activeFormatted
+    },
+
+    full_day() {
+      this.options = this.schedules.map(schedule => ({
+        value: schedule.hour,
+        text: `${schedule.hour}h00`
+      }))
+      this.options.push({ value: null, text: '-- : --' })
+    }
+  },
+
+  created() {
+    this.getDisabledDays()
+  },
+
   methods: {
+    activeDisableButton() {
+      if (this.value) {
+        this.$bvModal.show('bv-modal-disableday')
+      } else {
+        this.makeToast('Selecione um dia no calendário', 'warning')
+      }
+    },
+
+    clearForm() {
+      this.$bvModal.hide('bv-modal-disableday')
+      this.editingId = null
+      this.selectedDay.title = ''
+      this.selectedDay.description = ''
+      this.value = null
+      this.schedule.start = null
+      this.schedule.end = null
+    },
+
+    confirmDeletion(disabled) {
+      this.confirm = ''
+      this.$bvModal
+        .msgBoxConfirm(
+          `Você deseja realmente apagar o dia "${disabled.title}"?`,
+          {
+            title: 'Confirmar deleção',
+            size: 'sm',
+            buttonSize: 'sm',
+            okVariant: 'danger',
+            okTitle: 'Confirmar',
+            cancelTitle: 'Cancelar',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+          }
+        )
+        .then(value => {
+          this.confirm = value
+          this.deteleDisableDay(disabled.id)
+        })
+    },
+
+    createDisableDay(evt) {
+      evt.preventDefault()
+
+      const data = {
+        title: this.selectedDay.title,
+        description: this.selectedDay.description,
+        full_day: this.full_day,
+        date: this.value,
+        schedules: [this.schedule.start, this.schedule.end]
+      }
+
+      if (this.full_day) {
+        this.$api
+          .$post('/disable_days', data)
+          .then(response => {
+            this.makeToast('Dia desativado!', 'success')
+            this.getDisabledDays()
+            this.$bvModal.hide('bv-modal-disableday')
+          })
+          .catch(response => {
+            this.makeToast('Erro ao desativar dia', 'danger')
+          })
+      } else if (this.schedule.start && this.schedule.end) {
+        this.$api
+          .$post('/disable_days', data)
+          .then(response => {
+            this.makeToast('Dia desativado!', 'success')
+            this.getDisabledDays()
+            this.$bvModal.hide('bv-modal-disableday')
+          })
+          .catch(response => {
+            this.makeToast('Erro ao desativar dia', 'danger')
+          })
+      } else {
+        this.makeToast('Selecione os horários', 'warning')
+      }
+    },
+
+    dayDisabled(ymd, date) {
+      const day = date.getDate()
+      const days = this.days ? this.days : []
+      return days.includes(day) ? 'table-secondary' : ''
+    },
+
     dateDisabled(ymd, date) {
       const weekday = date.getDay()
-      const day = date.getDate()
-      return weekday === 0 || weekday === 6 || day === 13
+      return weekday === 0 || weekday === 6
     },
+
+    deteleDisableDay(id) {
+      if (this.confirm) {
+        this.$api
+          .$delete(`/disable_days/${id}`)
+          .then(() => {
+            this.getDisabledDays()
+            this.makeToast('Deletado com sucesso!', 'success')
+          })
+          .catch(() => {
+            this.makeToast('Ocorreu um erro ao deletar', 'danger')
+          })
+      }
+    },
+
+    editDisableDay(disabled) {
+      const start = Math.min(
+        ...disabled.schedules.map(schedule => schedule.hour)
+      )
+      const end = Math.max(...disabled.schedules.map(schedule => schedule.hour))
+
+      this.editingId = disabled.id
+      this.value = disabled.date
+      this.selectedDay.title = disabled.title
+      this.selectedDay.description = disabled.description || ''
+      this.schedule.start = typeof start !== 'number' ? start : 8
+      this.schedule.end = typeof end !== 'number' ? end : 12
+
+      this.$bvModal.show('bv-modal-disableday')
+    },
+
+    getDisabledDays() {
+      const month = this.context
+        ? this.context.activeYMD.split('-')[1]
+        : new Date().getMonth() + 1
+
+      const year = this.context
+        ? this.context.activeYMD.split('-')[0]
+        : new Date().getFullYear()
+
+      const params = { month, year }
+
+      this.$api
+        .$get('/disable_days_current_month', { params })
+        .then(response => {
+          this.disableDays = response.disabledDays
+          this.days = response.disabledDays.map(
+            day => +day.date.split('T')[0].split('-')[2]
+          )
+        })
+    },
+
+    makeToast,
+
     onContext(ctx) {
       this.context = ctx
+    },
+
+    updateDiableDay() {
+      const data = {
+        title: this.selectedDay.title,
+        description: this.selectedDay.description,
+        full_day: this.full_day,
+        date: this.value,
+        schedules: [this.schedule.start, this.schedule.end]
+      }
+
+      this.$api
+        .$put(`/disable_days/${this.editingId}`, data)
+        .then(response => {
+          this.makeToast('Atualizado!', 'success')
+          this.clearForm()
+          this.getDisabledDays()
+        })
+        .catch(response => {
+          this.makeToast('Erro ao atualizar dia', 'danger')
+        })
     }
   }
 }
 </script>
 
 <style scoped>
+[mode='out-in'] {
+  margin: 0;
+  padding: 0;
+}
+
+input[type='text'],
+select,
+textarea {
+  outline: none;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 header {
   display: flex;
   flex-wrap: wrap;
@@ -190,6 +498,12 @@ span {
 
 .btn {
   float: right;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
 }
 
 .calendar {
@@ -223,6 +537,7 @@ span {
   height: 350px;
   max-width: 400px;
   margin-bottom: 40px;
+  flex-grow: 2;
 }
 
 .card-list-body {
@@ -248,7 +563,9 @@ span {
 }
 
 .card-list-content header {
-  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   margin: 0;
 }
 
@@ -281,6 +598,24 @@ span {
   display: grid;
   margin: 0 auto;
   max-width: 900px;
+}
+
+.grey-bg {
+  background: #dfdfdf;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.message {
+  margin: 5px;
+  padding: 5px;
+}
+
+.schedules-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
 }
 
 @media screen and (max-width: 830px) and (min-width: 730px) {

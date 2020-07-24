@@ -54,36 +54,38 @@
           ></b-form-input>
 
           <label for="dropdown-check">Equipamentos</label>
-          <b-dropdown
-            id="dropdown-check"
-            text="Selecionar equipamentos"
-            style="width: 100%; "
-            class="mb-3"
-          >
-            <b-dropdown-text style="max-width: 300px;">
-              <b-form-checkbox-group id="checkboxes" v-model="event.equipments">
-                <b-form-checkbox
-                  v-for="equipment in equipments.data"
-                  :key="equipment.id"
-                  :value="equipment.name"
-                  style="display: block;"
-                  >{{ equipment.name | capitalize }}</b-form-checkbox
-                >
-              </b-form-checkbox-group>
-            </b-dropdown-text>
 
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item-button>Pronto</b-dropdown-item-button>
-          </b-dropdown>
+          <b-input-group>
+            <b-form-input
+              id="time_start"
+              :value="equipmentsList"
+              type="text"
+              class="mb-4"
+              readonly
+            >
+            </b-form-input>
+            <template v-slot:prepend>
+              <b-dropdown id="dropdown-check" class="mb-4">
+                <b-dropdown-text style="max-width: 300px;">
+                  <b-form-checkbox-group
+                    id="checkboxes"
+                    v-model="event.equipments"
+                  >
+                    <b-form-checkbox
+                      v-for="equipment in equipments.data"
+                      :key="equipment.id"
+                      :value="equipment.name"
+                      style="display: block;"
+                      >{{ equipment.name | capitalize }}</b-form-checkbox
+                    >
+                  </b-form-checkbox-group>
+                </b-dropdown-text>
 
-          <b-form-input
-            id="time_start"
-            :value="equipmentsList"
-            type="text"
-            class="mb-4"
-            readonly
-          >
-          </b-form-input>
+                <b-dropdown-divider></b-dropdown-divider>
+                <b-dropdown-item-button>Pronto</b-dropdown-item-button>
+              </b-dropdown>
+            </template>
+          </b-input-group>
 
           <label for="date-picker">Data do evento</label>
           <b-form-datepicker
@@ -100,53 +102,29 @@
             v-bind="labels"
             @context="onContext"
           ></b-form-datepicker>
+          <transition name="component" mode="out-in">
+            <b-row v-if="event.date">
+              <b-col>
+                <label for="start">Começa</label>
+                <b-form-select
+                  id="start"
+                  v-model="start"
+                  :options="options"
+                  size="lg"
+                ></b-form-select>
+              </b-col>
 
-          <label for="dropdown-check">Horário</label>
-          <b-dropdown
-            id="dropdown-check"
-            text="Selecionar horários"
-            style="width: 100%; "
-            class="mb-4"
-          >
-            <b-dropdown-text style="max-width: 300px;">
-              <b-form-checkbox-group id="checkboxes" v-model="event.schedules">
-                <b-form-checkbox
-                  v-for="schedule in availableSchedules"
-                  :key="schedule.id"
-                  :value="schedule.hour"
-                  style="display: block;"
-                  >{{ `${schedule.hour}h00` }}</b-form-checkbox
-                >
-              </b-form-checkbox-group>
-            </b-dropdown-text>
-
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item-button>Pronto</b-dropdown-item-button>
-          </b-dropdown>
-
-          <b-row>
-            <b-col mb="auto">
-              <label for="time_start">Hora de início</label>
-              <b-form-input
-                id="time_start"
-                :value="begin"
-                type="text"
-                locale="pt"
-                readonly
-              >
-              </b-form-input>
-            </b-col>
-            <b-col mb="auto">
-              <label for="time_end">Até às</label>
-              <b-form-input
-                id="time_end"
-                :value="end"
-                type="text"
-                locale="pt"
-                readonly
-              ></b-form-input>
-            </b-col>
-          </b-row>
+              <b-col>
+                <label for="end">Termina</label>
+                <b-form-select
+                  id="end"
+                  v-model="end"
+                  :options="options"
+                  size="lg"
+                ></b-form-select>
+              </b-col>
+            </b-row>
+          </transition>
 
           <hr class="my-4" />
 
@@ -175,9 +153,9 @@ export default {
     const now = new Date()
     const minDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     return {
-      availableSchedules: this.schedules,
       context: null,
       disabledDays: [],
+      end: null,
       event: {
         title: '',
         description: '',
@@ -205,6 +183,7 @@ export default {
       },
       loading: false,
       min: minDate,
+      options: null,
       weekdays: [
         { value: 0, text: 'Domingo' },
         { value: 1, text: 'Segunda-feira' },
@@ -214,26 +193,14 @@ export default {
         { value: 5, text: 'Sexta-feira' },
         { value: 6, text: 'Sábado' }
       ],
-      show: true
+      show: true,
+      start: null
     }
   },
   computed: {
     ...mapGetters({
-      equipments: 'equipments/get',
-      schedules: 'schedules/get'
+      equipments: 'equipments/get'
     }),
-
-    begin() {
-      return this.event.schedules.length > 0
-        ? `${Math.min(...this.event.schedules)}h00`
-        : '-- : --'
-    },
-
-    end() {
-      return this.event.schedules.length > 0
-        ? `${Math.max(...this.event.schedules)}h00`
-        : '-- : --'
-    },
 
     equipmentsList() {
       if (this.event.equipments.length > 0) {
@@ -287,9 +254,24 @@ export default {
       const date = this.context.selectedYMD
       const params = { date }
       if (date) {
-        this.$api
-          .$get('/disabled_schedules', { params })
-          .then(response => (this.availableSchedules = response.schedules))
+        this.$api.$get('/disabled_schedules', { params }).then(response => {
+          this.options = response.schedules.map(schedule => {
+            if (schedule.available) {
+              return {
+                value: schedule.hour,
+                text: `${schedule.hour}h00`
+              }
+            } else {
+              return {
+                value: schedule.hour,
+                text: `${schedule.hour}h00 indisponível`,
+                disabled: true
+              }
+            }
+          })
+
+          this.options.push({ value: null, text: '-- : --' })
+        })
       }
     },
 
@@ -305,9 +287,10 @@ export default {
       evt.preventDefault()
       const event = this.event
 
+      event.schedules[0] = this.start
+      event.schedules[1] = this.end
       event.schedules = event.schedules.sort((a, b) => a - b)
-
-      if (this.event.date && this.event.schedules.length > 0) {
+      if (this.event.date && this.start && this.end) {
         this.$api
           .$post('/events', {
             ...event
@@ -323,7 +306,7 @@ export default {
       } else if (!this.event.date) {
         this.loading = false
         this.makeToast('Selecione a data do evento', 'warning')
-      } else if (this.event.schedules.length < 1) {
+      } else if (!this.start || !this.end) {
         this.loading = false
         this.makeToast('Selecione o horário do evento', 'warning')
       }
@@ -382,7 +365,8 @@ export default {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border: 1px #343a40;
   box-shadow: 0px 0px 4px #343a40;
 }
