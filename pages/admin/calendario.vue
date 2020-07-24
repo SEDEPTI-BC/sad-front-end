@@ -502,8 +502,8 @@ span {
 .card-list {
   height: 350px;
   max-width: 400px;
-  min-width: 350px;
   margin-bottom: 40px;
+  flex-grow: 2;
 }
 
 .card-list-body {
