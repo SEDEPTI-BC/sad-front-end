@@ -55,7 +55,7 @@
             >
               <header>
                 <strong>{{ disabled.title | capitalize }}</strong>
-                <div>
+                <div class="buttons">
                   <button class="btn" @click="confirmDeletion(disabled)">
                     <b-icon-trash class="trash" />
                   </button>
@@ -498,6 +498,12 @@ span {
   float: right;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
+}
+
 .calendar {
   height: 350px;
   max-width: 400px;
@@ -555,7 +561,9 @@ span {
 }
 
 .card-list-content header {
-  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   margin: 0;
 }
 
