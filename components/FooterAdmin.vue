@@ -2,12 +2,15 @@
   <footer class="footer">
     <p>
       Desenvolvido e mantido por
-
-      <img
-        src="../assets/images/Logo_SEDEPTI.jpg"
-        alt="logo-sedepti"
-        class="logo"
-      />
+      <b
+        ><nuxt-link to="/sedepti">
+          <img
+            src="../assets/images/Logo_SEDEPTI.jpg"
+            alt="logo-sedepti"
+            class="logo"
+          />
+        </nuxt-link>
+      </b>
     </p>
   </footer>
 </template>
