@@ -73,6 +73,10 @@
   color: red;
 }
 
+a {
+  color: #dc3545;
+}
+
 a:hover {
   color: #4e565f;
 }

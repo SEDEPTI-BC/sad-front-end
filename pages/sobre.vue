@@ -1,68 +1,44 @@
 <template>
-  <div class="content pt-4">
+  <div class="content pt-5">
     <div class="container">
-      <h2 class="my-4">Sobre o Sistema de Agendamentos de Auditório</h2>
+      <h2 class="my-5">Sobre o Sistema de Agendamentos de Auditório</h2>
 
-      <strong>
-        A passagem do Lorem Ipsum usada desde 1500 "Lorem ipsum dolor sit amet
-      </strong>
+      <strong>Finalidade</strong>
+
       <p>
-        Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum."
+        O SAD (Sistema de Agendamentos de Auditório) foi desenvolvido com o
+        intuito de falicitar, agilizar e automatizar os agendamentos de horários
+        do auditório da Biblioteca Central da UFPA.
       </p>
+      <br />
       <p>
-        At vero eos et accusamus et iusto odio dignissimos ducimus qui
-        blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
-        et quas molestias excepturi sint occaecati cupiditate non provident,
-        similique sunt in culpa qui officia deserunt mollitia animi, id est
-        laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita
-        distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
-        cumque nihil impedit quo minus id quod maxime placeat facere possimus,
-        omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem
-        quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet
-        ut et voluptates repudiandae sint et molestiae non recusandae. Itaque
-        earum rerum hic tenetur a sapiente delectus, ut aut reiciendis
-        voluptatibus maiores alias consequatur aut perferendis doloribus
-        asperiores repellat.
+        Neste sistema é possível realizar agendamentos escolhendo o dia e os
+        horários, de acordo com a disponibilidade de horários mostrado pelo
+        sistema.
       </p>
 
-      <strong>
-        Secção 1.10.32 do "de Finibus Bonorum et Malorum", escrito por Cícero em
-        45 AC.
-      </strong>
+      <strong>Realizando um agendamento</strong>
+
       <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-        accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
-        illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-        explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-        odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-        voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
-        quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam
-        eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat
-        voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam
-        corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
-        Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse
-        quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo
-        voluptas nulla pariatur?
+        Para agendar um evento, basta o usuário preencher o formulário na página
+        de <nuxt-link to="/agendar">agendamento</nuxt-link> com os dados
+        requeridos no formulário.
       </p>
       <p>
-        Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        Após finalizar o preenchimento do formulário e confirmar o agendamento,
+        o usuário irá receber um email, contendo a data, horário e todas as
+        informações a respeito do evento agendado.
+      </p>
+      <strong>Local</strong>
+      <p>
+        O local onde ocorrerão os eventos será no auditório da Biblioteca
+        Central UFPA no endereço Rua Augusto Corrêa, n. 1 – CEP 66075-110 Belém
+        – PA.
+      </p>
+      <strong>Contatos</strong>
+      <p>
+        Para mais informações entre em contato com a
+        <a :href="`mailto:${email}`">administração</a> do SAD.
       </p>
     </div>
   </div>
@@ -73,26 +49,26 @@ export default {
   layout: 'public',
   name: 'Sobre',
   data() {
-    return {}
-  },
-  methods: {
-    login() {}
+    return {
+      email: 'bc@ufpa.br'
+    }
   }
 }
 </script>
 
 <style scoped>
 p {
+  text-align: justify;
   margin-bottom: 0;
 }
 
 strong {
   display: block;
-  margin-bottom: 20px;
+  margin: 40px 0 20px 0;
 }
 
 .content {
-  padding-top: 10px;
+  padding-bottom: 100px;
   min-height: 100vh;
   color: #555;
   background: #edf3ff;
