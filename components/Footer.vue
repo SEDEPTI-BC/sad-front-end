@@ -8,7 +8,11 @@
       <p>
         End.: Rua Augusto Corrêa, n. 1 – CEP 66075-110 Belém – PA
       </p>
-      <p>Desenvolvido e mantido por SEDEPTI.</p>
+      <p>
+        Desenvolvido e mantido por
+        <b><nuxt-link to="/sedepti" style="color: white;">SEDEPTI</nuxt-link></b
+        >.
+      </p>
     </div>
 
     <img src="../assets/images/ufpa-logo.png" alt="logo-ufpa" class="logo" />

@@ -7,6 +7,7 @@ const _86fa16c6 = () => interopDefault(import('../pages/admin/index.vue' /* webp
 const _0c896839 = () => interopDefault(import('../pages/agendamento-confirmado.vue' /* webpackChunkName: "pages/agendamento-confirmado" */))
 const _da56701e = () => interopDefault(import('../pages/agendar.vue' /* webpackChunkName: "pages/agendar" */))
 const _250c4e98 = () => interopDefault(import('../pages/login.vue' /* webpackChunkName: "pages/login" */))
+const _fc410886 = () => interopDefault(import('../pages/sedepti.vue' /* webpackChunkName: "pages/sedepti" */))
 const _01b68384 = () => interopDefault(import('../pages/sobre.vue' /* webpackChunkName: "pages/sobre" */))
 const _ad8531ae = () => interopDefault(import('../pages/admin/calendario.vue' /* webpackChunkName: "pages/admin/calendario" */))
 const _166578b8 = () => interopDefault(import('../pages/admin/equipamentos.vue' /* webpackChunkName: "pages/admin/equipamentos" */))
@@ -46,6 +47,10 @@ export const routerOptions = {
     path: "/login",
     component: _250c4e98,
     name: "login"
+  }, {
+    path: "/sedepti",
+    component: _fc410886,
+    name: "sedepti"
   }, {
     path: "/sobre",
     component: _01b68384,
